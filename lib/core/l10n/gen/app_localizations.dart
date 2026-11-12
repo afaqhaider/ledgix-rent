@@ -1,0 +1,872 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_ar.dart';
+import 'app_localizations_en.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'gen/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
+    Locale('en'),
+  ];
+
+  /// No description provided for @appName.
+  ///
+  /// In en, this message translates to:
+  /// **'LedGix Rent'**
+  String get appName;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signIn;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get signUp;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (+971…)'**
+  String get phone;
+
+  /// No description provided for @sendOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendOtp;
+
+  /// No description provided for @otpCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get otpCode;
+
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
+  /// No description provided for @emailTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailTab;
+
+  /// No description provided for @phoneTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneTab;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get arabic;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, landlord!'**
+  String get welcomeTitle;
+
+  /// No description provided for @welcomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your language and add your first property.'**
+  String get welcomeSub;
+
+  /// No description provided for @yourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get yourName;
+
+  /// No description provided for @dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// No description provided for @portfolio.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio'**
+  String get portfolio;
+
+  /// No description provided for @cheques.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheques'**
+  String get cheques;
+
+  /// No description provided for @maintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get maintenance;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @tenants.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenants'**
+  String get tenants;
+
+  /// No description provided for @leases.
+  ///
+  /// In en, this message translates to:
+  /// **'Leases'**
+  String get leases;
+
+  /// No description provided for @vendors.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendors'**
+  String get vendors;
+
+  /// No description provided for @holdRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold requests'**
+  String get holdRequests;
+
+  /// No description provided for @directDebits.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct debits'**
+  String get directDebits;
+
+  /// No description provided for @documents.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documents;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @collectedMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected this month'**
+  String get collectedMonth;
+
+  /// No description provided for @outstandingMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding this month'**
+  String get outstandingMonth;
+
+  /// No description provided for @collectedYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected this year'**
+  String get collectedYear;
+
+  /// No description provided for @outstandingYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding this year'**
+  String get outstandingYear;
+
+  /// No description provided for @upcomingCheques.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming cheques'**
+  String get upcomingCheques;
+
+  /// No description provided for @openTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Open tickets'**
+  String get openTickets;
+
+  /// No description provided for @nothingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get nothingYet;
+
+  /// No description provided for @addProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add property'**
+  String get addProperty;
+
+  /// No description provided for @propertyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Property name'**
+  String get propertyName;
+
+  /// No description provided for @propertyType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get propertyType;
+
+  /// No description provided for @villa.
+  ///
+  /// In en, this message translates to:
+  /// **'Villa'**
+  String get villa;
+
+  /// No description provided for @apartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get apartment;
+
+  /// No description provided for @studio.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio'**
+  String get studio;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @community.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get community;
+
+  /// No description provided for @titleDeedNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Title deed no.'**
+  String get titleDeedNo;
+
+  /// No description provided for @dewaAccountNo.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA account no.'**
+  String get dewaAccountNo;
+
+  /// No description provided for @occupied.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get occupied;
+
+  /// No description provided for @vacant.
+  ///
+  /// In en, this message translates to:
+  /// **'Vacant'**
+  String get vacant;
+
+  /// No description provided for @nextDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due'**
+  String get nextDue;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @addTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tenant'**
+  String get addTenant;
+
+  /// No description provided for @tenantName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant name'**
+  String get tenantName;
+
+  /// No description provided for @emiratesIdNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID no.'**
+  String get emiratesIdNo;
+
+  /// No description provided for @attachPassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach passport copy'**
+  String get attachPassport;
+
+  /// No description provided for @attachEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach Emirates ID copy'**
+  String get attachEmiratesId;
+
+  /// No description provided for @attached.
+  ///
+  /// In en, this message translates to:
+  /// **'Attached'**
+  String get attached;
+
+  /// No description provided for @addLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Add lease'**
+  String get addLease;
+
+  /// No description provided for @property.
+  ///
+  /// In en, this message translates to:
+  /// **'Property'**
+  String get property;
+
+  /// No description provided for @tenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get tenant;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDate;
+
+  /// No description provided for @annualRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent (AED)'**
+  String get annualRent;
+
+  /// No description provided for @securityDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit (AED)'**
+  String get securityDeposit;
+
+  /// No description provided for @ejariNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari no.'**
+  String get ejariNo;
+
+  /// No description provided for @numberOfCheques.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of cheques'**
+  String get numberOfCheques;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethod;
+
+  /// No description provided for @cheque.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get cheque;
+
+  /// No description provided for @directDebit.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct debit'**
+  String get directDebit;
+
+  /// No description provided for @addPropertyFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a property and a tenant first.'**
+  String get addPropertyFirst;
+
+  /// No description provided for @scheduleGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment schedule created'**
+  String get scheduleGenerated;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusDeposited.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposited'**
+  String get statusDeposited;
+
+  /// No description provided for @statusCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleared'**
+  String get statusCleared;
+
+  /// No description provided for @statusBounced.
+  ///
+  /// In en, this message translates to:
+  /// **'Bounced'**
+  String get statusBounced;
+
+  /// No description provided for @statusOnHold.
+  ///
+  /// In en, this message translates to:
+  /// **'On hold'**
+  String get statusOnHold;
+
+  /// No description provided for @markDeposited.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark deposited'**
+  String get markDeposited;
+
+  /// No description provided for @markCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark cleared'**
+  String get markCleared;
+
+  /// No description provided for @markBounced.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark bounced'**
+  String get markBounced;
+
+  /// No description provided for @attachPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach cheque photo'**
+  String get attachPhoto;
+
+  /// No description provided for @chequeNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque no.'**
+  String get chequeNo;
+
+  /// No description provided for @bankName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bankName;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @dueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get dueDate;
+
+  /// No description provided for @failedDebit.
+  ///
+  /// In en, this message translates to:
+  /// **'Debit failed'**
+  String get failedDebit;
+
+  /// No description provided for @requestHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Request hold'**
+  String get requestHold;
+
+  /// No description provided for @requestedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'New date'**
+  String get requestedDate;
+
+  /// No description provided for @reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reason;
+
+  /// No description provided for @approve.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get approve;
+
+  /// No description provided for @reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// No description provided for @originalDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Original date'**
+  String get originalDate;
+
+  /// No description provided for @response.
+  ///
+  /// In en, this message translates to:
+  /// **'Response'**
+  String get response;
+
+  /// No description provided for @holdPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get holdPending;
+
+  /// No description provided for @holdApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get holdApproved;
+
+  /// No description provided for @holdRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get holdRejected;
+
+  /// No description provided for @newTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'New ticket'**
+  String get newTicket;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @priority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get priority;
+
+  /// No description provided for @low.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get low;
+
+  /// No description provided for @medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// No description provided for @high.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get high;
+
+  /// No description provided for @urgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get urgent;
+
+  /// No description provided for @ticketOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get ticketOpen;
+
+  /// No description provided for @ticketInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get ticketInProgress;
+
+  /// No description provided for @ticketResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get ticketResolved;
+
+  /// No description provided for @vendor.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor'**
+  String get vendor;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost (AED)'**
+  String get cost;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get addPhoto;
+
+  /// No description provided for @addVendor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add vendor'**
+  String get addVendor;
+
+  /// No description provided for @vendorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor name'**
+  String get vendorName;
+
+  /// No description provided for @trade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade'**
+  String get trade;
+
+  /// No description provided for @addDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Add document'**
+  String get addDocument;
+
+  /// No description provided for @docLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease'**
+  String get docLease;
+
+  /// No description provided for @docEjari.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari'**
+  String get docEjari;
+
+  /// No description provided for @docTitleDeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Title deed'**
+  String get docTitleDeed;
+
+  /// No description provided for @docEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID'**
+  String get docEmiratesId;
+
+  /// No description provided for @offlineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline: showing saved data'**
+  String get offlineHint;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}
