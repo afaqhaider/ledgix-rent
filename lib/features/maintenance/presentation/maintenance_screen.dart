@@ -3,16 +3,42 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../domain/maintenance_ticket.dart';
 
-String priorityLabel(AppLocalizations l, TicketPriority p) =>
-    switch (p) { TicketPriority.low => l.low, TicketPriority.medium => l.medium, TicketPriority.high => l.high, TicketPriority.urgent => l.urgent };
+String priorityLabel(AppLocalizations l, TicketPriority p) => switch (p) {
+      TicketPriority.low => l.low,
+      TicketPriority.medium => l.normal,
+      TicketPriority.high => l.high,
+      TicketPriority.urgent => l.emergency,
+    };
 
-String ticketStatusLabel(AppLocalizations l, TicketStatus s) =>
-    switch (s) { TicketStatus.open => l.ticketOpen, TicketStatus.inProgress => l.ticketInProgress, TicketStatus.resolved => l.ticketResolved };
+String ticketStatusLabel(AppLocalizations l, TicketStatus s) => switch (s) {
+      TicketStatus.open => l.ticketOpen,
+      TicketStatus.requested => l.ticketRequested,
+      TicketStatus.quoted => l.ticketQuoted,
+      TicketStatus.approved => l.ticketApproved,
+      TicketStatus.scheduled => l.ticketScheduled,
+      TicketStatus.inProgress => l.ticketInProgress,
+      TicketStatus.completed => l.ticketCompleted,
+      TicketStatus.closed => l.ticketClosed,
+    };
+
+String categoryLabel(AppLocalizations l, TicketCategory c) => switch (c) {
+      TicketCategory.ac => l.catAc,
+      TicketCategory.plumbing => l.catPlumbing,
+      TicketCategory.electrical => l.catElectrical,
+      TicketCategory.appliances => l.catAppliances,
+      TicketCategory.pestControl => l.catPestControl,
+      TicketCategory.painting => l.catPainting,
+      TicketCategory.other => l.other,
+    };
+
+String formatDateTime(DateTime d) =>
+    '${formatDate(d)} ${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 
 class MaintenanceScreen extends ConsumerWidget {
   const MaintenanceScreen({super.key});
@@ -20,7 +46,6 @@ class MaintenanceScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l;
     final props = {for (final p in ref.watch(propertiesProvider).value ?? []) p.id: p.name};
-    final vendors = ref.watch(vendorsProvider).value ?? [];
     return Scaffold(
       appBar: AppBar(title: Text(l.maintenance)),
       floatingActionButton: FloatingActionButton.extended(
@@ -31,50 +56,18 @@ class MaintenanceScreen extends ConsumerWidget {
       body: AsyncList<MaintenanceTicket>(
         items: ref.watch(ticketsProvider),
         builder: (c, t) => Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(children: [
-                Expanded(child: Text(t.title, style: Theme.of(c).textTheme.titleMedium)),
-                StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
-              ]),
-              Text(props[t.propertyId] ?? ''),
-              if (t.description.isNotEmpty) Text(t.description),
-              if (t.photos.isNotEmpty) Text('📎 ${t.photos.length}'),
-              const SizedBox(height: 8),
-              Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                DropdownButton<TicketStatus>(
-                  value: t.status,
-                  items: [for (final s in TicketStatus.values) DropdownMenuItem(value: s, child: Text(ticketStatusLabel(l, s)))],
-                  onChanged: (s) => ref.read(maintenanceRepositoryProvider).save(t.copyWith(status: s)),
-                ),
-                DropdownButton<String>(
-                  value: vendors.any((v) => v.id == t.vendorId) ? t.vendorId : null,
-                  hint: Text(l.vendor),
-                  items: [for (final v in vendors) DropdownMenuItem(value: v.id, child: Text(v.name))],
-                  onChanged: (v) => ref.read(maintenanceRepositoryProvider).save(t.copyWith(vendorId: v)),
-                ),
-                ActionChip(
-                  label: Text(t.cost == 0 ? l.cost : formatAed(t.cost)),
-                  onPressed: () async {
-                    final ctl = TextEditingController(text: t.cost == 0 ? '' : '${t.cost}');
-                    final ok = await showDialog<bool>(
-                      context: c,
-                      builder: (d) => AlertDialog(
-                        title: Text(l.cost),
-                        content: TextField(controller: ctl, keyboardType: TextInputType.number),
-                        actions: [
-                          TextButton(onPressed: () => Navigator.pop(d, false), child: Text(l.cancel)),
-                          FilledButton(onPressed: () => Navigator.pop(d, true), child: Text(l.save)),
-                        ],
-                      ),
-                    );
-                    final v = double.tryParse(ctl.text);
-                    if (ok == true && v != null) await ref.read(maintenanceRepositoryProvider).save(t.copyWith(cost: v));
-                  },
-                ),
-              ]),
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(16),
+            title: Text(t.title, style: Theme.of(c).textTheme.titleMedium),
+            subtitle: Text([props[t.propertyId] ?? '', categoryLabel(l, t.category), if (t.cost > 0) formatAed(t.cost)]
+                .where((s) => s.isNotEmpty)
+                .join(' · ')),
+            trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
+              StatusChip(ticketStatusLabel(l, t.status), Theme.of(c).colorScheme.primary),
+              const SizedBox(height: 4),
+              StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
             ]),
+            onTap: () => c.push('/tickets/${t.id}'),
           ),
         ),
       ),
@@ -90,10 +83,21 @@ class TicketFormScreen extends ConsumerStatefulWidget {
 
 class _TicketFormScreenState extends ConsumerState<TicketFormScreen> {
   final _key = GlobalKey<FormState>();
-  final _title = TextEditingController(), _desc = TextEditingController();
+  final _title = TextEditingController(), _desc = TextEditingController(), _access = TextEditingController();
   String? _property;
   TicketPriority _priority = TicketPriority.medium;
-  final _photos = <String>[];
+  TicketCategory _category = TicketCategory.other;
+  bool _visit = false;
+  final _slots = <DateTime>[];
+  final _photos = <String>[], _videos = <String>[];
+
+  Future<void> _addSlot() async {
+    final d = await pickDate(context, todayGst());
+    if (d == null || !mounted) return;
+    final t = await showTimePicker(context: context, initialTime: const TimeOfDay(hour: 10, minute: 0));
+    if (t == null) return;
+    setState(() => _slots.add(DateTime(d.year, d.month, d.day, t.hour, t.minute)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +114,12 @@ class _TicketFormScreenState extends ConsumerState<TicketFormScreen> {
               title: _title.text.trim(),
               description: _desc.text.trim(),
               priority: _priority,
+              category: _category,
+              visitRequired: _visit,
+              timeSlots: _visit ? _slots : const [],
+              accessNotes: _visit ? _access.text.trim() : '',
               photos: _photos,
+              videos: _videos,
             ));
         if (context.mounted) context.pop();
       },
@@ -123,13 +132,28 @@ class _TicketFormScreenState extends ConsumerState<TicketFormScreen> {
           onChanged: (v) => _property = v,
         ),
         TextFormField(controller: _title, decoration: InputDecoration(labelText: l.title), validator: (v) => requiredValidator(context, v)),
+        DropdownButtonFormField<TicketCategory>(
+          initialValue: _category,
+          decoration: InputDecoration(labelText: l.category),
+          items: [for (final c in TicketCategory.values) DropdownMenuItem(value: c, child: Text(categoryLabel(l, c)))],
+          onChanged: (v) => _category = v ?? _category,
+        ),
         TextFormField(controller: _desc, decoration: InputDecoration(labelText: l.description), maxLines: 3),
         DropdownButtonFormField<TicketPriority>(
           initialValue: _priority,
-          decoration: InputDecoration(labelText: l.priority),
-          items: [for (final p in TicketPriority.values) DropdownMenuItem(value: p, child: Text(priorityLabel(l, p)))],
+          decoration: InputDecoration(labelText: l.urgency),
+          items: [for (final p in TicketPriority.values.reversed) DropdownMenuItem(value: p, child: Text(priorityLabel(l, p)))],
           onChanged: (v) => _priority = v ?? _priority,
         ),
+        SwitchListTile(title: Text(l.visitRequired), value: _visit, onChanged: (v) => setState(() => _visit = v)),
+        if (_visit) ...[
+          Wrap(spacing: 8, children: [
+            for (final s in _slots)
+              InputChip(label: Text(formatDateTime(s)), onDeleted: () => setState(() => _slots.remove(s))),
+            if (_slots.length < 3) ActionChip(avatar: const Icon(Icons.add), label: Text(l.addTimeSlot), onPressed: _addSlot),
+          ]),
+          TextFormField(controller: _access, decoration: InputDecoration(labelText: l.accessNotes), maxLines: 2),
+        ],
         OutlinedButton.icon(
           icon: const Icon(Icons.add_a_photo_outlined),
           label: Text('${l.addPhoto} (${_photos.length})'),
@@ -140,6 +164,17 @@ class _TicketFormScreenState extends ConsumerState<TicketFormScreen> {
             setState(() => _photos.add(url));
           },
         ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.videocam_outlined),
+          label: Text('${l.addVideo} (${_videos.length})'),
+          onPressed: () async {
+            final f = await ImagePicker().pickVideo(source: ImageSource.gallery);
+            if (f == null) return;
+            final url = await ref.read(fileStorageProvider).upload('tickets/${newId()}_${f.name}', f.path);
+            setState(() => _videos.add(url));
+          },
+        ),
+        if (!FeatureFlags.maintenanceForwarding) const SizedBox.shrink(),
       ],
     );
   }

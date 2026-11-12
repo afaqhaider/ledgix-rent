@@ -4,6 +4,21 @@ enum PaymentMethod { cheque, directDebit }
 
 enum LeaseStatus { active, expired, terminated }
 
+enum EjariStatus {
+  unknown,
+  active,
+  expiring,
+  expired;
+
+  /// Expiring = within [windowDays] of the expiry date.
+  static EjariStatus fromExpiry(DateTime expiry, DateTime today, {int windowDays = 90}) {
+    final e = DateTime(expiry.year, expiry.month, expiry.day);
+    if (e.isBefore(today)) return EjariStatus.expired;
+    if (e.difference(today).inDays <= windowDays) return EjariStatus.expiring;
+    return EjariStatus.active;
+  }
+}
+
 class Lease implements Entity {
   const Lease({
     required this.id,
@@ -17,6 +32,9 @@ class Lease implements Entity {
     this.numberOfCheques = 1,
     this.paymentMethod = PaymentMethod.cheque,
     this.status = LeaseStatus.active,
+    this.ejariStatus = EjariStatus.unknown,
+    this.ejariExpiry,
+    this.ejariLastSynced,
   });
 
   @override
@@ -27,6 +45,30 @@ class Lease implements Entity {
   final int numberOfCheques;
   final PaymentMethod paymentMethod;
   final LeaseStatus status;
+
+  /// Cached Ejari details (see EjariService) with the time of the last sync.
+  final EjariStatus ejariStatus;
+  final DateTime? ejariExpiry, ejariLastSynced;
+
+  /// Date renewal alerts count back from: the Ejari expiry when known.
+  DateTime get renewalDate => ejariExpiry ?? endDate;
+
+  Lease withEjari({String? ejariNo, required EjariStatus status, DateTime? expiry, required DateTime syncedAt}) => Lease(
+        id: id,
+        propertyId: propertyId,
+        tenantId: tenantId,
+        startDate: startDate,
+        endDate: endDate,
+        annualRent: annualRent,
+        securityDeposit: securityDeposit,
+        ejariNo: ejariNo ?? this.ejariNo,
+        numberOfCheques: numberOfCheques,
+        paymentMethod: paymentMethod,
+        status: this.status,
+        ejariStatus: status,
+        ejariExpiry: expiry,
+        ejariLastSynced: syncedAt,
+      );
 
   @override
   Map<String, dynamic> toMap() => {
@@ -41,6 +83,9 @@ class Lease implements Entity {
         'numberOfCheques': numberOfCheques,
         'paymentMethod': paymentMethod.name,
         'status': status.name,
+        'ejariStatus': ejariStatus.name,
+        'ejariExpiry': ejariExpiry?.toIso8601String(),
+        'ejariLastSynced': ejariLastSynced?.toIso8601String(),
       };
 
   factory Lease.fromMap(Map<String, dynamic> m) => Lease(
@@ -55,5 +100,8 @@ class Lease implements Entity {
         numberOfCheques: (m['numberOfCheques'] ?? 1) as int,
         paymentMethod: enumByName(PaymentMethod.values, m['paymentMethod'], PaymentMethod.cheque),
         status: enumByName(LeaseStatus.values, m['status'], LeaseStatus.active),
+        ejariStatus: enumByName(EjariStatus.values, m['ejariStatus'], EjariStatus.unknown),
+        ejariExpiry: parseDate(m['ejariExpiry']),
+        ejariLastSynced: parseDate(m['ejariLastSynced']),
       );
 }

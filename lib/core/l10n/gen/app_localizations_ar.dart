@@ -377,4 +377,289 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlineHint => 'دون اتصال: عرض البيانات المحفوظة';
+
+  @override
+  String get ticketRequested => 'تم الطلب';
+
+  @override
+  String get ticketQuoted => 'تم التسعير';
+
+  @override
+  String get ticketApproved => 'تمت الموافقة';
+
+  @override
+  String get ticketScheduled => 'مجدول';
+
+  @override
+  String get ticketCompleted => 'مكتمل';
+
+  @override
+  String get ticketClosed => 'مغلق';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get catAc => 'تكييف';
+
+  @override
+  String get catPlumbing => 'سباكة';
+
+  @override
+  String get catElectrical => 'كهرباء';
+
+  @override
+  String get catAppliances => 'أجهزة';
+
+  @override
+  String get catPestControl => 'مكافحة حشرات';
+
+  @override
+  String get catPainting => 'دهان';
+
+  @override
+  String get urgency => 'الاستعجال';
+
+  @override
+  String get emergency => 'طارئ';
+
+  @override
+  String get normal => 'عادي';
+
+  @override
+  String get visitRequired => 'هل الزيارة مطلوبة؟';
+
+  @override
+  String get addTimeSlot => 'إضافة موعد (بحد أقصى 3)';
+
+  @override
+  String get accessNotes => 'ملاحظات الدخول';
+
+  @override
+  String get addVideo => 'إضافة فيديو';
+
+  @override
+  String get ticketDetails => 'طلب الصيانة';
+
+  @override
+  String get landlordNote => 'ملاحظة للشركة';
+
+  @override
+  String get maintenanceCompany => 'شركة الصيانة';
+
+  @override
+  String get requestQuote => 'طلب عرض سعر';
+
+  @override
+  String get shareTenantContact => 'مشاركة بيانات اتصال المستأجر';
+
+  @override
+  String get forwardedApp => 'أُرسل عبر التطبيق';
+
+  @override
+  String get forwardedEmail => 'أُرسل بالبريد برابط آمن (صالح 7 أيام)';
+
+  @override
+  String get quotes => 'عروض الأسعار';
+
+  @override
+  String get addQuote => 'إضافة عرض سعر';
+
+  @override
+  String get amount => 'المبلغ (درهم)';
+
+  @override
+  String get vat => 'ضريبة القيمة المضافة (درهم)';
+
+  @override
+  String get scope => 'نطاق العمل';
+
+  @override
+  String get proposedVisit => 'موعد الزيارة المقترح';
+
+  @override
+  String get askQuestion => 'طرح سؤال';
+
+  @override
+  String get question => 'السؤال';
+
+  @override
+  String get quoteSubmitted => 'مقدّم';
+
+  @override
+  String get quoteApproved => 'تمت الموافقة';
+
+  @override
+  String get quoteRejected => 'مرفوض';
+
+  @override
+  String get quoteQuestion => 'تم طرح سؤال';
+
+  @override
+  String get startJob => 'بدء العمل';
+
+  @override
+  String get completeJob => 'تحديد كمكتمل';
+
+  @override
+  String get closeJob => 'تأكيد المستأجر والتقييم';
+
+  @override
+  String get rating => 'التقييم';
+
+  @override
+  String get visitConfirmed => 'تم تأكيد الزيارة';
+
+  @override
+  String get tradeLicenceNo => 'رقم الرخصة التجارية';
+
+  @override
+  String get contactPerson => 'الشخص المسؤول';
+
+  @override
+  String get services => 'الخدمات المقدمة (مفصولة بفواصل)';
+
+  @override
+  String get areasCovered => 'المناطق المغطاة (مفصولة بفواصل)';
+
+  @override
+  String get linkedAccount => 'معرّف حساب ليدجكس (إن وجد)';
+
+  @override
+  String get defaultForCategories => 'الشركة الافتراضية لـ';
+
+  @override
+  String get defaultCompany => 'شركة الصيانة الافتراضية';
+
+  @override
+  String get none => 'لا شيء';
+
+  @override
+  String get utilityBills => 'فواتير الخدمات';
+
+  @override
+  String get addBill => 'إضافة فاتورة';
+
+  @override
+  String get fetchBill => 'جلب أحدث فاتورة';
+
+  @override
+  String get provider => 'المزود';
+
+  @override
+  String get accountNo => 'رقم الحساب';
+
+  @override
+  String get period => 'الفترة';
+
+  @override
+  String get paidBy => 'يدفع';
+
+  @override
+  String get landlord => 'المالك';
+
+  @override
+  String get billUnpaid => 'غير مدفوعة';
+
+  @override
+  String get billPaid => 'مدفوعة';
+
+  @override
+  String get billOverdue => 'متأخرة';
+
+  @override
+  String get markPaid => 'تحديد كمدفوعة';
+
+  @override
+  String get attachBill => 'إرفاق صورة الفاتورة';
+
+  @override
+  String get noAccountNo => 'أضف رقم حساب ديوا أو التبريد للعقار أولًا.';
+
+  @override
+  String get chillerProvider => 'مزود التبريد';
+
+  @override
+  String get chillerAccountNo => 'رقم حساب التبريد';
+
+  @override
+  String get jointlyOwned => 'مبنى مملوك بالاشتراك';
+
+  @override
+  String get mollakUnitRef => 'الرقم المرجعي للوحدة في مُلاك';
+
+  @override
+  String get serviceCharges => 'رسوم الخدمات';
+
+  @override
+  String get syncMollak => 'مزامنة من مُلاك';
+
+  @override
+  String get outstanding => 'المستحق';
+
+  @override
+  String get dueStatus => 'مستحقة';
+
+  @override
+  String get chargePaid => 'مدفوعة';
+
+  @override
+  String get chargeOverdue => 'متأخرة';
+
+  @override
+  String get verifyEjari => 'التحقق من إيجاري';
+
+  @override
+  String get ejariActive => 'إيجاري ساري';
+
+  @override
+  String get ejariExpiring => 'إيجاري ينتهي قريبًا';
+
+  @override
+  String get ejariExpired => 'إيجاري منتهي';
+
+  @override
+  String get ejariUnknown => 'لم يتم التحقق';
+
+  @override
+  String get ejariExpiry => 'انتهاء إيجاري';
+
+  @override
+  String get lastSynced => 'آخر مزامنة';
+
+  @override
+  String get reports => 'تقارير الوحدات';
+
+  @override
+  String get income => 'الدخل';
+
+  @override
+  String get expenses => 'المصروفات';
+
+  @override
+  String get net => 'الصافي';
+
+  @override
+  String get yieldLabel => 'العائد الصافي';
+
+  @override
+  String get maintenanceCost => 'الصيانة';
+
+  @override
+  String get utilitiesCost => 'الخدمات';
+
+  @override
+  String get dewaLabel => 'ديوا';
+
+  @override
+  String get chillerLabel => 'التبريد';
+
+  @override
+  String get sewaLabel => 'هيئة كهرباء ومياه الشارقة';
+
+  @override
+  String get addcLabel => 'أبوظبي للتوزيع';
+
+  @override
+  String get aadcLabel => 'العين للتوزيع';
 }

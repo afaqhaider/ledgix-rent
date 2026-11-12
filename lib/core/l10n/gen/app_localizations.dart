@@ -835,6 +835,576 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline: showing saved data'**
   String get offlineHint;
+
+  /// No description provided for @ticketRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get ticketRequested;
+
+  /// No description provided for @ticketQuoted.
+  ///
+  /// In en, this message translates to:
+  /// **'Quoted'**
+  String get ticketQuoted;
+
+  /// No description provided for @ticketApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get ticketApproved;
+
+  /// No description provided for @ticketScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get ticketScheduled;
+
+  /// No description provided for @ticketCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get ticketCompleted;
+
+  /// No description provided for @ticketClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get ticketClosed;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @catAc.
+  ///
+  /// In en, this message translates to:
+  /// **'AC'**
+  String get catAc;
+
+  /// No description provided for @catPlumbing.
+  ///
+  /// In en, this message translates to:
+  /// **'Plumbing'**
+  String get catPlumbing;
+
+  /// No description provided for @catElectrical.
+  ///
+  /// In en, this message translates to:
+  /// **'Electrical'**
+  String get catElectrical;
+
+  /// No description provided for @catAppliances.
+  ///
+  /// In en, this message translates to:
+  /// **'Appliances'**
+  String get catAppliances;
+
+  /// No description provided for @catPestControl.
+  ///
+  /// In en, this message translates to:
+  /// **'Pest control'**
+  String get catPestControl;
+
+  /// No description provided for @catPainting.
+  ///
+  /// In en, this message translates to:
+  /// **'Painting'**
+  String get catPainting;
+
+  /// No description provided for @urgency.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgency'**
+  String get urgency;
+
+  /// No description provided for @emergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get emergency;
+
+  /// No description provided for @normal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get normal;
+
+  /// No description provided for @visitRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit required?'**
+  String get visitRequired;
+
+  /// No description provided for @addTimeSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time slot (max 3)'**
+  String get addTimeSlot;
+
+  /// No description provided for @accessNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Access notes'**
+  String get accessNotes;
+
+  /// No description provided for @addVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add video'**
+  String get addVideo;
+
+  /// No description provided for @ticketDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance request'**
+  String get ticketDetails;
+
+  /// No description provided for @landlordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note to the company'**
+  String get landlordNote;
+
+  /// No description provided for @maintenanceCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance company'**
+  String get maintenanceCompany;
+
+  /// No description provided for @requestQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Quote'**
+  String get requestQuote;
+
+  /// No description provided for @shareTenantContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Share tenant contact details'**
+  String get shareTenantContact;
+
+  /// No description provided for @forwardedApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent in the LedGix Rent app'**
+  String get forwardedApp;
+
+  /// No description provided for @forwardedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Emailed with a secure link (valid 7 days)'**
+  String get forwardedEmail;
+
+  /// No description provided for @quotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotes'**
+  String get quotes;
+
+  /// No description provided for @addQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add quote'**
+  String get addQuote;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (AED)'**
+  String get amount;
+
+  /// No description provided for @vat.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT (AED)'**
+  String get vat;
+
+  /// No description provided for @scope.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope of work'**
+  String get scope;
+
+  /// No description provided for @proposedVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed visit'**
+  String get proposedVisit;
+
+  /// No description provided for @askQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get askQuestion;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @quoteSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get quoteSubmitted;
+
+  /// No description provided for @quoteApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get quoteApproved;
+
+  /// No description provided for @quoteRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get quoteRejected;
+
+  /// No description provided for @quoteQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Question asked'**
+  String get quoteQuestion;
+
+  /// No description provided for @startJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Start job'**
+  String get startJob;
+
+  /// No description provided for @completeJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark completed'**
+  String get completeJob;
+
+  /// No description provided for @closeJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant confirmed & rate'**
+  String get closeJob;
+
+  /// No description provided for @rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// No description provided for @visitConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit confirmed'**
+  String get visitConfirmed;
+
+  /// No description provided for @tradeLicenceNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade licence no.'**
+  String get tradeLicenceNo;
+
+  /// No description provided for @contactPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person'**
+  String get contactPerson;
+
+  /// No description provided for @services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services offered (comma separated)'**
+  String get services;
+
+  /// No description provided for @areasCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Areas covered (comma separated)'**
+  String get areasCovered;
+
+  /// No description provided for @linkedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'LedGix Rent account id (if any)'**
+  String get linkedAccount;
+
+  /// No description provided for @defaultForCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Default company for'**
+  String get defaultForCategories;
+
+  /// No description provided for @defaultCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Default maintenance company'**
+  String get defaultCompany;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @utilityBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Utility bills'**
+  String get utilityBills;
+
+  /// No description provided for @addBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Add bill'**
+  String get addBill;
+
+  /// No description provided for @fetchBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetch latest bill'**
+  String get fetchBill;
+
+  /// No description provided for @provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get provider;
+
+  /// No description provided for @accountNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account no.'**
+  String get accountNo;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @paidBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid by'**
+  String get paidBy;
+
+  /// No description provided for @landlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord'**
+  String get landlord;
+
+  /// No description provided for @billUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get billUnpaid;
+
+  /// No description provided for @billPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get billPaid;
+
+  /// No description provided for @billOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get billOverdue;
+
+  /// No description provided for @markPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark paid'**
+  String get markPaid;
+
+  /// No description provided for @attachBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach bill photo'**
+  String get attachBill;
+
+  /// No description provided for @noAccountNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a DEWA or chiller account number to this property first.'**
+  String get noAccountNo;
+
+  /// No description provided for @chillerProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Chiller provider'**
+  String get chillerProvider;
+
+  /// No description provided for @chillerAccountNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Chiller account no.'**
+  String get chillerAccountNo;
+
+  /// No description provided for @jointlyOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Jointly owned building'**
+  String get jointlyOwned;
+
+  /// No description provided for @mollakUnitRef.
+  ///
+  /// In en, this message translates to:
+  /// **'Mollak unit reference'**
+  String get mollakUnitRef;
+
+  /// No description provided for @serviceCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charges'**
+  String get serviceCharges;
+
+  /// No description provided for @syncMollak.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync from Mollak'**
+  String get syncMollak;
+
+  /// No description provided for @outstanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding'**
+  String get outstanding;
+
+  /// No description provided for @dueStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get dueStatus;
+
+  /// No description provided for @chargePaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get chargePaid;
+
+  /// No description provided for @chargeOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get chargeOverdue;
+
+  /// No description provided for @verifyEjari.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Ejari'**
+  String get verifyEjari;
+
+  /// No description provided for @ejariActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari active'**
+  String get ejariActive;
+
+  /// No description provided for @ejariExpiring.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari expiring'**
+  String get ejariExpiring;
+
+  /// No description provided for @ejariExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari expired'**
+  String get ejariExpired;
+
+  /// No description provided for @ejariUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified'**
+  String get ejariUnknown;
+
+  /// No description provided for @ejariExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari expiry'**
+  String get ejariExpiry;
+
+  /// No description provided for @lastSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced'**
+  String get lastSynced;
+
+  /// No description provided for @reports.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit reports'**
+  String get reports;
+
+  /// No description provided for @income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get income;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @net.
+  ///
+  /// In en, this message translates to:
+  /// **'Net'**
+  String get net;
+
+  /// No description provided for @yieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Net yield'**
+  String get yieldLabel;
+
+  /// No description provided for @maintenanceCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get maintenanceCost;
+
+  /// No description provided for @utilitiesCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get utilitiesCost;
+
+  /// No description provided for @dewaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA'**
+  String get dewaLabel;
+
+  /// No description provided for @chillerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Chiller'**
+  String get chillerLabel;
+
+  /// No description provided for @sewaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SEWA'**
+  String get sewaLabel;
+
+  /// No description provided for @addcLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ADDC'**
+  String get addcLabel;
+
+  /// No description provided for @aadcLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AADC'**
+  String get aadcLabel;
 }
 
 class _AppLocalizationsDelegate

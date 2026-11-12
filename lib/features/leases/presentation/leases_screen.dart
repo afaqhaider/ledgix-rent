@@ -2,11 +2,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../payments/domain/payment_scheduler.dart';
 import '../domain/lease.dart';
+
+String ejariLabel(AppLocalizations l, EjariStatus s) => switch (s) {
+      EjariStatus.active => l.ejariActive,
+      EjariStatus.expiring => l.ejariExpiring,
+      EjariStatus.expired => l.ejariExpired,
+      EjariStatus.unknown => l.ejariUnknown,
+    };
+
+Color ejariColor(EjariStatus s) => switch (s) {
+      EjariStatus.active => const Color(0xFF1A7F37),
+      EjariStatus.expiring => const Color(0xFF9A6700),
+      EjariStatus.expired => const Color(0xFFCF222E),
+      EjariStatus.unknown => Colors.blueGrey,
+    };
 
 String methodLabel(AppLocalizations l, PaymentMethod m) =>
     m == PaymentMethod.cheque ? l.cheque : l.directDebit;
@@ -32,6 +47,20 @@ class LeasesScreen extends ConsumerWidget {
             subtitle: Text('${formatDate(le.startDate)} → ${formatDate(le.endDate)}\n'
                 '${formatAed(le.annualRent)} · ${le.numberOfCheques} × ${methodLabel(c.l, le.paymentMethod)}'),
             isThreeLine: true,
+            trailing: FeatureFlags.ejari && le.ejariNo.isNotEmpty
+                ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    StatusChip(ejariLabel(c.l, le.ejariStatus), ejariColor(le.ejariStatus)),
+                    GestureDetector(
+                      onTap: () async {
+                        final r = await ref.read(ejariServiceProvider).lookupContract(le.ejariNo);
+                        final now = todayGst();
+                        await ref.read(leaseRepositoryProvider).save(le.withEjari(
+                            status: EjariStatus.fromExpiry(r.expiry, now), expiry: r.expiry, syncedAt: nowGst()));
+                      },
+                      child: Text(c.l.verifyEjari, style: const TextStyle(fontSize: 12, decoration: TextDecoration.underline)),
+                    ),
+                  ])
+                : null,
           ),
         ),
       ),
@@ -53,6 +82,8 @@ class _LeaseFormScreenState extends ConsumerState<LeaseFormScreen> {
   late DateTime _end = addMonths(_start, 12).subtract(const Duration(days: 1));
   int _cheques = 4;
   PaymentMethod _method = PaymentMethod.cheque;
+  EjariStatus _ejariStatus = EjariStatus.unknown;
+  DateTime? _ejariExpiry, _ejariSynced;
 
   Future<void> _save() async {
     if (!_key.currentState!.validate() || _property == null || _tenant == null) return;
@@ -67,6 +98,9 @@ class _LeaseFormScreenState extends ConsumerState<LeaseFormScreen> {
       ejariNo: _ejari.text.trim(),
       numberOfCheques: _cheques,
       paymentMethod: _method,
+      ejariStatus: _ejariStatus,
+      ejariExpiry: _ejariExpiry,
+      ejariLastSynced: _ejariSynced,
     );
     await ref.read(leaseRepositoryProvider).save(lease);
     final payments = ref.read(paymentRepositoryProvider);
@@ -122,6 +156,28 @@ class _LeaseFormScreenState extends ConsumerState<LeaseFormScreen> {
         ),
         TextFormField(controller: _deposit, decoration: InputDecoration(labelText: l.securityDeposit), keyboardType: TextInputType.number),
         TextFormField(controller: _ejari, decoration: InputDecoration(labelText: l.ejariNo)),
+        if (FeatureFlags.ejari)
+          Row(children: [
+            OutlinedButton.icon(
+              icon: const Icon(Icons.verified_outlined),
+              label: Text(l.verifyEjari),
+              onPressed: () async {
+                if (_ejari.text.trim().isEmpty) return;
+                final r = await ref.read(ejariServiceProvider).lookupContract(_ejari.text.trim());
+                setState(() {
+                  _ejariExpiry = r.expiry;
+                  _ejariStatus = EjariStatus.fromExpiry(r.expiry, todayGst());
+                  _ejariSynced = nowGst();
+                });
+              },
+            ),
+            const SizedBox(width: 12),
+            if (_ejariExpiry != null) ...[
+              StatusChip(ejariLabel(l, _ejariStatus), ejariColor(_ejariStatus)),
+              const SizedBox(width: 8),
+              Flexible(child: Text('${l.ejariExpiry}: ${formatDate(_ejariExpiry!)}', style: const TextStyle(fontSize: 12))),
+            ],
+          ]),
         DropdownButtonFormField<int>(
           initialValue: _cheques,
           decoration: InputDecoration(labelText: l.numberOfCheques),

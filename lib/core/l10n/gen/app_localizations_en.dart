@@ -377,4 +377,290 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineHint => 'Offline: showing saved data';
+
+  @override
+  String get ticketRequested => 'Requested';
+
+  @override
+  String get ticketQuoted => 'Quoted';
+
+  @override
+  String get ticketApproved => 'Approved';
+
+  @override
+  String get ticketScheduled => 'Scheduled';
+
+  @override
+  String get ticketCompleted => 'Completed';
+
+  @override
+  String get ticketClosed => 'Closed';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get catAc => 'AC';
+
+  @override
+  String get catPlumbing => 'Plumbing';
+
+  @override
+  String get catElectrical => 'Electrical';
+
+  @override
+  String get catAppliances => 'Appliances';
+
+  @override
+  String get catPestControl => 'Pest control';
+
+  @override
+  String get catPainting => 'Painting';
+
+  @override
+  String get urgency => 'Urgency';
+
+  @override
+  String get emergency => 'Emergency';
+
+  @override
+  String get normal => 'Normal';
+
+  @override
+  String get visitRequired => 'Visit required?';
+
+  @override
+  String get addTimeSlot => 'Add time slot (max 3)';
+
+  @override
+  String get accessNotes => 'Access notes';
+
+  @override
+  String get addVideo => 'Add video';
+
+  @override
+  String get ticketDetails => 'Maintenance request';
+
+  @override
+  String get landlordNote => 'Note to the company';
+
+  @override
+  String get maintenanceCompany => 'Maintenance company';
+
+  @override
+  String get requestQuote => 'Request Quote';
+
+  @override
+  String get shareTenantContact => 'Share tenant contact details';
+
+  @override
+  String get forwardedApp => 'Sent in the LedGix Rent app';
+
+  @override
+  String get forwardedEmail => 'Emailed with a secure link (valid 7 days)';
+
+  @override
+  String get quotes => 'Quotes';
+
+  @override
+  String get addQuote => 'Add quote';
+
+  @override
+  String get amount => 'Amount (AED)';
+
+  @override
+  String get vat => 'VAT (AED)';
+
+  @override
+  String get scope => 'Scope of work';
+
+  @override
+  String get proposedVisit => 'Proposed visit';
+
+  @override
+  String get askQuestion => 'Ask a question';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String get quoteSubmitted => 'Submitted';
+
+  @override
+  String get quoteApproved => 'Approved';
+
+  @override
+  String get quoteRejected => 'Rejected';
+
+  @override
+  String get quoteQuestion => 'Question asked';
+
+  @override
+  String get startJob => 'Start job';
+
+  @override
+  String get completeJob => 'Mark completed';
+
+  @override
+  String get closeJob => 'Tenant confirmed & rate';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String get visitConfirmed => 'Visit confirmed';
+
+  @override
+  String get tradeLicenceNo => 'Trade licence no.';
+
+  @override
+  String get contactPerson => 'Contact person';
+
+  @override
+  String get services => 'Services offered (comma separated)';
+
+  @override
+  String get areasCovered => 'Areas covered (comma separated)';
+
+  @override
+  String get linkedAccount => 'LedGix Rent account id (if any)';
+
+  @override
+  String get defaultForCategories => 'Default company for';
+
+  @override
+  String get defaultCompany => 'Default maintenance company';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get utilityBills => 'Utility bills';
+
+  @override
+  String get addBill => 'Add bill';
+
+  @override
+  String get fetchBill => 'Fetch latest bill';
+
+  @override
+  String get provider => 'Provider';
+
+  @override
+  String get accountNo => 'Account no.';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String get paidBy => 'Paid by';
+
+  @override
+  String get landlord => 'Landlord';
+
+  @override
+  String get billUnpaid => 'Unpaid';
+
+  @override
+  String get billPaid => 'Paid';
+
+  @override
+  String get billOverdue => 'Overdue';
+
+  @override
+  String get markPaid => 'Mark paid';
+
+  @override
+  String get attachBill => 'Attach bill photo';
+
+  @override
+  String get noAccountNo =>
+      'Add a DEWA or chiller account number to this property first.';
+
+  @override
+  String get chillerProvider => 'Chiller provider';
+
+  @override
+  String get chillerAccountNo => 'Chiller account no.';
+
+  @override
+  String get jointlyOwned => 'Jointly owned building';
+
+  @override
+  String get mollakUnitRef => 'Mollak unit reference';
+
+  @override
+  String get serviceCharges => 'Service charges';
+
+  @override
+  String get syncMollak => 'Sync from Mollak';
+
+  @override
+  String get outstanding => 'Outstanding';
+
+  @override
+  String get dueStatus => 'Due';
+
+  @override
+  String get chargePaid => 'Paid';
+
+  @override
+  String get chargeOverdue => 'Overdue';
+
+  @override
+  String get verifyEjari => 'Verify Ejari';
+
+  @override
+  String get ejariActive => 'Ejari active';
+
+  @override
+  String get ejariExpiring => 'Ejari expiring';
+
+  @override
+  String get ejariExpired => 'Ejari expired';
+
+  @override
+  String get ejariUnknown => 'Not verified';
+
+  @override
+  String get ejariExpiry => 'Ejari expiry';
+
+  @override
+  String get lastSynced => 'Last synced';
+
+  @override
+  String get reports => 'Unit reports';
+
+  @override
+  String get income => 'Income';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get net => 'Net';
+
+  @override
+  String get yieldLabel => 'Net yield';
+
+  @override
+  String get maintenanceCost => 'Maintenance';
+
+  @override
+  String get utilitiesCost => 'Utilities';
+
+  @override
+  String get dewaLabel => 'DEWA';
+
+  @override
+  String get chillerLabel => 'Chiller';
+
+  @override
+  String get sewaLabel => 'SEWA';
+
+  @override
+  String get addcLabel => 'ADDC';
+
+  @override
+  String get aadcLabel => 'AADC';
 }

@@ -7,6 +7,13 @@ import '../features/auth/data/firebase_auth_repository.dart';
 import '../features/auth/domain/auth_repository.dart';
 import '../features/dashboard/domain/dashboard_stats.dart';
 import '../features/holds/domain/hold_request.dart';
+import '../features/integrations/data/cloud_services.dart';
+import '../features/integrations/data/mock_services.dart';
+import '../features/integrations/domain/integration_services.dart';
+import '../features/maintenance/domain/quote.dart';
+import '../features/maintenance/domain/work_order.dart';
+import '../features/servicecharges/domain/service_charge.dart';
+import '../features/utilities/domain/utility_bill.dart';
 import '../features/landlord/domain/landlord.dart';
 import '../features/leases/domain/lease.dart';
 import '../features/maintenance/domain/maintenance_ticket.dart';
@@ -75,6 +82,14 @@ final maintenanceRepositoryProvider =
     Provider<MaintenanceRepository>((r) => _repo(r, 'maintenanceTickets', MaintenanceTicket.fromMap));
 final vendorRepositoryProvider =
     Provider<VendorRepository>((r) => _repo(r, 'vendors', Vendor.fromMap));
+final workOrderRepositoryProvider =
+    Provider<CrudRepository<WorkOrder>>((r) => _repo(r, 'workOrders', WorkOrder.fromMap));
+final quoteRepositoryProvider = Provider<CrudRepository<Quote>>((r) => _repo(r, 'quotes', Quote.fromMap));
+final utilityBillRepositoryProvider =
+    Provider<CrudRepository<UtilityBill>>((r) => _repo(r, 'utilityBills', UtilityBill.fromMap));
+final serviceChargeRepositoryProvider =
+    Provider<CrudRepository<ServiceCharge>>((r) => _repo(r, 'serviceCharges', ServiceCharge.fromMap));
+
 final landlordRepositoryProvider =
     Provider<LandlordRepository>((r) => _repo(r, 'profile', Landlord.fromMap));
 
@@ -86,6 +101,19 @@ final paymentsProvider = StreamProvider((ref) => ref.watch(paymentRepositoryProv
 final holdsProvider = StreamProvider((ref) => ref.watch(holdRepositoryProvider).watchAll());
 final ticketsProvider = StreamProvider((ref) => ref.watch(maintenanceRepositoryProvider).watchAll());
 final vendorsProvider = StreamProvider((ref) => ref.watch(vendorRepositoryProvider).watchAll());
+
+final workOrdersProvider = StreamProvider((ref) => ref.watch(workOrderRepositoryProvider).watchAll());
+final quotesProvider = StreamProvider((ref) => ref.watch(quoteRepositoryProvider).watchAll());
+final utilityBillsProvider = StreamProvider((ref) => ref.watch(utilityBillRepositoryProvider).watchAll());
+final serviceChargesProvider = StreamProvider((ref) => ref.watch(serviceChargeRepositoryProvider).watchAll());
+
+/// Integrations: real calls go through Cloud Functions; demo mode uses mocks.
+final ejariServiceProvider =
+    Provider<EjariService>((ref) => useFirebase ? CloudEjariService() : MockEjariService());
+final mollakServiceProvider =
+    Provider<MollakService>((ref) => useFirebase ? CloudMollakService() : MockMollakService());
+final utilityBillServiceProvider = Provider<UtilityBillService>(
+    (ref) => useFirebase ? CloudUtilityBillService() : MockUtilityBillService());
 
 final dashboardProvider = Provider<DashboardStats>((ref) => DashboardStats.compute(
       payments: ref.watch(paymentsProvider).value ?? const [],

@@ -29,7 +29,7 @@ class ReminderPlanner {
   static List<PlannedReminder> forLease(Lease l) => l.status == LeaseStatus.active
       ? [
           for (final d in renewalDays)
-            PlannedReminder(dateOnly(l.endDate).subtract(Duration(days: d)), d, 'renewal')
+            PlannedReminder(dateOnly(l.renewalDate).subtract(Duration(days: d)), d, 'renewal')
         ]
       : const [];
 

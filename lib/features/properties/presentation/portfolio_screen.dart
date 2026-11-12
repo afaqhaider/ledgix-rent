@@ -5,12 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
 import '../../leases/domain/lease.dart';
 import '../../payments/domain/payment.dart';
+import '../../integrations/domain/integration_services.dart';
+import '../../servicecharges/domain/service_charge.dart';
+import '../../vendors/domain/vendor.dart';
 import '../domain/property.dart';
 
 class PortfolioScreen extends ConsumerWidget {
@@ -67,8 +71,10 @@ class PropertyFormScreen extends ConsumerStatefulWidget {
 
 class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
   final _key = GlobalKey<FormState>();
-  final _c = {for (final k in ['name', 'address', 'community', 'deed', 'dewa']) k: TextEditingController()};
+  final _c = {for (final k in ['name', 'address', 'community', 'deed', 'dewa', 'chillerProvider', 'chillerNo', 'mollak']) k: TextEditingController()};
   PropertyType _type = PropertyType.apartment;
+  bool _jointly = false;
+  String? _defaultVendor;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +96,11 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
               community: _c['community']!.text.trim(),
               titleDeedNo: _c['deed']!.text.trim(),
               dewaAccountNo: _c['dewa']!.text.trim(),
+              chillerProvider: _c['chillerProvider']!.text.trim(),
+              chillerAccountNo: _c['chillerNo']!.text.trim(),
+              isJointlyOwned: _jointly,
+              mollakUnitRef: _jointly ? _c['mollak']!.text.trim() : '',
+              defaultVendorId: _defaultVendor,
             ));
         if (context.mounted) context.pop();
       },
@@ -105,6 +116,20 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
         f('community', l.community),
         f('deed', l.titleDeedNo),
         f('dewa', l.dewaAccountNo),
+        f('chillerProvider', l.chillerProvider),
+        f('chillerNo', l.chillerAccountNo),
+        if (FeatureFlags.mollak) ...[
+          SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(l.jointlyOwned), value: _jointly, onChanged: (v) => setState(() => _jointly = v)),
+          if (_jointly) f('mollak', l.mollakUnitRef),
+        ],
+        DropdownButtonFormField<String>(
+          initialValue: _defaultVendor,
+          decoration: InputDecoration(labelText: l.defaultCompany),
+          items: [
+            for (final v in ref.watch(vendorsProvider).value ?? <Vendor>[]) DropdownMenuItem(value: v.id, child: Text(v.name)),
+          ],
+          onChanged: (v) => _defaultVendor = v,
+        ),
       ],
     );
   }
@@ -167,6 +192,14 @@ class PropertyDetailScreen extends ConsumerWidget {
           l.dewaAccountNo: p.dewaAccountNo,
         }.entries.where((e) => e.value.isNotEmpty))
           ListTile(dense: true, title: Text(e.key), trailing: Text(e.value)),
+        if (FeatureFlags.utilityBills)
+          ListTile(
+            leading: const Icon(Icons.bolt_outlined),
+            title: Text(l.utilityBills),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/property/${p.id}/bills'),
+          ),
+        if (FeatureFlags.mollak && p.isJointlyOwned) ServiceChargeCard(property: p),
         const Divider(),
         Text(l.documents, style: Theme.of(context).textTheme.titleMedium),
         if (p.documents.isEmpty) const EmptyState(),
@@ -184,6 +217,71 @@ class PropertyDetailScreen extends ConsumerWidget {
             ),
           ),
       ]),
+    );
+  }
+}
+
+
+String chargeStatusLabel(AppLocalizations l, ChargeStatus s) =>
+    switch (s) { ChargeStatus.due => l.dueStatus, ChargeStatus.paid => l.chargePaid, ChargeStatus.overdue => l.chargeOverdue };
+
+/// Service charges of a jointly owned building, synced from Mollak.
+class ServiceChargeCard extends ConsumerWidget {
+  const ServiceChargeCard({super.key, required this.property});
+  final Property property;
+
+  Future<void> _sync(WidgetRef ref) async {
+    final repo = ref.read(serviceChargeRepositoryProvider);
+    final existing = (await repo.watchAll().first).where((c) => c.propertyId == property.id).toList();
+    final MollakService mollak = ref.read(mollakServiceProvider);
+    for (final c in await mollak.getServiceCharges(property.mollakUnitRef)) {
+      final prev = existing.where((e) => e.period == c.period).firstOrNull;
+      await repo.save(ServiceCharge(
+        id: prev?.id ?? newId(),
+        propertyId: property.id,
+        period: c.period,
+        amount: c.amount,
+        dueDate: c.dueDate,
+        status: c.paid ? ChargeStatus.paid : ChargeStatus.due,
+      ));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l;
+    final today = todayGst();
+    final charges = (ref.watch(serviceChargesProvider).value ?? [])
+        .where((c) => c.propertyId == property.id)
+        .toList()
+      ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    final outstanding = charges.where((c) => c.status != ChargeStatus.paid).fold<double>(0, (a, c) => a + c.amount);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Expanded(child: Text(l.serviceCharges, style: Theme.of(context).textTheme.titleMedium)),
+            TextButton.icon(
+              icon: const Icon(Icons.sync),
+              label: Text(l.syncMollak),
+              onPressed: property.mollakUnitRef.isEmpty ? null : () => _sync(ref),
+            ),
+          ]),
+          if (charges.isNotEmpty) Text('${l.outstanding}: ${formatAed(outstanding)}'),
+          for (final c in charges)
+            ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              title: Text('${c.period} · ${formatAed(c.amount)}'),
+              subtitle: Text('${l.dueDate}: ${formatDate(c.dueDate)}'),
+              trailing: StatusChip(
+                chargeStatusLabel(l, c.effectiveStatus(today)),
+                switch (c.effectiveStatus(today)) { ChargeStatus.paid => Colors.green, ChargeStatus.overdue => Colors.red, ChargeStatus.due => Colors.orange },
+              ),
+            ),
+        ]),
+      ),
     );
   }
 }

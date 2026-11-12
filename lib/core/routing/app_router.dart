@@ -9,6 +9,9 @@ import '../../features/landlord/presentation/onboarding_screen.dart';
 import '../../features/leases/domain/lease.dart';
 import '../../features/leases/presentation/leases_screen.dart';
 import '../../features/maintenance/presentation/maintenance_screen.dart';
+import '../../features/maintenance/presentation/ticket_detail_screen.dart';
+import '../../features/reports/presentation/reports_screen.dart';
+import '../../features/utilities/presentation/utility_bills_screen.dart';
 import '../../features/payments/presentation/payments_screen.dart';
 import '../../features/properties/presentation/portfolio_screen.dart';
 import '../../features/tenants/presentation/tenants_screen.dart';
@@ -70,6 +73,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/debits', builder: (_, _) => const PaymentsScreen(type: PaymentMethod.directDebit)),
       GoRoute(path: '/holds', builder: (_, _) => const HoldsScreen()),
       GoRoute(path: '/tickets/new', builder: (_, _) => const TicketFormScreen()),
+      GoRoute(path: '/tickets/:id', builder: (_, s) => TicketDetailScreen(id: s.pathParameters['id']!)),
+      GoRoute(path: '/property/:id/bills', builder: (_, s) => UtilityBillsScreen(propertyId: s.pathParameters['id']!)),
+      GoRoute(path: '/reports', builder: (_, _) => const ReportsScreen()),
       GoRoute(path: '/vendors', builder: (_, _) => const VendorsScreen()),
       GoRoute(path: '/vendors/new', builder: (_, _) => const VendorFormScreen()),
     ],
@@ -91,6 +97,7 @@ class MoreScreen extends ConsumerWidget {
         item(Icons.account_balance_outlined, l.directDebits, '/debits'),
         item(Icons.pause_circle_outline, l.holdRequests, '/holds'),
         item(Icons.handyman_outlined, l.vendors, '/vendors'),
+        item(Icons.bar_chart, l.reports, '/reports'),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.language),

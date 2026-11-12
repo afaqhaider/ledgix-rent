@@ -35,7 +35,7 @@ class DashboardStats {
       collectedYear: sum(year.where((p) => p.isSettled)),
       outstandingYear: sum(year.where((p) => !p.isSettled)),
       upcoming: upcoming.take(upcomingLimit).toList(),
-      openTickets: tickets.where((t) => t.status != TicketStatus.resolved).length,
+      openTickets: tickets.where((t) => !t.isClosedOut).length,
     );
   }
 }

@@ -2,6 +2,8 @@ import '../../../core/domain/entity.dart';
 
 enum PropertyType { villa, apartment, studio, other }
 
+enum PaidBy { landlord, tenant }
+
 class PropertyDocument {
   const PropertyDocument({required this.name, required this.url, this.kind = 'other'});
   final String name, url;
@@ -25,6 +27,12 @@ class Property implements Entity {
     this.titleDeedNo = '',
     this.dewaAccountNo = '',
     this.documents = const [],
+    this.isJointlyOwned = false,
+    this.mollakUnitRef = '',
+    this.chillerProvider = '',
+    this.chillerAccountNo = '',
+    this.defaultVendorId,
+    this.utilityPaidBy = PaidBy.tenant,
   });
 
   @override
@@ -32,8 +40,14 @@ class Property implements Entity {
   final String landlordId, name, address, community, titleDeedNo, dewaAccountNo;
   final PropertyType type;
   final List<PropertyDocument> documents;
+  final bool isJointlyOwned;
+  final String mollakUnitRef, chillerProvider, chillerAccountNo;
+  final String? defaultVendorId;
 
-  Property copyWith({List<PropertyDocument>? documents}) => Property(
+  /// Who pays utility bills for this unit.
+  final PaidBy utilityPaidBy;
+
+  Property copyWith({List<PropertyDocument>? documents, PaidBy? utilityPaidBy, String? defaultVendorId}) => Property(
         id: id,
         landlordId: landlordId,
         name: name,
@@ -43,6 +57,12 @@ class Property implements Entity {
         titleDeedNo: titleDeedNo,
         dewaAccountNo: dewaAccountNo,
         documents: documents ?? this.documents,
+        isJointlyOwned: isJointlyOwned,
+        mollakUnitRef: mollakUnitRef,
+        chillerProvider: chillerProvider,
+        chillerAccountNo: chillerAccountNo,
+        defaultVendorId: defaultVendorId ?? this.defaultVendorId,
+        utilityPaidBy: utilityPaidBy ?? this.utilityPaidBy,
       );
 
   @override
@@ -56,6 +76,12 @@ class Property implements Entity {
         'titleDeedNo': titleDeedNo,
         'dewaAccountNo': dewaAccountNo,
         'documents': documents.map((d) => d.toMap()).toList(),
+        'isJointlyOwned': isJointlyOwned,
+        'mollakUnitRef': mollakUnitRef,
+        'chillerProvider': chillerProvider,
+        'chillerAccountNo': chillerAccountNo,
+        'defaultVendorId': defaultVendorId,
+        'utilityPaidBy': utilityPaidBy.name,
       };
 
   factory Property.fromMap(Map<String, dynamic> m) => Property(
@@ -71,5 +97,11 @@ class Property implements Entity {
           for (final d in (m['documents'] as List? ?? const []))
             PropertyDocument.fromMap(Map<String, dynamic>.from(d as Map))
         ],
+        isJointlyOwned: m['isJointlyOwned'] == true,
+        mollakUnitRef: '${m['mollakUnitRef'] ?? ''}',
+        chillerProvider: '${m['chillerProvider'] ?? ''}',
+        chillerAccountNo: '${m['chillerAccountNo'] ?? ''}',
+        defaultVendorId: m['defaultVendorId'] as String?,
+        utilityPaidBy: enumByName(PaidBy.values, m['utilityPaidBy'], PaidBy.tenant),
       );
 }

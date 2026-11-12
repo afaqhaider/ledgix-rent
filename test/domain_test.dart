@@ -103,7 +103,7 @@ void main() {
         ],
         tickets: const [
           MaintenanceTicket(id: 't1', propertyId: 'p', title: 'a'),
-          MaintenanceTicket(id: 't2', propertyId: 'p', title: 'b', status: TicketStatus.resolved),
+          MaintenanceTicket(id: 't2', propertyId: 'p', title: 'b', status: TicketStatus.completed),
         ],
       );
       expect(s.collectedMonth, 100);
