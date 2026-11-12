@@ -27,7 +27,7 @@ class PortfolioScreen extends ConsumerWidget {
     final today = todayGst();
     return Scaffold(
       appBar: AppBar(title: Text(context.l.portfolio)),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/property/new'),
         icon: const Icon(Icons.add),
         label: Text(context.l.addProperty),
@@ -178,7 +178,7 @@ class PropertyDetailScreen extends ConsumerWidget {
           },
         ),
       ]),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => _addDoc(context, ref, p),
         icon: const Icon(Icons.upload_file),
         label: Text(l.addDocument),

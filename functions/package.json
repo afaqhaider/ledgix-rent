@@ -2,7 +2,7 @@
   "name": "ledgix-rent-functions",
   "private": true,
   "main": "lib/index.js",
-  "engines": { "node": "20" },
+  "engines": { "node": "22" },
   "scripts": { "build": "tsc", "serve": "npm run build && firebase emulators:start --only functions" },
   "dependencies": {
     "firebase-admin": "^12.0.0",

@@ -34,7 +34,7 @@ class LeasesScreen extends ConsumerWidget {
     final tenants = {for (final t in ref.watch(tenantsProvider).value ?? []) t.id: t.name};
     return Scaffold(
       appBar: AppBar(title: Text(context.l.leases)),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/leases/new'),
         icon: const Icon(Icons.add),
         label: Text(context.l.addLease),

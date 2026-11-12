@@ -52,7 +52,9 @@ final userIdProvider = StreamProvider<String?>((ref) {
 });
 
 final fileStorageProvider =
-    Provider<FileStorage>((ref) => useFirebase ? FirebaseFileStorage() : LocalFileStorage());
+    Provider<FileStorage>((ref) => useFirebase
+        ? FirebaseFileStorage(ref.watch(userIdProvider).value ?? 'anon')
+        : LocalFileStorage());
 
 /// Demo repositories live for the whole app session.
 final _demoStore = <String, Object>{};

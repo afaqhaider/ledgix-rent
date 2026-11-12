@@ -129,7 +129,7 @@ class UtilityBillsScreen extends ConsumerWidget {
       appBar: AppBar(title: Text('${l.utilityBills} · ${p.name}'), actions: [
         IconButton(tooltip: l.fetchBill, icon: const Icon(Icons.cloud_download_outlined), onPressed: () => _fetch(context, ref, p)),
       ]),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => _manual(context, ref, p),
         icon: const Icon(Icons.add),
         label: Text(l.addBill),

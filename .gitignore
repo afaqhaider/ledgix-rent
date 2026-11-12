@@ -60,6 +60,7 @@ functions/.env*
 functions/serviceAccount*.json
 *serviceAccount*.json
 *.jks
+secrets/
 *.keystore
 android/key.properties
 functions/node_modules/

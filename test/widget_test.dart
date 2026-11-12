@@ -8,6 +8,14 @@ import 'package:ledgix_rent/features/properties/domain/property.dart';
 import 'package:ledgix_rent/features/vendors/domain/vendor.dart';
 import 'package:ledgix_rent/main.dart';
 
+/// Scrolls a lazily built list until [finder] is on screen, then taps it.
+/// Needed on real phones, where buttons can sit below the fold.
+Future<void> tapVisible(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(finder, 200, scrollable: find.byType(Scrollable).first);
+  await tester.pumpAndSettle();
+  await tester.tap(finder);
+}
+
 void main() {
   testWidgets('demo flow: sign in, onboard, see dashboard', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: LedgixApp()));
@@ -22,7 +30,7 @@ void main() {
     expect(find.text('Welcome, landlord!'), findsOneWidget);
     await tester.enterText(find.byType(TextFormField).at(0), 'Afaq');
     await tester.enterText(find.byType(TextFormField).at(1), 'Marina Studio');
-    await tester.tap(find.widgetWithText(FilledButton, 'Continue'));
+    await tapVisible(tester, find.widgetWithText(FilledButton, 'Continue'));
     await tester.pumpAndSettle();
 
     // Dashboard, then portfolio lists the first property.
@@ -63,11 +71,11 @@ void main() {
     await tester.pumpAndSettle();
 
     // Company is preselected only via defaults; pick it, then request a quote.
-    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tapVisible(tester, find.byType(DropdownButtonFormField<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('CoolFix').last);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Request Quote'));
+    await tapVisible(tester, find.text('Request Quote'));
     await tester.pumpAndSettle();
 
     await tester.runAsync(() async {

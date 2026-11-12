@@ -13,7 +13,7 @@ class VendorsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         appBar: AppBar(title: Text(context.l.vendors)),
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(heroTag: null, 
           onPressed: () => context.push('/vendors/new'),
           icon: const Icon(Icons.add),
           label: Text(context.l.addVendor),

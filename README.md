@@ -10,6 +10,7 @@ hold requests, reminders, maintenance, vendors, dashboard and documents. English
 flutter pub get
 flutter run          # demo mode: in-memory data, any login works
 flutter test
+flutter test integration_test -d <device-id>   # same flows + every screen, on a real phone
 ```
 
 Demo mode is the default. It uses in-memory repositories and a fake login so you can click through the whole app.
@@ -26,13 +27,13 @@ Demo mode is the default. It uses in-memory repositories and a fake login so you
 Secrets are git-ignored. **Never commit them.**
 
 1. Create a Firebase project in the console. Enable **Auth** (Email/Password and Phone), **Firestore**, **Storage**, **Cloud Messaging**.
-2. Register the Android app `com.ledgix.ledgix_rent` and the iOS app `com.ledgix.ledgixRent`.
+2. Register the Android and iOS apps, both `com.ledgix.rent`.
 3. Download and place the files (both are git-ignored):
    - `android/app/google-services.json`
    - `ios/Runner/GoogleService-Info.plist`
 4. Android: add the Google Services Gradle plugin (`com.google.gms.google-services`) to `android/settings.gradle.kts` and `android/app/build.gradle.kts` as shown in the FlutterFire docs. iOS: add the plist to the Runner target in Xcode and enable Push Notifications + Background Modes.
 5. Copy `.env.example` to `.env` (placeholders only, kept for your own tooling).
-6. Security rules: start from `firestore.rules.example` (each landlord can only access `landlords/{uid}/**`) and add equivalent Storage rules.
+6. Security rules: `firestore.rules` and `storage.rules` (each landlord can only access `landlords/{uid}/**`). Deploy with `firebase deploy --only firestore:rules,storage --project ledgix-rent`.
 7. Run with Firebase on:
    ```bash
    flutter run --dart-define=USE_FIREBASE=true
@@ -40,7 +41,7 @@ Secrets are git-ignored. **Never commit them.**
 8. Cloud Functions (reminders), run these yourself:
    ```bash
    cd functions && npm install && npm run build
-   firebase deploy --only functions   # you run this, not the build agent
+   firebase deploy --only functions --project ledgix-rent   # Node 22, us-central1 (same area as Firestore nam5)
    ```
    `dailyReminders` runs at 08:00 GST and sends the 3-day and 1-day deposit reminders plus the 90/60/30-day lease renewal alerts to tokens saved in `landlords/{uid}.fcmTokens`.
 

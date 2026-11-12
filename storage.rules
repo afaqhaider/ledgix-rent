@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// Files live under landlords/{uid}/... (see lib/core/data/file_storage.dart).
+// Only the owning landlord can read, upload (max 20 MB) or delete them.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /landlords/{uid}/{allPaths=**} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && request.resource.size < 20 * 1024 * 1024;
+    }
+  }
+}

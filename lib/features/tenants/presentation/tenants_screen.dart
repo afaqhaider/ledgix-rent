@@ -12,7 +12,7 @@ class TenantsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         appBar: AppBar(title: Text(context.l.tenants)),
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(heroTag: null, 
           onPressed: () => context.push('/tenants/new'),
           icon: const Icon(Icons.person_add),
           label: Text(context.l.addTenant),

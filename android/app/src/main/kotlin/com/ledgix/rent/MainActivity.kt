@@ -1,4 +1,4 @@
-package com.ledgix.ledgix_rent
+package com.ledgix.rent
 
 import io.flutter.embedding.android.FlutterActivity
 

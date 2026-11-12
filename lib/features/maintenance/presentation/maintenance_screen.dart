@@ -48,7 +48,7 @@ class MaintenanceScreen extends ConsumerWidget {
     final props = {for (final p in ref.watch(propertiesProvider).value ?? []) p.id: p.name};
     return Scaffold(
       appBar: AppBar(title: Text(l.maintenance)),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/tickets/new'),
         icon: const Icon(Icons.add),
         label: Text(l.newTicket),
@@ -59,13 +59,17 @@ class MaintenanceScreen extends ConsumerWidget {
           child: ListTile(
             contentPadding: const EdgeInsets.all(16),
             title: Text(t.title, style: Theme.of(c).textTheme.titleMedium),
-            subtitle: Text([props[t.propertyId] ?? '', categoryLabel(l, t.category), if (t.cost > 0) formatAed(t.cost)]
-                .where((s) => s.isNotEmpty)
-                .join(' · ')),
-            trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
-              StatusChip(ticketStatusLabel(l, t.status), Theme.of(c).colorScheme.primary),
-              const SizedBox(height: 4),
-              StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
+            // Chips sit under the subtitle (not in `trailing`) so large system
+            // font sizes don't overflow the tile height.
+            subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text([props[t.propertyId] ?? '', categoryLabel(l, t.category), if (t.cost > 0) formatAed(t.cost)]
+                  .where((s) => s.isNotEmpty)
+                  .join(' · ')),
+              const SizedBox(height: 8),
+              Wrap(spacing: 6, runSpacing: 6, children: [
+                StatusChip(ticketStatusLabel(l, t.status), Theme.of(c).colorScheme.primary),
+                StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
+              ]),
             ]),
             onTap: () => c.push('/tickets/${t.id}'),
           ),
