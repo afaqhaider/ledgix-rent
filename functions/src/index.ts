@@ -55,7 +55,7 @@ export const dailyReminders = onSchedule(
       const leases = await l.ref.collection("leases").get();
       for (const le of leases.docs) {
         if (le.get("status") !== "active") continue;
-        const end = String(le.get("endDate")).slice(0, 10);
+        const end = String(le.get("ejariExpiry") ?? le.get("endDate")).slice(0, 10); // Ejari expiry when known
         for (const d of RENEWAL_DAYS) {
           if (addDays(end, -d) === today) {
             messages.push({
@@ -72,3 +72,8 @@ export const dailyReminders = onSchedule(
     }
   }
 );
+
+// Add-ons
+export { ejariLookup, mollakQuery, utilityFetch } from "./integrations/callables";
+export { deliverWorkOrder, quotePage } from "./maintenance";
+export { utilityBillCheck } from "./utilityBills";

@@ -44,9 +44,36 @@ Secrets are git-ignored. **Never commit them.**
    ```
    `dailyReminders` runs at 08:00 GST and sends the 3-day and 1-day deposit reminders plus the 90/60/30-day lease renewal alerts to tokens saved in `landlords/{uid}.fcmTokens`.
 
+## Add-ons (all mock-first)
+
+Every external integration sits behind an interface with a mock, runs **server-side only** (Cloud Functions, called from the app via `httpsCallable`), and has a feature flag. Demo mode uses the Dart mocks, so everything works without credentials.
+
+| Add-on | App | Server (`functions/src`) |
+|---|---|---|
+| Maintenance forwarding | ticket detail, work order, quotes, company profiles | `deliverWorkOrder` (push or email), `quotePage` (no-signup quote page) |
+| Utility bills | per-property bills screen, manual entry + photo | `utilityBillCheck` (daily; per-landlord `utilityCheckDay`), `utilityFetch` |
+| Ejari | Verify Ejari on lease, status badge, renewal alerts from Ejari expiry | `ejariLookup` |
+| Mollak | jointly-owned toggle, service-charge card, in unit reports | `mollakQuery` |
+
+Interfaces: `EjariService`, `MollakService`, `UtilityBillService` (Dart: `lib/features/integrations`, TS: `functions/src/integrations/services.ts`), plus `EmailService` (TS only).
+
+**Feature flags**: app `--dart-define=FF_EJARI=false` (also `FF_MOLLAK`, `FF_UTILITY_BILLS`, `FF_FORWARDING`); server env vars with the same names; `*_MODE=live` switches a gateway from mock to live.
+
+### What you must obtain for each real integration
+
+| Integration | You need | Where it goes |
+|---|---|---|
+| Ejari and Mollak | A registered business account with the Dubai Land Department and access to the **DLD API Gateway** (Ejari Contract Enquiry on the Dubai developer portal is a lighter option) | Client id/secret in Secret Manager as `DLD_GATEWAY_CLIENT_ID` / `DLD_GATEWAY_CLIENT_SECRET`; implement `LiveEjariService` / `LiveMollakService`; set `EJARI_MODE=live` / `MOLLAK_MODE=live` |
+| DEWA / chiller bills | DEWA's enquiry API is for partners only, so use a bank bill-payment API (for example Mashreq utility bill payment) or a licensed aggregator and sign its agreement | `UTILITY_PROVIDER_API_KEY` in Secret Manager; implement `LiveUtilityBillService`; `UTILITY_MODE=live` |
+| Work-order email | An email provider of your choice (SendGrid, Postmark, SES...) with a verified sender domain | `EMAIL_PROVIDER_API_KEY` in Secret Manager; implement `LiveEmailService`; `EMAIL_MODE=live`; set `QUOTE_PAGE_URL` to the deployed `quotePage` URL |
+
+Never commit keys. Deploy yourself with `firebase deploy --only functions`.
+
+**Not built yet**: the maintenance company's own in-app inbox (work orders are stored and pushed to a linked company account, but the company-side screens are a later version), bill payment, Ejari registration/renewal and fee payment, and PDF bill upload (needs a file-picker package; photos work now).
+
 ## Data layout (Firestore)
 
-`landlords/{uid}/{profile|properties|tenants|leases|payments|holdRequests|maintenanceTickets|vendors}/{id}`
+`landlords/{uid}/{profile|properties|tenants|leases|payments|holdRequests|maintenanceTickets|vendors|workOrders|quotes|utilityBills|serviceCharges}/{id}`
 
 ## Offline
 
