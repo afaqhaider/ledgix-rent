@@ -49,6 +49,143 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithApple => 'Continue with Apple';
 
   @override
+  String get loginTitle => 'Sign in to LedGix Rent';
+
+  @override
+  String get signUpTitle => 'Create your LedGix Rent account';
+
+  @override
+  String get loginSubtitle => 'Rent, cheques and maintenance in one place.';
+
+  @override
+  String get orUseEmail => 'or use your email';
+
+  @override
+  String get orUsePhone => 'or use your phone number';
+
+  @override
+  String get otherOptions => 'Other ways to continue';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get resetPasswordTitle => 'Reset your password';
+
+  @override
+  String get resetPasswordBody =>
+      'Enter the email you sign in with and we\'ll send you a link to choose a new password.';
+
+  @override
+  String get sendResetLink => 'Send reset link';
+
+  @override
+  String resetLinkSent(String email) {
+    return 'If an account exists for $email, a reset link is on its way.';
+  }
+
+  @override
+  String get noAccountYet => 'New to LedGix Rent?';
+
+  @override
+  String get haveAccount => 'Already have an account?';
+
+  @override
+  String get usePhoneInstead => 'Use phone number instead';
+
+  @override
+  String get useEmailInstead => 'Use email instead';
+
+  @override
+  String get showPassword => 'Show password';
+
+  @override
+  String get hidePassword => 'Hide password';
+
+  @override
+  String get brandHeadline => 'Rent, cheques and maintenance. One calm place.';
+
+  @override
+  String get brandBullet1 => 'Deposit reminders before every cheque is due';
+
+  @override
+  String get brandBullet2 => 'Ejari, DEWA and documents kept with each unit';
+
+  @override
+  String get brandBullet3 => 'Forward maintenance and approve quotes in a tap';
+
+  @override
+  String get partOfLedgix => 'Part of LedGix';
+
+  @override
+  String get emailRequired => 'Enter your email address';
+
+  @override
+  String get emailInvalid => 'Enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Enter your password';
+
+  @override
+  String get passwordTooShort => 'Use at least 6 characters';
+
+  @override
+  String get phoneRequired => 'Enter your phone number with country code';
+
+  @override
+  String get errInvalidCredentials =>
+      'That email and password don\'t match. Try again or reset your password.';
+
+  @override
+  String get errEmailInUse =>
+      'An account with this email already exists. Sign in instead.';
+
+  @override
+  String get errWeakPassword =>
+      'Choose a stronger password (at least 6 characters).';
+
+  @override
+  String get errInvalidEmail => 'That email address doesn\'t look right.';
+
+  @override
+  String get errUserDisabled =>
+      'This account has been disabled. Contact support@getledgix.com.';
+
+  @override
+  String get errTooManyRequests =>
+      'Too many attempts. Wait a few minutes and try again.';
+
+  @override
+  String get errNetwork =>
+      'Couldn\'t connect. Check your internet connection and try again.';
+
+  @override
+  String get errMethodDisabled =>
+      'This sign-in option isn\'t available yet. Try another one.';
+
+  @override
+  String get errPopupBlocked =>
+      'Your browser blocked the sign-in window. Allow pop-ups for this site and try again.';
+
+  @override
+  String get errAccountExists =>
+      'This email is registered with a different sign-in option. Use the one you signed up with.';
+
+  @override
+  String get errInvalidPhone =>
+      'Enter your number with the country code, for example +971 50 123 4567.';
+
+  @override
+  String get errInvalidCode =>
+      'That code isn\'t right or has expired. Check the SMS and try again.';
+
+  @override
+  String get errLedgix => 'LedGix ID sign-in didn\'t finish. Please try again.';
+
+  @override
+  String get errGeneric => 'Something went wrong. Please try again.';
+
+  @override
   String get emailTab => 'Email';
 
   @override

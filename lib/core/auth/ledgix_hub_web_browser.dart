@@ -22,4 +22,7 @@ void clearHubWebFlow() {
 
 void navigateTo(String url) => web.window.location.href = url;
 
-void replaceUrlWithRoot() => web.window.history.replaceState(null, '', '/');
+/// Swaps the callback URL for the app's own root (its `<base href>`, e.g.
+/// /app/) without reloading, dropping the one-time code from the address bar.
+void replaceUrlWithAppRoot() =>
+    web.window.history.replaceState(null, '', Uri.parse(web.document.baseURI).path);

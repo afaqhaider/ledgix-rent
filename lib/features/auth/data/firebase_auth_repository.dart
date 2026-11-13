@@ -27,6 +27,16 @@ class FirebaseAuthRepository implements AuthRepository {
       _auth.createUserWithEmailAndPassword(email: email, password: password);
 
   @override
+  Future<void> sendPasswordReset(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      // Don't reveal whether an address has an account.
+      if (e.code != 'user-not-found') rethrow;
+    }
+  }
+
+  @override
   Future<void> signInWithLedgix() async {
     if (kIsWeb) return LedgixHub.startWeb();
     final code = await LedgixHub.authorizeNative();

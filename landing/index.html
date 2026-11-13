@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LedGix Rent · Rent, cheques and maintenance for UAE landlords</title>
+  <meta name="description" content="LedGix Rent keeps your properties, tenants, Ejari contracts, post-dated cheques, DEWA bills and maintenance in one place, and reminds you before anything is due. In English and Arabic.">
+  <link rel="canonical" href="https://rent.getledgix.com/">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#080b12" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LedGix Rent">
+  <meta property="og:title" content="LedGix Rent · Rent, cheques and maintenance. One place.">
+  <meta property="og:description" content="For landlords in the UAE: properties, tenants, Ejari, cheques, DEWA bills and maintenance, with reminders before anything is due.">
+  <meta property="og:url" content="https://rent.getledgix.com/">
+  <meta property="og:image" content="https://rent.getledgix.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    // Theme and language before first paint (no flash). Old app links (/#/...) now live under /app/.
+    (function () {
+      if (location.hash.indexOf('#/') === 0) { location.replace('/app/' + location.hash); return; }
+      var d = document.documentElement, t = null, l = null;
+      try { t = localStorage.getItem('ledgix-theme'); l = localStorage.getItem('ledgix-rent-lang'); } catch (e) {}
+      var q = new URLSearchParams(location.search).get('lang');
+      if (q === 'ar' || q === 'en') l = q;
+      d.setAttribute('data-theme', t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    })();
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"LedGix Rent","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://rent.getledgix.com/","publisher":{"@type":"Organization","name":"LedGix","url":"https://getledgix.com"},"inLanguage":["en","ar"]}
+  </script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="LedGix Rent home">
+      <img src="/assets/rent-mark.png" alt="" width="30" height="30">
+      <span>LedGix <span class="product">Rent</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#features" data-i18n="navFeatures">Features</a>
+      <a href="#how" data-i18n="navHow">How it works</a>
+      <a href="#security" data-i18n="navSecurity">Security</a>
+      <a href="#faq" data-i18n="navFaq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn lang-btn" type="button" data-lang-toggle aria-label="Switch language">العربية</button>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-ghost hide-sm" href="/app/" data-i18n="signIn">Sign in</a>
+      <a class="btn btn-primary hide-sm" href="/app/" data-i18n="getStarted">Get started</a>
+      <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-label="Menu" aria-expanded="false" aria-controls="mobile-panel">
+        <svg class="open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobile-panel">
+  <a class="m-link" href="#features" data-i18n="navFeatures">Features</a>
+  <a class="m-link" href="#how" data-i18n="navHow">How it works</a>
+  <a class="m-link" href="#security" data-i18n="navSecurity">Security</a>
+  <a class="m-link" href="#faq" data-i18n="navFaq">FAQ</a>
+  <div class="m-actions">
+    <a class="btn btn-primary" href="/app/" data-i18n="getStarted">Get started</a>
+    <a class="btn btn-secondary" href="/app/" data-i18n="signIn">Sign in</a>
+  </div>
+</div>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="dot"></span><span data-i18n="heroEyebrow">For landlords in the UAE</span></span>
+        <h1 class="display-mega"><span data-i18n="heroTitle1">Rent, cheques and maintenance.</span> <span class="accent" data-i18n="heroTitle2">One calm place.</span></h1>
+        <p class="lede" data-i18n="heroLede">LedGix Rent keeps every property, tenant, Ejari contract, post-dated cheque, DEWA bill and maintenance request together, and reminds you before anything is due. In English and Arabic.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="/app/"><span data-i18n="getStarted">Get started</span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-secondary btn-lg" href="#how" data-i18n="seeHow">See how it works</a>
+        </div>
+        <div class="platforms" aria-label="Platforms">
+          <span class="plat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg><span data-i18n="platWeb">Web</span> <span class="live" data-i18n="available">Available</span></span>
+          <span class="plat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><span data-i18n="platPhones">iPhone and Android</span> <span class="soon" data-i18n="comingSoon">Coming soon</span></span>
+        </div>
+      </div>
+
+      <div class="mock" aria-hidden="true">
+        <div class="window">
+          <div class="window-bar"><i></i><i></i><i></i><span class="url">rent.getledgix.com/app</span></div>
+          <div class="app">
+            <aside class="app-side">
+              <div class="logo"><img src="/assets/rent-mark.png" alt=""><span>LedGix Rent</span></div>
+              <span class="item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span data-i18n="mDashboard">Dashboard</span></span>
+              <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg><span data-i18n="mProperties">Properties</span></span>
+              <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a5.5 5.5 0 0 1 3.5 6"/></svg><span data-i18n="mTenants">Tenants</span></span>
+              <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 14h5M15 14h3"/></svg><span data-i18n="mCheques">Cheques</span></span>
+              <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/></svg><span data-i18n="mMaintenance">Maintenance</span></span>
+              <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span data-i18n="mReports">Reports</span></span>
+            </aside>
+            <div class="app-main">
+              <div><div class="greet" data-i18n="mGreeting">Good morning</div><div class="sub" data-i18n="mSub">Sample data · November</div></div>
+              <div class="kpis">
+                <div class="kpi"><div class="k" data-i18n="mCollected">Collected this month</div><div class="v"><small>AED</small>38,500</div></div>
+                <div class="kpi"><div class="k" data-i18n="mOutstanding">Outstanding</div><div class="v"><small>AED</small>12,000</div></div>
+                <div class="kpi"><div class="k" data-i18n="mTickets">Open tickets</div><div class="v">2</div></div>
+              </div>
+              <div class="card-mini">
+                <div class="hd"><span style="color:inherit;font-weight:600;font-size:12px" data-i18n="mUpcoming">Upcoming cheques</span><span data-i18n="mNext30">Next 30 days</span></div>
+                <div class="row"><div class="t">Marina Studio 1204<small data-i18n="mCheque3">Cheque 3 of 4 · 15 Dec</small></div><div class="amt">AED 18,750</div><span class="pill pending" data-i18n="mPending">Pending</span></div>
+                <div class="row"><div class="t">JVC Villa 17<small data-i18n="mCheque2">Cheque 2 of 6 · 01 Dec</small></div><div class="amt">AED 15,000</div><span class="pill deposited" data-i18n="mDeposited">Deposited</span></div>
+                <div class="row"><div class="t">Al Barsha 2BR<small data-i18n="mCheque1">Cheque 1 of 2 · 20 Nov</small></div><div class="amt">AED 42,000</div><span class="pill cleared" data-i18n="mCleared">Cleared</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scan-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg><span data-i18n="mScanned">Ejari scanned · 12 fields filled</span></div>
+        <div class="notif"><img src="/assets/rent-mark.png" alt=""><div><b data-i18n="mNotifTitle">Deposit reminder</b><span data-i18n="mNotifBody">Marina Studio 1204: cheque due in 3 days.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow" data-i18n="featEyebrow">Features</span>
+        <h2 class="display-lg" data-i18n="featTitle">Everything a landlord tracks, without the spreadsheet.</h2>
+        <p data-i18n="featLede">Built around how renting works in the UAE: annual contracts, post-dated cheques, Ejari, DEWA and building service charges.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 14h5M15 14h3M6 10h12"/></svg></div>
+          <h3 data-i18n="f1t">Cheque tracking and deposit reminders</h3>
+          <p data-i18n="f1d">Log each post-dated cheque once. Get a reminder 3 days and 1 day before it's due, and see what's pending, deposited, cleared, on hold or bounced.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+          <h3 data-i18n="f2t">Rent agreements and Ejari</h3>
+          <p data-i18n="f2d">Each unit's agreement, Ejari number, term and payment schedule in one record, with renewal alerts at 90, 60 and 30 days.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg></div>
+          <h3 data-i18n="f3t">Scan documents to fill forms</h3>
+          <p data-i18n="f3d">Scan an Ejari certificate, tenancy contract, DEWA bill or title deed and LedGix Rent fills in the details for you to check.</p>
+          <span class="tag" data-i18n="f3tag">In the iPhone and Android apps</span>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/></svg></div>
+          <h3 data-i18n="f4t">Maintenance with quotes</h3>
+          <p data-i18n="f4d">Forward a request to your maintenance company, get their quote back and approve it, with every step kept on the ticket.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></svg></div>
+          <h3 data-i18n="f5t">Utility bills and service charges</h3>
+          <p data-i18n="f5d">Keep DEWA bills and Mollak service charges with each unit, so nothing slips through between tenancies.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+          <h3 data-i18n="f6t">Reports</h3>
+          <p data-i18n="f6d">Collected and outstanding rent by month and by year, for one property or your whole portfolio.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div>
+          <h3 data-i18n="f7t">Documents in one place</h3>
+          <p data-i18n="f7d">Title deeds, Emirates IDs, passports, contracts and bills stored privately with the property or tenant they belong to.</p>
+        </article>
+        <article class="feature">
+          <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h8M8 3v2M5.5 5c.8 3.3 3 5.7 6.5 7M10.5 5c-.8 3.3-3 5.7-6.5 7M13 21l4-9 4 9M14.5 18h5"/></svg></div>
+          <h3 data-i18n="f8t">Arabic and English</h3>
+          <p data-i18n="f8d">Every screen works in both languages, right-to-left included. Switch any time.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section tight-top" id="how">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow" data-i18n="howEyebrow">How it works</span>
+        <h2 class="display-lg" data-i18n="howTitle">Set up in an afternoon. Then let it remind you.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">01</span><h3 data-i18n="s1t">Add your properties</h3><p data-i18n="s1d">Type the details or scan the title deed and DEWA bill. Add the documents you want to keep on file.</p></div>
+        <div class="step"><span class="num">02</span><h3 data-i18n="s2t">Add tenants and agreements</h3><p data-i18n="s2d">Scan the Ejari or tenancy contract to capture the tenant, the term and the cheque schedule in one go.</p></div>
+        <div class="step"><span class="num">03</span><h3 data-i18n="s3t">Get reminded, stay on top</h3><p data-i18n="s3d">Deposit reminders, renewal alerts and maintenance updates arrive on your phone before they become problems.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Landlords and tenants -->
+  <section class="section tight-top" id="tenants">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow" data-i18n="audEyebrow">Landlords and tenants</span>
+        <h2 class="display-lg" data-i18n="audTitle">Built for landlords. Tenants are next.</h2>
+        <p data-i18n="audLede">Today LedGix Rent is for landlords. A tenant app is on the way, so the back-and-forth over WhatsApp can finally stop.</p>
+      </div>
+      <div class="audience">
+        <div class="aud">
+          <div class="aud-head"><h3 data-i18n="audL">For landlords</h3><span class="badge live" data-i18n="available">Available</span></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg><span data-i18n="audL1">Properties, tenants, agreements and documents</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg><span data-i18n="audL2">Cheque schedules with deposit reminders</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg><span data-i18n="audL3">Maintenance forwarding and quote approval</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg><span data-i18n="audL4">Reports across your portfolio</span></li>
+          </ul>
+        </div>
+        <div class="aud soon">
+          <div class="aud-head"><h3 data-i18n="audT">For tenants</h3><span class="badge soon" data-i18n="comingSoon">Coming soon</span></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg><span data-i18n="audT1">See their agreement and payment schedule</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg><span data-i18n="audT2">Raise maintenance requests straight to you</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg><span data-i18n="audT3">Upload documents you ask for</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg><span data-i18n="audT4">Get reminders before cheques are deposited</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section class="section tight-top" id="security">
+    <div class="wrap security">
+      <div class="sec-head">
+        <span class="eyebrow" data-i18n="secEyebrow">Privacy and security</span>
+        <h2 class="display-lg" data-i18n="secTitle">Your data stays yours.</h2>
+        <p data-i18n="secLede">Tenant IDs, cheques and contracts are sensitive. LedGix Rent keeps them private to your account and never uses them for advertising.</p>
+        <a class="link" href="/privacy/" data-ar-href="/privacy/#ar"><span data-i18n="secLink">Read the privacy policy</span>
+          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="sec-list">
+        <div class="sec-item"><div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3 data-i18n="sec1t">Private to your account</h3><p data-i18n="sec1d">Each landlord's records and files are stored separately, and only the signed-in owner can open them.</p></div>
+        <div class="sec-item"><div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><h3 data-i18n="sec2t">Sign in your way</h3><p data-i18n="sec2d">Use your LedGix ID, Google, Apple or email. One LedGix ID works across every LedGix app.</p></div>
+        <div class="sec-item"><div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M9 7V4h6v3"/></svg></div><h3 data-i18n="sec3t">Delete any time</h3><p data-i18n="sec3d">Delete your account from inside the app and everything in it goes with it.</p></div>
+        <div class="sec-item"><div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg></div><h3 data-i18n="sec4t">No ads, no data selling</h3><p data-i18n="sec4d">We don't run ads and we don't sell or share your information for advertising.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section tight-top" id="faq">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow" data-i18n="faqEyebrow">FAQ</span>
+        <h2 class="display-lg" data-i18n="faqTitle">Questions landlords ask</h2>
+      </div>
+      <div class="faq">
+        <details><summary><span data-i18n="q1">Who is LedGix Rent for?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a1">Landlords in the UAE who look after their own units, whether that's one apartment or a portfolio of apartments, villas and offices.</div></details>
+        <details><summary><span data-i18n="q2">Does it work in Arabic?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a2">Yes. The whole app is available in Arabic and English, with full right-to-left layout. You can switch language at any time.</div></details>
+        <details><summary><span data-i18n="q3">Can it read my Ejari, tenancy contract or DEWA bill?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a3">In the iPhone and Android apps, yes. Scan or upload the document and LedGix Rent fills in the details from its English text for you to review. Text that only appears in Arabic isn't read yet, and you can edit every field.</div></details>
+        <details><summary><span data-i18n="q4">Is it connected to Ejari, DEWA or Mollak?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a4">Not directly yet. LedGix Rent stores your Ejari, DEWA and Mollak details and documents alongside each unit. Direct connections to those services aren't switched on.</div></details>
+        <details><summary><span data-i18n="q5">What is LedGix ID?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a5">One account for every LedGix app. If you already use another LedGix app, sign in to LedGix Rent with the same LedGix ID. You can also use Google, Apple or email.</div></details>
+        <details><summary><span data-i18n="q6">When are the iPhone and Android apps coming?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a6">They're in testing now. Until they're out, you can use LedGix Rent in any browser, and your data will be there when you install the app.</div></details>
+        <details><summary><span data-i18n="q7">How do I delete my account?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans" data-i18n="a7">Choose Delete account in the app's settings. It permanently removes your account, records and files. If you can't get into the app, email support@getledgix.com from your account's email address.</div></details>
+        <details><summary><span data-i18n="q8">How do I get help?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="ans"><span data-i18n="a8">Email us at</span> <a class="link" href="mailto:support@getledgix.com">support@getledgix.com</a>.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section tight-top">
+    <div class="wrap">
+      <div class="cta-band">
+        <img src="/assets/rent-mark.png" alt="" width="56" height="56">
+        <h2 class="display-lg" data-i18n="ctaTitle">Put your rentals on autopilot.</h2>
+        <p data-i18n="ctaLede">Sign in with your LedGix ID, Google, Apple or email and add your first property in minutes.</p>
+        <div class="hero-ctas"><a class="btn btn-primary btn-lg" href="/app/" data-i18n="getStarted">Get started</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/"><img src="/assets/rent-mark.png" alt="" width="30" height="30"><span>LedGix <span class="product">Rent</span></span></a>
+        <p data-i18n="footTag">Rent, cheques and maintenance for landlords in the UAE.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footProduct">Product</h4>
+        <ul>
+          <li><a href="#features" data-i18n="navFeatures">Features</a></li>
+          <li><a href="#how" data-i18n="navHow">How it works</a></li>
+          <li><a href="/app/" data-i18n="signIn">Sign in</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footSupport">Support</h4>
+        <ul>
+          <li><a href="#faq" data-i18n="navFaq">FAQ</a></li>
+          <li><a href="mailto:support@getledgix.com">support@getledgix.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footLegal">Legal</h4>
+        <ul>
+          <li><a href="/privacy/" data-ar-href="/privacy/#ar" data-i18n="privacy">Privacy policy</a></li>
+          <li><a href="/privacy/#delete" data-ar-href="/privacy/#delete-ar" data-i18n="footDelete">Account deletion</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 LedGix</span>
+      <a class="ledgix-by" href="https://getledgix.com" rel="noopener"><img src="/assets/ledgix-mark.png" alt=""><span data-i18n="partOf">Part of LedGix</span></a>
+    </div>
+  </div>
+</footer>
+
+<script src="/site.js" defer></script>
+</body>
+</html>

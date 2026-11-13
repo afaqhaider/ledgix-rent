@@ -34,6 +34,11 @@ abstract final class LedgixHub {
   static const mobileRedirectUri = '$mobileScheme://oidc-callback';
   static const callbackPath = '/hub-callback';
 
+  /// Firebase Hosting serves the app (base href /app/) for both of these, so
+  /// the Hub's registered redirect (/hub-callback) keeps working after the
+  /// app moved under /app/.
+  static const callbackPaths = {callbackPath, '/app$callbackPath'};
+
   /// Web redirect on whichever registered host is serving the app.
   static String get webRedirectUri => Uri.base.host == 'rent.getledgix.com'
       ? 'https://rent.getledgix.com$callbackPath'
@@ -99,10 +104,10 @@ abstract final class LedgixHub {
   /// Web: if this page load is the Hub callback, returns its code and cleans
   /// the address bar. Null on any other page load.
   static HubCode? takeWebCallback() {
-    if (!kIsWeb || Uri.base.path != callbackPath) return null;
+    if (!kIsWeb || !callbackPaths.contains(Uri.base.path)) return null;
     final flow = readHubWebFlow();
     clearHubWebFlow();
-    replaceUrlWithRoot();
+    replaceUrlWithAppRoot();
     if (flow == null) throw LedgixSignInError('LedGix ID sign-in expired. Please try again.');
     return _readCallback(Uri.base, expectedState: flow.state, verifier: flow.verifier, redirectUri: webRedirectUri);
   }
