@@ -231,7 +231,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tenants => 'Tenants';
 
   @override
-  String get leases => 'Leases';
+  String get leases => 'Rent agreements';
 
   @override
   String get vendors => 'Vendors';
@@ -358,7 +358,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attached => 'Attached';
 
   @override
-  String get addLease => 'Add lease';
+  String get addLease => 'Add rent agreement';
 
   @override
   String get property => 'Property';
@@ -970,9 +970,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile => 'Profile';
 
   @override
-  String get profileComingSoon => 'Profile editing is coming soon.';
-
-  @override
   String get preferences => 'Preferences';
 
   @override
@@ -1057,4 +1054,286 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authSubtagline =>
       'Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get filledFromScan => 'Filled from scan, please check';
+
+  @override
+  String get replaceTypedTitle => 'Replace what you typed?';
+
+  @override
+  String get replaceTypedBody =>
+      'The scan found different values for these fields. Tick the ones to replace; the rest keep what you typed.';
+
+  @override
+  String get keepMine => 'Keep mine';
+
+  @override
+  String get replaceSelected => 'Replace selected';
+
+  @override
+  String scanFilled(int count, String doc) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fields filled from $doc, please review',
+      one: '1 field filled from $doc, please review',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scanNothingNew(String doc) {
+    return 'Read $doc, but found nothing new to fill.';
+  }
+
+  @override
+  String get docDewaBill => 'DEWA bill';
+
+  @override
+  String get docOwnerEmiratesId => 'Emirates ID (owner)';
+
+  @override
+  String get docOwnerPassport => 'Passport (owner)';
+
+  @override
+  String get docMollak => 'Mollak / service charge';
+
+  @override
+  String get docTenancyContract => 'Tenancy contract';
+
+  @override
+  String get docEmiratesIdCopy => 'Emirates ID';
+
+  @override
+  String get docPassportCopy => 'Passport';
+
+  @override
+  String get docOther => 'Other';
+
+  @override
+  String get takePhoto => 'Take a photo';
+
+  @override
+  String get chooseImage => 'Choose an image';
+
+  @override
+  String get choosePdf => 'Choose a PDF';
+
+  @override
+  String get fileTooLarge => 'That file is over 20 MB. Choose a smaller one.';
+
+  @override
+  String documentsMissing(String list) {
+    return 'Attach: $list';
+  }
+
+  @override
+  String get noDocumentsYet => 'No documents yet.';
+
+  @override
+  String get notUploadedYet => 'uploads on save';
+
+  @override
+  String get preview => 'Preview';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get scanToFill => 'Scan to fill';
+
+  @override
+  String get scan => 'Scan';
+
+  @override
+  String get scanning => 'Reading…';
+
+  @override
+  String get scanNotRecognised =>
+      'Couldn\'t read that document. Try a clearer photo or the PDF.';
+
+  @override
+  String get scanFailed =>
+      'Scanning failed. Please try again or fill the form by hand.';
+
+  @override
+  String get scanWebNote => 'Scanning works in the iPhone and Android apps.';
+
+  @override
+  String get scanHintProperty =>
+      'Title deed, DEWA bill, Ejari or tenancy contract';
+
+  @override
+  String get scanHintTenant =>
+      'Emirates ID, passport, Ejari or tenancy contract';
+
+  @override
+  String get scanHintAgreement => 'Ejari certificate or tenancy contract';
+
+  @override
+  String get sectionBasicInfo => 'Basic information';
+
+  @override
+  String get sectionDewaMollak => 'DEWA & Mollak';
+
+  @override
+  String get sectionOwnership => 'Ownership';
+
+  @override
+  String get sectionHoa => 'Owners association (HOA)';
+
+  @override
+  String get sectionMaintenance => 'Maintenance';
+
+  @override
+  String get sectionDocuments => 'Documents';
+
+  @override
+  String get dewaPremiseNo => 'DEWA premise no.';
+
+  @override
+  String get mollakRegistrationNo => 'Mollak registration no.';
+
+  @override
+  String get hoaName => 'HOA name';
+
+  @override
+  String get hoaPhone => 'HOA contact number';
+
+  @override
+  String get ownerEmiratesIdNo => 'Owner\'s Emirates ID no.';
+
+  @override
+  String get ownerPassportNo => 'Owner\'s passport no.';
+
+  @override
+  String get annualRentLabel => 'Annual rent';
+
+  @override
+  String get depositLabel => 'Security deposit';
+
+  @override
+  String get aed => 'AED';
+
+  @override
+  String get editProperty => 'Edit property';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get propertyNameHelper => 'For example: Marina Heights 1203';
+
+  @override
+  String get premiseHelper => '9 digits, on the DEWA bill';
+
+  @override
+  String get firstName => 'First name';
+
+  @override
+  String get middleName => 'Middle name';
+
+  @override
+  String get lastName => 'Last name';
+
+  @override
+  String get contactNo => 'Contact no.';
+
+  @override
+  String get passportNo => 'Passport no.';
+
+  @override
+  String get sectionPersonal => 'Personal details';
+
+  @override
+  String get sectionContact => 'Contact';
+
+  @override
+  String get sectionIdentity => 'Identity';
+
+  @override
+  String get editTenant => 'Edit tenant';
+
+  @override
+  String get invalidEmiratesId => 'Use the format 784-XXXX-XXXXXXX-X';
+
+  @override
+  String get invalidEmail => 'Enter a valid email address';
+
+  @override
+  String get ownIdTenantError => 'This is your own ID. A tenant can\'t use it.';
+
+  @override
+  String get ownIdTitle => 'This looks like your own Emirates ID';
+
+  @override
+  String get ownIdBody =>
+      'The ID on this document matches yours, so it hasn\'t been filled in as a tenant.';
+
+  @override
+  String get ownIdAgreementBody =>
+      'The tenant on this document has your own ID, so no tenant was filled in. Choose the tenant yourself.';
+
+  @override
+  String get useForMyProfile => 'Save to my profile';
+
+  @override
+  String get ownIdSaved => 'Saved to your profile.';
+
+  @override
+  String get addRentAgreement => 'Add rent agreement';
+
+  @override
+  String get editRentAgreement => 'Edit rent agreement';
+
+  @override
+  String get sectionUnitTenant => 'Unit & tenant';
+
+  @override
+  String get sectionTermRent => 'Term & rent';
+
+  @override
+  String get sectionPayment => 'Payment';
+
+  @override
+  String get newTenant => 'New tenant';
+
+  @override
+  String addScannedTenant(String name) {
+    return 'Add $name as tenant';
+  }
+
+  @override
+  String propertyMatched(String name) {
+    return 'Matched to $name';
+  }
+
+  @override
+  String get myProfile => 'My profile';
+
+  @override
+  String get myEmiratesIdNo => 'My Emirates ID no.';
+
+  @override
+  String get myPassportNo => 'My passport no.';
+
+  @override
+  String get ownIdHelper =>
+      'Used to recognise your own documents, so you\'re never added as a tenant.';
+
+  @override
+  String get profileSaved => 'Profile saved.';
+
+  @override
+  String get tenantRequired => 'Choose or add a tenant';
+
+  @override
+  String get noTenantsYet => 'No tenants yet. Add one to continue.';
+
+  @override
+  String get scheduleNote => 'The cheque schedule is created when you save.';
 }

@@ -8,12 +8,15 @@ import '../../features/holds/presentation/holds_screen.dart';
 import '../../features/landlord/presentation/onboarding_screen.dart';
 import '../../features/leases/domain/lease.dart';
 import '../../features/leases/presentation/leases_screen.dart';
+import '../../features/leases/presentation/rent_agreement_form_screen.dart';
+import '../../features/landlord/presentation/profile_screen.dart';
 import '../../features/maintenance/presentation/maintenance_screen.dart';
 import '../../features/maintenance/presentation/ticket_detail_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/utilities/presentation/utility_bills_screen.dart';
 import '../../features/payments/presentation/payments_screen.dart';
 import '../../features/properties/presentation/portfolio_screen.dart';
+import '../../features/properties/presentation/property_form_screen.dart';
 import '../../features/tenants/presentation/tenants_screen.dart';
 import '../../features/vendors/presentation/vendors_screen.dart';
 import '../../features/servicecharges/presentation/service_charges_screen.dart';
@@ -70,10 +73,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/maintenance', pageBuilder: (_, s) => _section(s, const MaintenanceScreen())),
           GoRoute(path: '/property/new', builder: (_, _) => const PropertyFormScreen()),
           GoRoute(path: '/property/:id', builder: (_, s) => PropertyDetailScreen(id: s.pathParameters['id']!)),
+          GoRoute(path: '/property/:id/edit', builder: (_, s) => PropertyFormScreen(id: s.pathParameters['id']!)),
           GoRoute(path: '/tenants', pageBuilder: (_, s) => _section(s, const TenantsScreen())),
-          GoRoute(path: '/tenants/new', builder: (_, _) => const TenantFormScreen()),
+          GoRoute(
+            path: '/tenants/new',
+            builder: (_, s) => TenantFormScreen(prefill: (s.extra as Map?)?.cast<String, String>()),
+          ),
+          GoRoute(path: '/tenants/:id/edit', builder: (_, s) => TenantFormScreen(id: s.pathParameters['id']!)),
           GoRoute(path: '/leases', pageBuilder: (_, s) => _section(s, const LeasesScreen())),
-          GoRoute(path: '/leases/new', builder: (_, _) => const LeaseFormScreen()),
+          GoRoute(path: '/leases/new', builder: (_, _) => const RentAgreementFormScreen()),
+          GoRoute(path: '/leases/:id/edit', builder: (_, s) => RentAgreementFormScreen(id: s.pathParameters['id']!)),
           GoRoute(path: '/debits', pageBuilder: (_, s) => _section(s, const PaymentsScreen(type: PaymentMethod.directDebit))),
           GoRoute(path: '/holds', pageBuilder: (_, s) => _section(s, const HoldsScreen())),
           GoRoute(path: '/tickets/new', builder: (_, _) => const TicketFormScreen()),
@@ -85,8 +94,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/utilities', pageBuilder: (_, s) => _section(s, const UtilitiesOverviewScreen())),
           GoRoute(path: '/service-charges', pageBuilder: (_, s) => _section(s, const ServiceChargesScreen())),
           GoRoute(path: '/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
-          // PLACEHOLDER: the forms branch adds the real profile editor; point this route at it on merge.
-          GoRoute(path: '/profile', builder: (_, _) => const ProfilePlaceholderScreen()),
+          GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
         ],
       ),
     ],

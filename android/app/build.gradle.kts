@@ -74,3 +74,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // On-device OCR for "Scan to fill" (bundled Latin model, works offline).
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+}

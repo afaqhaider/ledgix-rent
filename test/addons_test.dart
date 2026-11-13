@@ -40,7 +40,7 @@ void main() {
     });
 
     test('tenant contact only when allowed', () {
-      const tenant = Tenant(id: 'x', name: 'Sara', phone: '0501234567');
+      final tenant = Tenant(id: 'x', name: 'Sara', phone: '0501234567');
       expect(WorkOrderBuilder.text(ticket: ticket, property: property, tenant: tenant), isNot(contains('Sara')));
       final shared = ticket.copyWith(shareTenantContact: true);
       expect(WorkOrderBuilder.text(ticket: shared, property: property, tenant: tenant), contains('Sara (0501234567)'));

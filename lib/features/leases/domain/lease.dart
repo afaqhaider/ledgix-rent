@@ -1,4 +1,5 @@
 import '../../../core/domain/entity.dart';
+import '../../documents/domain/app_document.dart';
 
 enum PaymentMethod { cheque, directDebit }
 
@@ -35,6 +36,7 @@ class Lease implements Entity {
     this.ejariStatus = EjariStatus.unknown,
     this.ejariExpiry,
     this.ejariLastSynced,
+    this.documents = const [],
   });
 
   @override
@@ -49,6 +51,9 @@ class Lease implements Entity {
   /// Cached Ejari details (see EjariService) with the time of the last sync.
   final EjariStatus ejariStatus;
   final DateTime? ejariExpiry, ejariLastSynced;
+
+  /// Ejari certificate, tenancy contract and other files.
+  final List<AppDocument> documents;
 
   /// Date renewal alerts count back from: the Ejari expiry when known.
   DateTime get renewalDate => ejariExpiry ?? endDate;
@@ -68,6 +73,7 @@ class Lease implements Entity {
         ejariStatus: status,
         ejariExpiry: expiry,
         ejariLastSynced: syncedAt,
+        documents: documents,
       );
 
   @override
@@ -86,6 +92,7 @@ class Lease implements Entity {
         'ejariStatus': ejariStatus.name,
         'ejariExpiry': ejariExpiry?.toIso8601String(),
         'ejariLastSynced': ejariLastSynced?.toIso8601String(),
+        'documents': documents.map((d) => d.toMap()).toList(),
       };
 
   factory Lease.fromMap(Map<String, dynamic> m) => Lease(
@@ -103,5 +110,6 @@ class Lease implements Entity {
         ejariStatus: enumByName(EjariStatus.values, m['ejariStatus'], EjariStatus.unknown),
         ejariExpiry: parseDate(m['ejariExpiry']),
         ejariLastSynced: parseDate(m['ejariLastSynced']),
+        documents: AppDocument.listFrom(m['documents']),
       );
 }

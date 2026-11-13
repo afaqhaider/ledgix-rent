@@ -1,20 +1,14 @@
 import '../../../core/domain/entity.dart';
+import '../../documents/domain/app_document.dart';
+
+export '../../documents/domain/app_document.dart';
 
 enum PropertyType { villa, apartment, studio, other }
 
 enum PaidBy { landlord, tenant }
 
-class PropertyDocument {
-  const PropertyDocument({required this.name, required this.url, this.kind = 'other'});
-  final String name, url;
-
-  /// lease, ejari, titleDeed, emiratesId, other
-  final String kind;
-
-  Map<String, dynamic> toMap() => {'name': name, 'url': url, 'kind': kind};
-  factory PropertyDocument.fromMap(Map<String, dynamic> m) => PropertyDocument(
-      name: '${m['name']}', url: '${m['url']}', kind: '${m['kind'] ?? 'other'}');
-}
+/// Kept as an alias: property documents are now [AppDocument]s.
+typedef PropertyDocument = AppDocument;
 
 class Property implements Entity {
   const Property({
@@ -26,6 +20,12 @@ class Property implements Entity {
     this.community = '',
     this.titleDeedNo = '',
     this.dewaAccountNo = '',
+    this.dewaPremiseNo = '',
+    this.hoaName = '',
+    this.hoaPhone = '',
+    this.ownerEmiratesIdNo = '',
+    this.ownerPassportNo = '',
+    this.annualRent,
     this.documents = const [],
     this.isJointlyOwned = false,
     this.mollakUnitRef = '',
@@ -38,6 +38,10 @@ class Property implements Entity {
   @override
   final String id;
   final String landlordId, name, address, community, titleDeedNo, dewaAccountNo;
+  final String dewaPremiseNo, hoaName, hoaPhone, ownerEmiratesIdNo, ownerPassportNo;
+
+  /// Expected annual rent for the unit (the agreement holds the actual figure).
+  final double? annualRent;
   final PropertyType type;
   final List<PropertyDocument> documents;
   final bool isJointlyOwned;
@@ -56,6 +60,12 @@ class Property implements Entity {
         community: community,
         titleDeedNo: titleDeedNo,
         dewaAccountNo: dewaAccountNo,
+        dewaPremiseNo: dewaPremiseNo,
+        hoaName: hoaName,
+        hoaPhone: hoaPhone,
+        ownerEmiratesIdNo: ownerEmiratesIdNo,
+        ownerPassportNo: ownerPassportNo,
+        annualRent: annualRent,
         documents: documents ?? this.documents,
         isJointlyOwned: isJointlyOwned,
         mollakUnitRef: mollakUnitRef,
@@ -75,6 +85,12 @@ class Property implements Entity {
         'community': community,
         'titleDeedNo': titleDeedNo,
         'dewaAccountNo': dewaAccountNo,
+        'dewaPremiseNo': dewaPremiseNo,
+        'hoaName': hoaName,
+        'hoaPhone': hoaPhone,
+        'ownerEmiratesIdNo': ownerEmiratesIdNo,
+        'ownerPassportNo': ownerPassportNo,
+        'annualRent': annualRent,
         'documents': documents.map((d) => d.toMap()).toList(),
         'isJointlyOwned': isJointlyOwned,
         'mollakUnitRef': mollakUnitRef,
@@ -93,10 +109,13 @@ class Property implements Entity {
         community: '${m['community'] ?? ''}',
         titleDeedNo: '${m['titleDeedNo'] ?? ''}',
         dewaAccountNo: '${m['dewaAccountNo'] ?? ''}',
-        documents: [
-          for (final d in (m['documents'] as List? ?? const []))
-            PropertyDocument.fromMap(Map<String, dynamic>.from(d as Map))
-        ],
+        dewaPremiseNo: '${m['dewaPremiseNo'] ?? ''}',
+        hoaName: '${m['hoaName'] ?? ''}',
+        hoaPhone: '${m['hoaPhone'] ?? ''}',
+        ownerEmiratesIdNo: '${m['ownerEmiratesIdNo'] ?? ''}',
+        ownerPassportNo: '${m['ownerPassportNo'] ?? ''}',
+        annualRent: (m['annualRent'] as num?)?.toDouble(),
+        documents: AppDocument.listFrom(m['documents']),
         isJointlyOwned: m['isJointlyOwned'] == true,
         mollakUnitRef: '${m['mollakUnitRef'] ?? ''}',
         chillerProvider: '${m['chillerProvider'] ?? ''}',

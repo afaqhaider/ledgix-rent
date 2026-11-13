@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/layout/app_shell.dart';
@@ -18,7 +17,7 @@ import '../../leases/domain/lease.dart';
 import '../../payments/domain/payment.dart';
 import '../../integrations/domain/integration_services.dart';
 import '../../servicecharges/domain/service_charge.dart';
-import '../../vendors/domain/vendor.dart';
+import '../../documents/presentation/documents_editor.dart';
 import '../domain/property.dart';
 
 class PortfolioScreen extends ConsumerWidget {
@@ -67,104 +66,27 @@ class PortfolioScreen extends ConsumerWidget {
   }
 }
 
-class PropertyFormScreen extends ConsumerStatefulWidget {
-  const PropertyFormScreen({super.key});
-  @override
-  ConsumerState<PropertyFormScreen> createState() => _PropertyFormScreenState();
-}
-
-class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
-  final _key = GlobalKey<FormState>();
-  final _c = {for (final k in ['name', 'address', 'community', 'deed', 'dewa', 'chillerProvider', 'chillerNo', 'mollak']) k: TextEditingController()};
-  PropertyType _type = PropertyType.apartment;
-  bool _jointly = false;
-  String? _defaultVendor;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l;
-    Widget f(String k, String label, {bool req = false}) => TextFormField(
-        controller: _c[k], decoration: InputDecoration(labelText: label),
-        validator: req ? (v) => requiredValidator(context, v) : null);
-    return FormScaffold(
-      title: l.addProperty,
-      formKey: _key,
-      onSave: () async {
-        if (!_key.currentState!.validate()) return;
-        await ref.read(propertyRepositoryProvider).save(Property(
-              id: newId(),
-              landlordId: ref.read(authRepositoryProvider).currentUserId ?? '',
-              name: _c['name']!.text.trim(),
-              type: _type,
-              address: _c['address']!.text.trim(),
-              community: _c['community']!.text.trim(),
-              titleDeedNo: _c['deed']!.text.trim(),
-              dewaAccountNo: _c['dewa']!.text.trim(),
-              chillerProvider: _c['chillerProvider']!.text.trim(),
-              chillerAccountNo: _c['chillerNo']!.text.trim(),
-              isJointlyOwned: _jointly,
-              mollakUnitRef: _jointly ? _c['mollak']!.text.trim() : '',
-              defaultVendorId: _defaultVendor,
-            ));
-        if (context.mounted) context.pop();
-      },
-      children: [
-        f('name', l.propertyName, req: true),
-        DropdownButtonFormField<PropertyType>(
-          initialValue: _type,
-          decoration: InputDecoration(labelText: l.propertyType),
-          items: [for (final t in PropertyType.values) DropdownMenuItem(value: t, child: Text(propertyTypeLabel(l, t)))],
-          onChanged: (t) => setState(() => _type = t ?? _type),
-        ),
-        f('address', l.address),
-        f('community', l.community),
-        f('deed', l.titleDeedNo),
-        f('dewa', l.dewaAccountNo),
-        f('chillerProvider', l.chillerProvider),
-        f('chillerNo', l.chillerAccountNo),
-        if (FeatureFlags.mollak) ...[
-          SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(l.jointlyOwned), value: _jointly, onChanged: (v) => setState(() => _jointly = v)),
-          if (_jointly) f('mollak', l.mollakUnitRef),
-        ],
-        DropdownButtonFormField<String>(
-          initialValue: _defaultVendor,
-          decoration: InputDecoration(labelText: l.defaultCompany),
-          items: [
-            for (final v in ref.watch(vendorsProvider).value ?? <Vendor>[]) DropdownMenuItem(value: v.id, child: Text(v.name)),
-          ],
-          onChanged: (v) => _defaultVendor = v,
-        ),
-      ],
-    );
-  }
-}
-
 class PropertyDetailScreen extends ConsumerWidget {
   const PropertyDetailScreen({super.key, required this.id});
   final String id;
 
   Future<void> _addDoc(BuildContext context, WidgetRef ref, Property p) async {
     final l = context.l;
-    final kinds = {
-      'lease': l.docLease,
-      'ejari': l.docEjari,
-      'titleDeed': l.docTitleDeed,
-      'emiratesId': l.docEmiratesId,
-    };
     final kind = await showModalBottomSheet<String>(
       context: context,
+      showDragHandle: true,
       builder: (c) => SafeArea(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          for (final e in kinds.entries) ListTile(title: Text(e.value), onTap: () => Navigator.pop(c, e.key)),
+        child: ListView(shrinkWrap: true, children: [
+          for (final k in DocumentKinds.property) ListTile(title: Text(documentKindLabel(l, k)), onTap: () => Navigator.pop(c, k)),
         ]),
       ),
     );
-    if (kind == null) return;
-    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (kind == null || !context.mounted) return;
+    final file = await pickDocumentFile(context);
     if (file == null) return;
-    final url = await ref.read(fileStorageProvider).upload('documents/${p.id}/${newId()}_${file.name}', file.path);
+    final url = await ref.read(fileStorageProvider).uploadFile('documents/${p.id}/${newId()}_${file.name}', file);
     await ref.read(propertyRepositoryProvider).save(p.copyWith(
-        documents: [...p.documents, PropertyDocument(name: kinds[kind]!, url: url, kind: kind)]));
+        documents: [...p.documents, AppDocument(name: documentKindLabel(l, kind), url: url, kind: kind)]));
   }
 
   @override
@@ -174,6 +96,11 @@ class PropertyDetailScreen extends ConsumerWidget {
     final l = context.l;
     return Scaffold(
       appBar: ShellAppBar(title: Text(p.name), actions: [
+        IconButton(
+          tooltip: l.edit,
+          icon: const Icon(Icons.edit_outlined),
+          onPressed: () => context.push('/property/${p.id}/edit'),
+        ),
         IconButton(
           icon: const Icon(Icons.delete_outline),
           onPressed: () async {
@@ -192,8 +119,15 @@ class PropertyDetailScreen extends ConsumerWidget {
           l.propertyType: propertyTypeLabel(l, p.type),
           l.address: p.address,
           l.community: p.community,
+          l.annualRentLabel: p.annualRent == null ? '' : formatAed(p.annualRent!),
           l.titleDeedNo: p.titleDeedNo,
+          l.dewaPremiseNo: p.dewaPremiseNo,
           l.dewaAccountNo: p.dewaAccountNo,
+          l.mollakRegistrationNo: p.mollakUnitRef,
+          l.ownerEmiratesIdNo: p.ownerEmiratesIdNo,
+          l.ownerPassportNo: p.ownerPassportNo,
+          l.hoaName: p.hoaName,
+          l.hoaPhone: p.hoaPhone,
         }.entries.where((e) => e.value.isNotEmpty))
           ListTile(dense: true, title: Text(e.key), trailing: Text(e.value)),
         if (FeatureFlags.utilityBills)
@@ -209,8 +143,8 @@ class PropertyDetailScreen extends ConsumerWidget {
         if (p.documents.isEmpty) const EmptyState(),
         for (final d in p.documents)
           ListTile(
-            leading: const Icon(Icons.description_outlined),
-            title: Text(d.name),
+            leading: Icon(d.url.toLowerCase().contains('.pdf') ? Icons.picture_as_pdf_outlined : Icons.description_outlined),
+            title: Text(documentKindLabel(l, d.kind)),
             onTap: () => showDialog<void>(
               context: context,
               builder: (c) => Dialog(

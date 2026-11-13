@@ -231,7 +231,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tenants => 'المستأجرون';
 
   @override
-  String get leases => 'العقود';
+  String get leases => 'عقود الإيجار';
 
   @override
   String get vendors => 'المزودون';
@@ -358,7 +358,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attached => 'تم الإرفاق';
 
   @override
-  String get addLease => 'إضافة عقد';
+  String get addLease => 'إضافة عقد إيجار';
 
   @override
   String get property => 'العقار';
@@ -971,9 +971,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profile => 'الملف الشخصي';
 
   @override
-  String get profileComingSoon => 'تعديل الملف الشخصي قريبًا.';
-
-  @override
   String get preferences => 'التفضيلات';
 
   @override
@@ -1060,4 +1057,286 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get authSubtagline =>
       'مصمم للملاك في الإمارات: تابع كل شيك، وجدّد العقود في وقتها، وابقَ على تواصل مع المستأجرين.';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get filledFromScan => 'تمت التعبئة من المسح، يرجى المراجعة';
+
+  @override
+  String get replaceTypedTitle => 'استبدال ما كتبته؟';
+
+  @override
+  String get replaceTypedBody =>
+      'وجد المسح قيمًا مختلفة لهذه الحقول. حدّد ما تريد استبداله، وسيبقى الباقي كما كتبته.';
+
+  @override
+  String get keepMine => 'إبقاء ما كتبته';
+
+  @override
+  String get replaceSelected => 'استبدال المحدد';
+
+  @override
+  String scanFilled(int count, String doc) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تمت تعبئة $count حقول من $doc، يرجى المراجعة',
+      one: 'تمت تعبئة حقل واحد من $doc، يرجى المراجعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scanNothingNew(String doc) {
+    return 'تمت قراءة $doc ولكن لم يُعثر على بيانات جديدة.';
+  }
+
+  @override
+  String get docDewaBill => 'فاتورة ديوا';
+
+  @override
+  String get docOwnerEmiratesId => 'الهوية الإماراتية (المالك)';
+
+  @override
+  String get docOwnerPassport => 'جواز السفر (المالك)';
+
+  @override
+  String get docMollak => 'ملاك / رسوم الخدمات';
+
+  @override
+  String get docTenancyContract => 'عقد الإيجار';
+
+  @override
+  String get docEmiratesIdCopy => 'الهوية الإماراتية';
+
+  @override
+  String get docPassportCopy => 'جواز السفر';
+
+  @override
+  String get docOther => 'أخرى';
+
+  @override
+  String get takePhoto => 'التقاط صورة';
+
+  @override
+  String get chooseImage => 'اختيار صورة';
+
+  @override
+  String get choosePdf => 'اختيار ملف PDF';
+
+  @override
+  String get fileTooLarge => 'حجم الملف أكبر من 20 ميغابايت. اختر ملفًا أصغر.';
+
+  @override
+  String documentsMissing(String list) {
+    return 'أرفق: $list';
+  }
+
+  @override
+  String get noDocumentsYet => 'لا توجد مستندات بعد.';
+
+  @override
+  String get notUploadedYet => 'يُرفع عند الحفظ';
+
+  @override
+  String get preview => 'معاينة';
+
+  @override
+  String get remove => 'إزالة';
+
+  @override
+  String get scanToFill => 'امسح للتعبئة';
+
+  @override
+  String get scan => 'مسح';
+
+  @override
+  String get scanning => 'جارٍ القراءة…';
+
+  @override
+  String get scanNotRecognised =>
+      'تعذّرت قراءة المستند. جرّب صورة أوضح أو ملف PDF.';
+
+  @override
+  String get scanFailed => 'فشل المسح. حاول مرة أخرى أو املأ النموذج يدويًا.';
+
+  @override
+  String get scanWebNote => 'المسح متاح في تطبيقي iPhone وAndroid.';
+
+  @override
+  String get scanHintProperty =>
+      'سند الملكية أو فاتورة ديوا أو إيجاري أو عقد الإيجار';
+
+  @override
+  String get scanHintTenant =>
+      'الهوية الإماراتية أو جواز السفر أو إيجاري أو عقد الإيجار';
+
+  @override
+  String get scanHintAgreement => 'شهادة إيجاري أو عقد الإيجار';
+
+  @override
+  String get sectionBasicInfo => 'المعلومات الأساسية';
+
+  @override
+  String get sectionDewaMollak => 'ديوا وملاك';
+
+  @override
+  String get sectionOwnership => 'الملكية';
+
+  @override
+  String get sectionHoa => 'جمعية الملاك';
+
+  @override
+  String get sectionMaintenance => 'الصيانة';
+
+  @override
+  String get sectionDocuments => 'المستندات';
+
+  @override
+  String get dewaPremiseNo => 'رقم مبنى ديوا';
+
+  @override
+  String get mollakRegistrationNo => 'رقم التسجيل في ملاك';
+
+  @override
+  String get hoaName => 'اسم جمعية الملاك';
+
+  @override
+  String get hoaPhone => 'رقم تواصل جمعية الملاك';
+
+  @override
+  String get ownerEmiratesIdNo => 'رقم الهوية الإماراتية للمالك';
+
+  @override
+  String get ownerPassportNo => 'رقم جواز سفر المالك';
+
+  @override
+  String get annualRentLabel => 'الإيجار السنوي';
+
+  @override
+  String get depositLabel => 'مبلغ التأمين';
+
+  @override
+  String get aed => 'درهم';
+
+  @override
+  String get editProperty => 'تعديل العقار';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get propertyNameHelper => 'مثال: مارينا هايتس 1203';
+
+  @override
+  String get premiseHelper => '9 أرقام، في فاتورة ديوا';
+
+  @override
+  String get firstName => 'الاسم الأول';
+
+  @override
+  String get middleName => 'الاسم الأوسط';
+
+  @override
+  String get lastName => 'اسم العائلة';
+
+  @override
+  String get contactNo => 'رقم التواصل';
+
+  @override
+  String get passportNo => 'رقم جواز السفر';
+
+  @override
+  String get sectionPersonal => 'البيانات الشخصية';
+
+  @override
+  String get sectionContact => 'التواصل';
+
+  @override
+  String get sectionIdentity => 'الهوية';
+
+  @override
+  String get editTenant => 'تعديل المستأجر';
+
+  @override
+  String get invalidEmiratesId => 'استخدم الصيغة 784-XXXX-XXXXXXX-X';
+
+  @override
+  String get invalidEmail => 'أدخل بريدًا إلكترونيًا صحيحًا';
+
+  @override
+  String get ownIdTenantError =>
+      'هذه هويتك الشخصية، ولا يمكن استخدامها لمستأجر.';
+
+  @override
+  String get ownIdTitle => 'يبدو أن هذه هويتك الإماراتية';
+
+  @override
+  String get ownIdBody =>
+      'الهوية في هذا المستند تطابق هويتك، لذلك لم تُعبأ كمستأجر.';
+
+  @override
+  String get ownIdAgreementBody =>
+      'المستأجر في هذا المستند يحمل هويتك، لذلك لم يُعبأ أي مستأجر. اختر المستأجر بنفسك.';
+
+  @override
+  String get useForMyProfile => 'حفظ في ملفي';
+
+  @override
+  String get ownIdSaved => 'تم الحفظ في ملفك.';
+
+  @override
+  String get addRentAgreement => 'إضافة عقد إيجار';
+
+  @override
+  String get editRentAgreement => 'تعديل عقد الإيجار';
+
+  @override
+  String get sectionUnitTenant => 'الوحدة والمستأجر';
+
+  @override
+  String get sectionTermRent => 'المدة والإيجار';
+
+  @override
+  String get sectionPayment => 'الدفع';
+
+  @override
+  String get newTenant => 'مستأجر جديد';
+
+  @override
+  String addScannedTenant(String name) {
+    return 'إضافة $name كمستأجر';
+  }
+
+  @override
+  String propertyMatched(String name) {
+    return 'تمت المطابقة مع $name';
+  }
+
+  @override
+  String get myProfile => 'ملفي الشخصي';
+
+  @override
+  String get myEmiratesIdNo => 'رقم هويتي الإماراتية';
+
+  @override
+  String get myPassportNo => 'رقم جواز سفري';
+
+  @override
+  String get ownIdHelper =>
+      'يُستخدم للتعرّف على مستنداتك حتى لا تُضاف كمستأجر أبدًا.';
+
+  @override
+  String get profileSaved => 'تم حفظ الملف.';
+
+  @override
+  String get tenantRequired => 'اختر مستأجرًا أو أضف واحدًا';
+
+  @override
+  String get noTenantsYet => 'لا يوجد مستأجرون بعد. أضف مستأجرًا للمتابعة.';
+
+  @override
+  String get scheduleNote => 'يُنشأ جدول الشيكات عند الحفظ.';
 }

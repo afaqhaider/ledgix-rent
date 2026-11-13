@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @leases.
   ///
   /// In en, this message translates to:
-  /// **'Leases'**
+  /// **'Rent agreements'**
   String get leases;
 
   /// No description provided for @vendors.
@@ -767,7 +767,7 @@ abstract class AppLocalizations {
   /// No description provided for @addLease.
   ///
   /// In en, this message translates to:
-  /// **'Add lease'**
+  /// **'Add rent agreement'**
   String get addLease;
 
   /// No description provided for @property.
@@ -1910,12 +1910,6 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get profile;
 
-  /// No description provided for @profileComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile editing is coming soon.'**
-  String get profileComingSoon;
-
   /// No description provided for @preferences.
   ///
   /// In en, this message translates to:
@@ -2041,6 +2035,522 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop.'**
   String get authSubtagline;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @filledFromScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled from scan, please check'**
+  String get filledFromScan;
+
+  /// No description provided for @replaceTypedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace what you typed?'**
+  String get replaceTypedTitle;
+
+  /// No description provided for @replaceTypedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The scan found different values for these fields. Tick the ones to replace; the rest keep what you typed.'**
+  String get replaceTypedBody;
+
+  /// No description provided for @keepMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep mine'**
+  String get keepMine;
+
+  /// No description provided for @replaceSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace selected'**
+  String get replaceSelected;
+
+  /// No description provided for @scanFilled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 field filled from {doc}, please review} other{{count} fields filled from {doc}, please review}}'**
+  String scanFilled(int count, String doc);
+
+  /// No description provided for @scanNothingNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Read {doc}, but found nothing new to fill.'**
+  String scanNothingNew(String doc);
+
+  /// No description provided for @docDewaBill.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA bill'**
+  String get docDewaBill;
+
+  /// No description provided for @docOwnerEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID (owner)'**
+  String get docOwnerEmiratesId;
+
+  /// No description provided for @docOwnerPassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport (owner)'**
+  String get docOwnerPassport;
+
+  /// No description provided for @docMollak.
+  ///
+  /// In en, this message translates to:
+  /// **'Mollak / service charge'**
+  String get docMollak;
+
+  /// No description provided for @docTenancyContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenancy contract'**
+  String get docTenancyContract;
+
+  /// No description provided for @docEmiratesIdCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID'**
+  String get docEmiratesIdCopy;
+
+  /// No description provided for @docPassportCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get docPassportCopy;
+
+  /// No description provided for @docOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get docOther;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get takePhoto;
+
+  /// No description provided for @chooseImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an image'**
+  String get chooseImage;
+
+  /// No description provided for @choosePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PDF'**
+  String get choosePdf;
+
+  /// No description provided for @fileTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'That file is over 20 MB. Choose a smaller one.'**
+  String get fileTooLarge;
+
+  /// No description provided for @documentsMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach: {list}'**
+  String documentsMissing(String list);
+
+  /// No description provided for @noDocumentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet.'**
+  String get noDocumentsYet;
+
+  /// No description provided for @notUploadedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'uploads on save'**
+  String get notUploadedYet;
+
+  /// No description provided for @preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @scanToFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan to fill'**
+  String get scanToFill;
+
+  /// No description provided for @scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scan;
+
+  /// No description provided for @scanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading…'**
+  String get scanning;
+
+  /// No description provided for @scanNotRecognised.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read that document. Try a clearer photo or the PDF.'**
+  String get scanNotRecognised;
+
+  /// No description provided for @scanFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning failed. Please try again or fill the form by hand.'**
+  String get scanFailed;
+
+  /// No description provided for @scanWebNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning works in the iPhone and Android apps.'**
+  String get scanWebNote;
+
+  /// No description provided for @scanHintProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Title deed, DEWA bill, Ejari or tenancy contract'**
+  String get scanHintProperty;
+
+  /// No description provided for @scanHintTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID, passport, Ejari or tenancy contract'**
+  String get scanHintTenant;
+
+  /// No description provided for @scanHintAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari certificate or tenancy contract'**
+  String get scanHintAgreement;
+
+  /// No description provided for @sectionBasicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic information'**
+  String get sectionBasicInfo;
+
+  /// No description provided for @sectionDewaMollak.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA & Mollak'**
+  String get sectionDewaMollak;
+
+  /// No description provided for @sectionOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Ownership'**
+  String get sectionOwnership;
+
+  /// No description provided for @sectionHoa.
+  ///
+  /// In en, this message translates to:
+  /// **'Owners association (HOA)'**
+  String get sectionHoa;
+
+  /// No description provided for @sectionMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get sectionMaintenance;
+
+  /// No description provided for @sectionDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get sectionDocuments;
+
+  /// No description provided for @dewaPremiseNo.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA premise no.'**
+  String get dewaPremiseNo;
+
+  /// No description provided for @mollakRegistrationNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Mollak registration no.'**
+  String get mollakRegistrationNo;
+
+  /// No description provided for @hoaName.
+  ///
+  /// In en, this message translates to:
+  /// **'HOA name'**
+  String get hoaName;
+
+  /// No description provided for @hoaPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'HOA contact number'**
+  String get hoaPhone;
+
+  /// No description provided for @ownerEmiratesIdNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner\'s Emirates ID no.'**
+  String get ownerEmiratesIdNo;
+
+  /// No description provided for @ownerPassportNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner\'s passport no.'**
+  String get ownerPassportNo;
+
+  /// No description provided for @annualRentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent'**
+  String get annualRentLabel;
+
+  /// No description provided for @depositLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit'**
+  String get depositLabel;
+
+  /// No description provided for @aed.
+  ///
+  /// In en, this message translates to:
+  /// **'AED'**
+  String get aed;
+
+  /// No description provided for @editProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit property'**
+  String get editProperty;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @propertyNameHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: Marina Heights 1203'**
+  String get propertyNameHelper;
+
+  /// No description provided for @premiseHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'9 digits, on the DEWA bill'**
+  String get premiseHelper;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get firstName;
+
+  /// No description provided for @middleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle name'**
+  String get middleName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get lastName;
+
+  /// No description provided for @contactNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact no.'**
+  String get contactNo;
+
+  /// No description provided for @passportNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport no.'**
+  String get passportNo;
+
+  /// No description provided for @sectionPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal details'**
+  String get sectionPersonal;
+
+  /// No description provided for @sectionContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get sectionContact;
+
+  /// No description provided for @sectionIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity'**
+  String get sectionIdentity;
+
+  /// No description provided for @editTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit tenant'**
+  String get editTenant;
+
+  /// No description provided for @invalidEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the format 784-XXXX-XXXXXXX-X'**
+  String get invalidEmiratesId;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get invalidEmail;
+
+  /// No description provided for @ownIdTenantError.
+  ///
+  /// In en, this message translates to:
+  /// **'This is your own ID. A tenant can\'t use it.'**
+  String get ownIdTenantError;
+
+  /// No description provided for @ownIdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This looks like your own Emirates ID'**
+  String get ownIdTitle;
+
+  /// No description provided for @ownIdBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The ID on this document matches yours, so it hasn\'t been filled in as a tenant.'**
+  String get ownIdBody;
+
+  /// No description provided for @ownIdAgreementBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The tenant on this document has your own ID, so no tenant was filled in. Choose the tenant yourself.'**
+  String get ownIdAgreementBody;
+
+  /// No description provided for @useForMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to my profile'**
+  String get useForMyProfile;
+
+  /// No description provided for @ownIdSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your profile.'**
+  String get ownIdSaved;
+
+  /// No description provided for @addRentAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Add rent agreement'**
+  String get addRentAgreement;
+
+  /// No description provided for @editRentAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit rent agreement'**
+  String get editRentAgreement;
+
+  /// No description provided for @sectionUnitTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit & tenant'**
+  String get sectionUnitTenant;
+
+  /// No description provided for @sectionTermRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Term & rent'**
+  String get sectionTermRent;
+
+  /// No description provided for @sectionPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get sectionPayment;
+
+  /// No description provided for @newTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'New tenant'**
+  String get newTenant;
+
+  /// No description provided for @addScannedTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name} as tenant'**
+  String addScannedTenant(String name);
+
+  /// No description provided for @propertyMatched.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched to {name}'**
+  String propertyMatched(String name);
+
+  /// No description provided for @myProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get myProfile;
+
+  /// No description provided for @myEmiratesIdNo.
+  ///
+  /// In en, this message translates to:
+  /// **'My Emirates ID no.'**
+  String get myEmiratesIdNo;
+
+  /// No description provided for @myPassportNo.
+  ///
+  /// In en, this message translates to:
+  /// **'My passport no.'**
+  String get myPassportNo;
+
+  /// No description provided for @ownIdHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Used to recognise your own documents, so you\'re never added as a tenant.'**
+  String get ownIdHelper;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved.'**
+  String get profileSaved;
+
+  /// No description provided for @tenantRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose or add a tenant'**
+  String get tenantRequired;
+
+  /// No description provided for @noTenantsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No tenants yet. Add one to continue.'**
+  String get noTenantsYet;
+
+  /// No description provided for @scheduleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The cheque schedule is created when you save.'**
+  String get scheduleNote;
 }
 
 class _AppLocalizationsDelegate

@@ -230,16 +230,3 @@ Future<void> confirmDeleteAccount(BuildContext context, WidgetRef ref) async {
     messenger.showSnackBar(SnackBar(content: Text('$e')));
   }
 }
-
-/// PLACEHOLDER for '/profile'. The forms branch adds the real profile editor
-/// (lib/features/landlord/presentation/profile_screen.dart); on merge, point
-/// the '/profile' route there and delete this widget.
-class ProfilePlaceholderScreen extends StatelessWidget {
-  const ProfilePlaceholderScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: ShellAppBar(title: Text(context.l.profile)),
-        body: Center(child: Text(context.l.profileComingSoon)),
-      );
-}

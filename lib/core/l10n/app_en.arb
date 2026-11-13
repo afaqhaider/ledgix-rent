@@ -76,7 +76,7 @@
   "maintenance": "Maintenance",
   "more": "More",
   "tenants": "Tenants",
-  "leases": "Leases",
+  "leases": "Rent agreements",
   "vendors": "Vendors",
   "holdRequests": "Hold requests",
   "directDebits": "Direct debits",
@@ -118,7 +118,7 @@
   "attachPassport": "Attach passport copy",
   "attachEmiratesId": "Attach Emirates ID copy",
   "attached": "Attached",
-  "addLease": "Add lease",
+  "addLease": "Add rent agreement",
   "property": "Property",
   "tenant": "Tenant",
   "startDate": "Start date",
@@ -356,7 +356,6 @@
   "account": "Account",
   "editProfile": "Edit profile",
   "profile": "Profile",
-  "profileComingSoon": "Profile editing is coming soon.",
   "preferences": "Preferences",
   "theme": "Theme",
   "themeSystem": "System",
@@ -392,5 +391,129 @@
   "thisMonth": "This month",
   "thisYear": "This year",
   "authTagline": "Rent, cheques and maintenance in one place.",
-  "authSubtagline": "Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop."
+  "authSubtagline": "Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop.",
+  "close": "Close",
+  "filledFromScan": "Filled from scan, please check",
+  "replaceTypedTitle": "Replace what you typed?",
+  "replaceTypedBody": "The scan found different values for these fields. Tick the ones to replace; the rest keep what you typed.",
+  "keepMine": "Keep mine",
+  "replaceSelected": "Replace selected",
+  "scanFilled": "{count, plural, =1{1 field filled from {doc}, please review} other{{count} fields filled from {doc}, please review}}",
+  "@scanFilled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "doc": {
+        "type": "String"
+      }
+    }
+  },
+  "scanNothingNew": "Read {doc}, but found nothing new to fill.",
+  "@scanNothingNew": {
+    "placeholders": {
+      "doc": {
+        "type": "String"
+      }
+    }
+  },
+  "docDewaBill": "DEWA bill",
+  "docOwnerEmiratesId": "Emirates ID (owner)",
+  "docOwnerPassport": "Passport (owner)",
+  "docMollak": "Mollak / service charge",
+  "docTenancyContract": "Tenancy contract",
+  "docEmiratesIdCopy": "Emirates ID",
+  "docPassportCopy": "Passport",
+  "docOther": "Other",
+  "takePhoto": "Take a photo",
+  "chooseImage": "Choose an image",
+  "choosePdf": "Choose a PDF",
+  "fileTooLarge": "That file is over 20 MB. Choose a smaller one.",
+  "documentsMissing": "Attach: {list}",
+  "@documentsMissing": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "noDocumentsYet": "No documents yet.",
+  "notUploadedYet": "uploads on save",
+  "preview": "Preview",
+  "remove": "Remove",
+  "scanToFill": "Scan to fill",
+  "scan": "Scan",
+  "scanning": "Reading…",
+  "scanNotRecognised": "Couldn't read that document. Try a clearer photo or the PDF.",
+  "scanFailed": "Scanning failed. Please try again or fill the form by hand.",
+  "scanWebNote": "Scanning works in the iPhone and Android apps.",
+  "scanHintProperty": "Title deed, DEWA bill, Ejari or tenancy contract",
+  "scanHintTenant": "Emirates ID, passport, Ejari or tenancy contract",
+  "scanHintAgreement": "Ejari certificate or tenancy contract",
+  "sectionBasicInfo": "Basic information",
+  "sectionDewaMollak": "DEWA & Mollak",
+  "sectionOwnership": "Ownership",
+  "sectionHoa": "Owners association (HOA)",
+  "sectionMaintenance": "Maintenance",
+  "sectionDocuments": "Documents",
+  "dewaPremiseNo": "DEWA premise no.",
+  "mollakRegistrationNo": "Mollak registration no.",
+  "hoaName": "HOA name",
+  "hoaPhone": "HOA contact number",
+  "ownerEmiratesIdNo": "Owner's Emirates ID no.",
+  "ownerPassportNo": "Owner's passport no.",
+  "annualRentLabel": "Annual rent",
+  "depositLabel": "Security deposit",
+  "aed": "AED",
+  "editProperty": "Edit property",
+  "edit": "Edit",
+  "propertyNameHelper": "For example: Marina Heights 1203",
+  "premiseHelper": "9 digits, on the DEWA bill",
+  "firstName": "First name",
+  "middleName": "Middle name",
+  "lastName": "Last name",
+  "contactNo": "Contact no.",
+  "passportNo": "Passport no.",
+  "sectionPersonal": "Personal details",
+  "sectionContact": "Contact",
+  "sectionIdentity": "Identity",
+  "editTenant": "Edit tenant",
+  "invalidEmiratesId": "Use the format 784-XXXX-XXXXXXX-X",
+  "invalidEmail": "Enter a valid email address",
+  "ownIdTenantError": "This is your own ID. A tenant can't use it.",
+  "ownIdTitle": "This looks like your own Emirates ID",
+  "ownIdBody": "The ID on this document matches yours, so it hasn't been filled in as a tenant.",
+  "ownIdAgreementBody": "The tenant on this document has your own ID, so no tenant was filled in. Choose the tenant yourself.",
+  "useForMyProfile": "Save to my profile",
+  "ownIdSaved": "Saved to your profile.",
+  "addRentAgreement": "Add rent agreement",
+  "editRentAgreement": "Edit rent agreement",
+  "sectionUnitTenant": "Unit & tenant",
+  "sectionTermRent": "Term & rent",
+  "sectionPayment": "Payment",
+  "newTenant": "New tenant",
+  "addScannedTenant": "Add {name} as tenant",
+  "@addScannedTenant": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "propertyMatched": "Matched to {name}",
+  "@propertyMatched": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "myProfile": "My profile",
+  "myEmiratesIdNo": "My Emirates ID no.",
+  "myPassportNo": "My passport no.",
+  "ownIdHelper": "Used to recognise your own documents, so you're never added as a tenant.",
+  "profileSaved": "Profile saved.",
+  "tenantRequired": "Choose or add a tenant",
+  "noTenantsYet": "No tenants yet. Add one to continue.",
+  "scheduleNote": "The cheque schedule is created when you save."
 }

@@ -58,6 +58,18 @@ firebase deploy --only hosting --project ledgix-rent
 
 Phone sign-in is not wired up for web (it needs reCAPTCHA); LedGix ID, email, Google and Apple work.
 
+## Properties, tenants, rent agreements and Scan to fill
+
+- **Add property** (`/property/new`, edit at `/property/:id/edit`): type, name and address are mandatory (marked *); DEWA premise/account, Mollak registration, HOA, title deed, owner's Emirates ID/passport and annual rent are optional. Documents are a list of typed files (DEWA bill, Title deed *, owner's Emirates ID/passport, Mollak, Ejari, tenancy contract, other), uploaded on Save to `landlords/{uid}/documents/{propertyId}/` (20 MB max each).
+- **Add tenant** (`/tenants/new`): first/last name, contact no. and Emirates ID no. are mandatory, plus the Emirates ID copy. Older tenants saved with a single `name` still load (it is split into first/middle/last).
+- **Rent agreements** (`/leases`): unit, tenant (with an **Add tenant** shortcut that comes back with the new tenant selected), Ejari no., term, rent, deposit, cheques and documents. A new agreement still generates the cheque schedule.
+- **My profile** (`/profile`): the landlord's own Emirates ID and passport numbers.
+- **Scan to fill** (top of each form): pick a photo or PDF; the app recognises DEWA bills, Ejari certificates, DLD tenancy contracts, title deeds, Emirates ID cards and passports (MRZ), and fills the matching fields. Filled fields are highlighted for review; anything you already typed is only replaced if you tick it. The scanned file is attached as a document.
+  - OCR is **on the device** (Apple Vision on iOS, Google ML Kit on Android, through the `ledgix/ocr` channel in `AppDelegate.swift` / `MainActivity.kt`); nothing is uploaded to read it. PDFs: first 3 pages.
+  - It reads the **English** half of bilingual documents; Arabic-only text is ignored. Scanning is not available in the web app.
+  - Parsing is plain Dart in `lib/features/documents/domain/` (unit-tested with made-up documents).
+  - **Your own ID is never a tenant:** if a scanned ID, passport or tenant section matches your profile (or a property's owner ID), nothing is filled in as a tenant and saving a tenant with it is blocked. Add your own Emirates ID in My profile so this works.
+
 ## Architecture
 
 - `lib/features/<feature>/{data,domain,presentation}`, shared code in `lib/core`.

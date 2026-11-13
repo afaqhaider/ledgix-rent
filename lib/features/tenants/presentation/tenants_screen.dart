@@ -1,11 +1,19 @@
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/forms.dart';
+import '../../documents/domain/app_document.dart';
+import '../../documents/domain/form_fill.dart';
+import '../../documents/domain/scanned_document.dart';
+import '../../documents/presentation/auto_fill.dart';
+import '../../documents/presentation/documents_editor.dart';
+import '../../documents/presentation/scan_to_fill.dart';
+import '../../landlord/presentation/onboarding_screen.dart';
 import '../domain/tenant.dart';
 
 class TenantsScreen extends ConsumerWidget {
@@ -13,7 +21,8 @@ class TenantsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         appBar: ShellAppBar(title: Text(context.l.tenants)),
-        floatingActionButton: FloatingActionButton.extended(heroTag: null, 
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: null,
           onPressed: () => context.push('/tenants/new'),
           icon: const Icon(Icons.person_add),
           label: Text(context.l.addTenant),
@@ -25,7 +34,9 @@ class TenantsScreen extends ConsumerWidget {
               leading: const CircleAvatar(child: Icon(Icons.person)),
               title: Text(t.name),
               subtitle: Text([t.phone, t.email].where((s) => s.isNotEmpty).join(' · ')),
+              onTap: () => c.push('/tenants/${t.id}/edit'),
               trailing: IconButton(
+                tooltip: c.l.delete,
                 icon: const Icon(Icons.delete_outline),
                 onPressed: () => ref.read(tenantRepositoryProvider).delete(t.id),
               ),
@@ -35,65 +46,195 @@ class TenantsScreen extends ConsumerWidget {
       );
 }
 
+final _eidFormat = RegExp(r'^784-?\d{4}-?\d{7}-?\d$');
+final _emailFormat = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+
+/// Add a tenant, or edit one when [id] is given. Pops with the tenant's id,
+/// so a Rent Agreement can select a tenant it just created. [prefill] holds
+/// form values (see [FormKeys]) from a scan made elsewhere.
 class TenantFormScreen extends ConsumerStatefulWidget {
-  const TenantFormScreen({super.key});
+  const TenantFormScreen({super.key, this.id, this.prefill});
+  final String? id;
+  final Map<String, String>? prefill;
   @override
   ConsumerState<TenantFormScreen> createState() => _TenantFormScreenState();
 }
 
 class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
   final _key = GlobalKey<FormState>();
-  final _name = TextEditingController(), _phone = TextEditingController();
-  final _email = TextEditingController(), _eid = TextEditingController();
-  String? _passport, _emiratesId;
+  final _f = AutoFillFields(const [
+    FormKeys.firstName, FormKeys.middleName, FormKeys.lastName, FormKeys.email, FormKeys.phone, FormKeys.emiratesId, FormKeys.passport,
+  ]);
+  late final DocumentsController _docs;
+  Tenant? _existing;
+  String? _banner;
+  bool _bannerWarning = false;
 
-  Future<String?> _pick(String folder) async {
-    final f = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (f == null) return null;
-    return ref.read(fileStorageProvider).upload('tenants/$folder/${newId()}_${f.name}', f.path);
+  @override
+  void initState() {
+    super.initState();
+    _f.onChanged = () => setState(() {});
+    _existing = widget.id == null ? null : ref.read(tenantsProvider).value?.where((t) => t.id == widget.id).firstOrNull;
+    final t = _existing;
+    _docs = DocumentsController(kinds: DocumentKinds.tenant, required: DocumentKinds.tenantRequired, existing: t?.documents ?? const []);
+    if (t != null) {
+      for (final (k, v) in [
+        (FormKeys.firstName, t.firstName), (FormKeys.middleName, t.middleName), (FormKeys.lastName, t.lastName),
+        (FormKeys.email, t.email), (FormKeys.phone, t.phone), (FormKeys.emiratesId, t.emiratesIdNo), (FormKeys.passport, t.passportNo),
+      ]) {
+        _f[k].text = v;
+      }
+    }
+    final pre = widget.prefill;
+    if (pre != null && pre.isNotEmpty) {
+      pre.forEach((k, v) {
+        _f[k].text = v;
+        _f.markFilled(k, v);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _f.dispose();
+    _docs.dispose();
+    super.dispose();
+  }
+
+  Map<String, String> _labels(AppLocalizations l) => {
+        FormKeys.firstName: l.firstName, FormKeys.middleName: l.middleName, FormKeys.lastName: l.lastName,
+        FormKeys.email: l.email, FormKeys.phone: l.contactNo, FormKeys.emiratesId: l.emiratesIdNo, FormKeys.passport: l.passportNo,
+      };
+
+  Future<void> _onScanned(ScannedDocument doc, XFile file) async {
+    final l = context.l;
+    final docLabel = scannedKindLabel(l, doc.kind);
+    if (isLandlordsOwnId(doc, ref.read(ownIdentityProvider))) {
+      // Never fill the landlord's own details in as a tenant.
+      await showOwnIdDialog(context, ref, doc);
+      if (mounted) {
+        setState(() {
+          _banner = l.ownIdBody;
+          _bannerWarning = true;
+        });
+      }
+      return;
+    }
+    final count = await _f.apply(context, tenantValues(doc), _labels(l));
+    final kind = doc.kind.documentKind;
+    if (DocumentKinds.tenant.contains(kind)) await _docs.add(file, kind: kind);
+    if (mounted) {
+      setState(() {
+        _banner = filledSummary(l, count, docLabel);
+        _bannerWarning = false;
+      });
+    }
+  }
+
+  String? _idValidator(String? v, {required bool eid}) {
+    final l = context.l;
+    final s = (v ?? '').trim();
+    if (eid && s.isEmpty) return l.required;
+    if (eid && !_eidFormat.hasMatch(s.replaceAll(' ', ''))) return l.invalidEmiratesId;
+    if (s.isNotEmpty && ref.read(ownIdentityProvider).matches(s)) return l.ownIdTenantError;
+    return null;
+  }
+
+  Future<void> _save() async {
+    final l = context.l;
+    final id = _existing?.id ?? newId();
+    final docs = await _docs.uploadAll(ref.read(fileStorageProvider), 'tenants/$id', l);
+    await ref.read(tenantRepositoryProvider).save(Tenant(
+          id: id,
+          firstName: _f.text(FormKeys.firstName),
+          middleName: _f.text(FormKeys.middleName),
+          lastName: _f.text(FormKeys.lastName),
+          email: _f.text(FormKeys.email),
+          phone: _f.text(FormKeys.phone),
+          emiratesIdNo: _f.text(FormKeys.emiratesId),
+          passportNo: _f.text(FormKeys.passport),
+          documents: docs,
+        ));
+    if (mounted) context.pop(id);
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l;
-    return FormScaffold(
-      title: l.addTenant,
+    Widget text(String k, String label,
+            {bool required = false, String? helper, TextInputType? keyboard, String? Function(String?)? validator, IconData? icon}) =>
+        TextFormField(
+          key: ValueKey('field-$k'),
+          controller: _f[k],
+          decoration: _f.decoration(context, k, required ? req(label) : label, helper: helper, icon: icon),
+          keyboardType: keyboard,
+          textInputAction: TextInputAction.next,
+          validator: validator ?? (required ? (v) => requiredValidator(context, v) : null),
+        );
+    return FormPage(
+      title: _existing == null ? l.addTenant : l.editTenant,
       formKey: _key,
-      onSave: () async {
-        if (!_key.currentState!.validate()) return;
-        await ref.read(tenantRepositoryProvider).save(Tenant(
-              id: newId(),
-              name: _name.text.trim(),
-              phone: _phone.text.trim(),
-              email: _email.text.trim(),
-              emiratesIdNo: _eid.text.trim(),
-              passportCopyUrl: _passport,
-              emiratesIdCopyUrl: _emiratesId,
-            ));
-        if (context.mounted) context.pop();
-      },
+      onSave: _save,
+      header: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        ScanToFillButton(hint: l.scanHintTenant, onScanned: _onScanned),
+        if (_banner != null) ...[
+          const SizedBox(height: 12),
+          scanResultBanner(_banner, warning: _bannerWarning, onClose: () => setState(() => _banner = null))!,
+        ],
+      ]),
       children: [
-        TextFormField(controller: _name, decoration: InputDecoration(labelText: l.tenantName), validator: (v) => requiredValidator(context, v)),
-        TextFormField(controller: _phone, decoration: InputDecoration(labelText: l.phone), keyboardType: TextInputType.phone),
-        TextFormField(controller: _email, decoration: InputDecoration(labelText: l.email), keyboardType: TextInputType.emailAddress),
-        TextFormField(controller: _eid, decoration: InputDecoration(labelText: l.emiratesIdNo)),
-        OutlinedButton.icon(
-          icon: Icon(_passport == null ? Icons.attach_file : Icons.check),
-          label: Text(_passport == null ? l.attachPassport : l.attached),
-          onPressed: () async {
-            final u = await _pick('passport');
-            if (u != null) setState(() => _passport = u);
-          },
-        ),
-        OutlinedButton.icon(
-          icon: Icon(_emiratesId == null ? Icons.attach_file : Icons.check),
-          label: Text(_emiratesId == null ? l.attachEmiratesId : l.attached),
-          onPressed: () async {
-            final u = await _pick('emirates_id');
-            if (u != null) setState(() => _emiratesId = u);
-          },
-        ),
+        FormSection(title: l.sectionPersonal, icon: Icons.person_outline, children: [
+          FieldGrid(children: [
+            text(FormKeys.firstName, l.firstName, required: true),
+            text(FormKeys.middleName, l.middleName),
+            text(FormKeys.lastName, l.lastName, required: true),
+          ]),
+        ]),
+        FormSection(title: l.sectionContact, icon: Icons.call_outlined, children: [
+          FieldGrid(children: [
+            text(FormKeys.phone, l.contactNo, required: true, keyboard: TextInputType.phone, helper: '05X XXX XXXX'),
+            text(FormKeys.email, l.email,
+                keyboard: TextInputType.emailAddress,
+                validator: (v) => (v ?? '').trim().isEmpty || _emailFormat.hasMatch(v!.trim()) ? null : l.invalidEmail),
+          ]),
+        ]),
+        FormSection(title: l.sectionIdentity, icon: Icons.badge_outlined, children: [
+          FieldGrid(children: [
+            text(FormKeys.emiratesId, l.emiratesIdNo, required: true, helper: '784-XXXX-XXXXXXX-X', validator: (v) => _idValidator(v, eid: true)),
+            text(FormKeys.passport, l.passportNo, validator: (v) => _idValidator(v, eid: false)),
+          ]),
+        ]),
+        FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [DocumentsEditor(controller: _docs)]),
       ],
     );
+  }
+}
+
+/// "This looks like your own Emirates ID": explains why nothing was filled
+/// in as a tenant and offers to keep the numbers on the landlord's profile.
+Future<void> showOwnIdDialog(BuildContext context, WidgetRef ref, ScannedDocument doc) async {
+  final l = context.l;
+  final me = ref.read(landlordProvider).value;
+  final eid = doc[ScanField.personEmiratesId] ?? doc[ScanField.tenantEmiratesId];
+  final passport = doc[ScanField.personPassport] ?? doc[ScanField.tenantPassport];
+  final canSave = me != null && ((eid != null && me.emiratesIdNo.isEmpty) || (passport != null && me.passportNo.isEmpty));
+  final save = await showDialog<bool>(
+    context: context,
+    builder: (c) => AlertDialog(
+      icon: const Icon(Icons.badge_outlined),
+      title: Text(l.ownIdTitle),
+      content: Text(l.ownIdBody),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(c, false), child: Text(l.close)),
+        if (canSave) FilledButton(onPressed: () => Navigator.pop(c, true), child: Text(l.useForMyProfile)),
+      ],
+    ),
+  );
+  if (save == true && me != null) {
+    await ref.read(landlordRepositoryProvider).save(me.copyWith(
+          emiratesIdNo: me.emiratesIdNo.isEmpty ? eid : null,
+          passportNo: me.passportNo.isEmpty ? passport : null,
+        ));
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.ownIdSaved)));
   }
 }
