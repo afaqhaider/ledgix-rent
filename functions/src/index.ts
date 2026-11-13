@@ -77,3 +77,9 @@ export const dailyReminders = onSchedule(
 export { ejariLookup, mollakQuery, utilityFetch } from "./integrations/callables";
 export { deliverWorkOrder, quotePage } from "./maintenance";
 export { utilityBillCheck } from "./utilityBills";
+
+// Account
+export { deleteAccount } from "./account";
+
+// LedGix ID (Hub) sign-in
+export { exchangeLedgixHubSession } from "./hub";

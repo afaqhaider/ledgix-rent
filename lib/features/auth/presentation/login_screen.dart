@@ -1,9 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/auth/ledgix_hub.dart';
 import '../../../core/providers.dart';
 import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/privacy.dart';
+import 'social_sign_in.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +21,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _otp = TextEditingController();
   String? _verificationId;
   bool _signUp = false, _busy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // A LedGix ID web sign-in that failed after returning from the Hub.
+    final error = LedgixHub.webCallbackError;
+    if (error != null) {
+      LedgixHub.webCallbackError = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+      });
+    }
+  }
 
   Future<void> _run(Future<void> Function() job) async {
     setState(() => _busy = true);
@@ -34,6 +50,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final auth = ref.read(authRepositoryProvider);
     final l = context.l;
+    final social = SocialSignInButtons(
+      onLedgix: _busy ? null : () => _run(auth.signInWithLedgix),
+      onGoogle: _busy ? null : () => _run(auth.signInWithGoogle),
+      onApple: _busy ? null : () => _run(auth.signInWithApple),
+    );
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -69,6 +90,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: () => setState(() => _signUp = !_signUp),
               child: Text(_signUp ? l.signIn : l.signUp),
             ),
+            social,
+            const SizedBox(height: 8),
+            const PrivacyPolicyLink(),
           ]),
           ListView(padding: const EdgeInsets.all(16), children: [
             const Center(child: BrandLogo(height: 112)),
@@ -92,6 +116,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       }),
               child: Text(_verificationId == null ? l.sendOtp : l.verify),
             ),
+            const SizedBox(height: 8),
+            social,
+            const SizedBox(height: 8),
+            const PrivacyPolicyLink(),
           ]),
         ]),
       ),

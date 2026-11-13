@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -211,7 +213,7 @@ class PropertyDetailScreen extends ConsumerWidget {
             onTap: () => showDialog<void>(
               context: context,
               builder: (c) => Dialog(
-                child: d.url.startsWith('http')
+                child: kIsWeb || d.url.startsWith('http')
                     ? Image.network(d.url, errorBuilder: (_, _, _) => const Icon(Icons.broken_image))
                     : Image.file(File(d.url), errorBuilder: (_, _, _) => const Icon(Icons.broken_image)),
               ),

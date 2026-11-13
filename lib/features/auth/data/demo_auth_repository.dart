@@ -28,6 +28,15 @@ class DemoAuthRepository implements AuthRepository {
   Future<void> signUpWithEmail(String email, String password) async => _set('demo');
 
   @override
+  Future<void> signInWithLedgix() async => _set('demo');
+
+  @override
+  Future<void> signInWithGoogle() async => _set('demo');
+
+  @override
+  Future<void> signInWithApple() async => _set('demo');
+
+  @override
   Future<String> sendOtp(String phoneNumber) async => 'demo-verification';
 
   @override
@@ -35,4 +44,10 @@ class DemoAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async => _set(null);
+
+  @override
+  Future<bool> deleteAccount() async {
+    _set(null);
+    return true;
+  }
 }

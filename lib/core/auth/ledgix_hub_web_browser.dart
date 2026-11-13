@@ -1,0 +1,25 @@
+import 'package:web/web.dart' as web;
+
+const _verifierKey = 'ledgix_rent_hub_verifier';
+const _stateKey = 'ledgix_rent_hub_state';
+
+void saveHubWebFlow(String verifier, String state) {
+  web.window.sessionStorage.setItem(_verifierKey, verifier);
+  web.window.sessionStorage.setItem(_stateKey, state);
+}
+
+({String verifier, String state})? readHubWebFlow() {
+  final verifier = web.window.sessionStorage.getItem(_verifierKey);
+  final state = web.window.sessionStorage.getItem(_stateKey);
+  if (verifier == null || state == null) return null;
+  return (verifier: verifier, state: state);
+}
+
+void clearHubWebFlow() {
+  web.window.sessionStorage.removeItem(_verifierKey);
+  web.window.sessionStorage.removeItem(_stateKey);
+}
+
+void navigateTo(String url) => web.window.location.href = url;
+
+void replaceUrlWithRoot() => web.window.history.replaceState(null, '', '/');

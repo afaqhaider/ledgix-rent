@@ -18,6 +18,7 @@ import '../../features/tenants/presentation/tenants_screen.dart';
 import '../../features/vendors/presentation/vendors_screen.dart';
 import '../providers.dart';
 import '../widgets/common.dart';
+import '../widgets/privacy.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
@@ -109,11 +110,61 @@ class MoreScreen extends ConsumerWidget {
           ),
         ),
         ListTile(
+          leading: const Icon(Icons.privacy_tip_outlined),
+          title: Text(l.privacyPolicy),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () => openPrivacyPolicy(context),
+        ),
+        ListTile(
           leading: const Icon(Icons.logout),
           title: Text(l.signOut),
           onTap: () => ref.read(authRepositoryProvider).signOut(),
         ),
+        ListTile(
+          key: const Key('delete-account'),
+          leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
+          title: Text(l.deleteAccount, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          onTap: () => _confirmDelete(context, ref),
+        ),
       ]),
     );
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final l = context.l;
+    final error = Theme.of(context).colorScheme.error;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        icon: Icon(Icons.warning_amber_rounded, color: error),
+        title: Text(l.deleteAccountTitle),
+        content: Text(l.deleteAccountBody),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: Text(l.cancel)),
+          FilledButton(
+            key: const Key('confirm-delete-account'),
+            style: FilledButton.styleFrom(backgroundColor: error, foregroundColor: Theme.of(context).colorScheme.onError),
+            onPressed: () => Navigator.pop(c, true),
+            child: Text(l.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+    final nav = Navigator.of(context, rootNavigator: true);
+    try {
+      final deleted = await ref.read(authRepositoryProvider).deleteAccount();
+      nav.pop();
+      if (deleted) messenger.showSnackBar(SnackBar(content: Text(l.accountDeleted)));
+    } catch (e) {
+      nav.pop();
+      messenger.showSnackBar(SnackBar(content: Text('$e')));
+    }
   }
 }

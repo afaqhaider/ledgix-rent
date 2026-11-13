@@ -47,6 +47,12 @@ dependencies:
     sdk: flutter
   material_ui: ^1.11.0
   cloud_functions: ^7.0.1
+  google_sign_in: ^7.2.0
+  cross_file: ^0.3.5+5
+  url_launcher: ^6.3.3
+  flutter_web_auth_2: ^5.1.0
+  web: ^1.1.2
+  crypto: ^3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +84,7 @@ flutter:
   assets:
     - assets/ledgix-rent-logo.png
     - assets/ledgix-rent-logo-mark.png
+    - assets/ledgix-id-mark.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

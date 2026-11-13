@@ -40,6 +40,56 @@ void main() {
     expect(find.text('Marina Studio'), findsOneWidget);
   });
 
+  testWidgets('Continue with LedGix ID signs in (demo)', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: LedgixApp()));
+    await tester.pumpAndSettle();
+    expect(find.text('Continue with LedGix ID'), findsOneWidget);
+    await tapVisible(tester, find.byKey(const Key('ledgix-sign-in')));
+    await tester.pumpAndSettle();
+    // Signed in: login is gone (onboarding or dashboard, depending on demo state).
+    expect(find.byKey(const Key('ledgix-sign-in')), findsNothing);
+    expect(
+      find.text('Welcome, landlord!').evaluate().isNotEmpty || find.text('Collected this month').evaluate().isNotEmpty,
+      isTrue,
+    );
+    await tester.pumpWidget(const SizedBox()); // reset for the next test
+  });
+
+  testWidgets('delete account asks first, then signs out', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: LedgixApp()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
+    await tester.pumpAndSettle();
+    // Demo data is shared across tests, so onboarding may already be done.
+    if (find.text('Welcome, landlord!').evaluate().isNotEmpty) {
+      await tester.enterText(find.byType(TextFormField).at(0), 'Afaq');
+      await tester.enterText(find.byType(TextFormField).at(1), 'Marina Studio');
+      await tapVisible(tester, find.widgetWithText(FilledButton, 'Continue'));
+      await tester.pumpAndSettle();
+    }
+
+    await tester.tap(find.text('More'));
+    await tester.pumpAndSettle();
+    expect(find.text('Privacy policy'), findsOneWidget);
+
+    // Cancel keeps the account.
+    await tapVisible(tester, find.byKey(const Key('delete-account')));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete your account?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete your account?'), findsNothing);
+    expect(find.text('Sign out'), findsOneWidget);
+
+    // Confirm deletes and returns to the login screen.
+    await tapVisible(tester, find.byKey(const Key('delete-account')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('confirm-delete-account')));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(FilledButton, 'Sign in'), findsOneWidget);
+    expect(find.text('Your account has been deleted.'), findsOneWidget);
+  });
+
   testWidgets('Arabic locale is right-to-left', (tester) async {
     final container = ProviderContainer();
     addTearDown(container.dispose);

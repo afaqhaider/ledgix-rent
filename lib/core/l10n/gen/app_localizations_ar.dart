@@ -37,6 +37,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verify => 'تحقق';
 
   @override
+  String get continueWithLedgix => 'المتابعة باستخدام LedGix ID';
+
+  @override
+  String get orDivider => 'أو';
+
+  @override
+  String get continueWithGoogle => 'المتابعة باستخدام Google';
+
+  @override
+  String get continueWithApple => 'المتابعة باستخدام Apple';
+
+  @override
   String get emailTab => 'البريد';
 
   @override
@@ -98,6 +110,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signOut => 'تسجيل الخروج';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get deleteAccount => 'حذف الحساب';
+
+  @override
+  String get deleteAccountTitle => 'حذف حسابك؟';
+
+  @override
+  String get deleteAccountBody =>
+      'سيؤدي هذا إلى حذف حسابك وكل ما فيه نهائيًا: العقارات والمستأجرين وعقود الإيجار والدفعات وصور الشيكات والمستندات وسجلات الصيانة. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get accountDeleted => 'تم حذف حسابك.';
 
   @override
   String get collectedMonth => 'المحصّل هذا الشهر';

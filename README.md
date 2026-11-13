@@ -37,6 +37,17 @@ flutter build ipa --release --dart-define=USE_FIREBASE=true --export-options-pli
 flutter build appbundle --release --dart-define=USE_FIREBASE=true   # upload build/app/outputs/bundle/release/app-release.aab in Play Console
 ```
 
+### Web (Firebase Hosting)
+
+Live at https://rent.getledgix.com (custom domain on Firebase Hosting; https://ledgix-rent.web.app also serves it). Privacy policy: https://rent.getledgix.com/privacy Needs the git-ignored `lib/firebase_options.dart` and `web/firebase-messaging-sw.js` (copies in `secrets/`).
+
+```bash
+flutter build web --release --dart-define=USE_FIREBASE=true --dart-define=WEB_VAPID_KEY=<Web Push public key>
+firebase deploy --only hosting --project ledgix-rent
+```
+
+Phone sign-in is not wired up for web (it needs reCAPTCHA); email, Google and Apple work.
+
 ## Architecture
 
 - `lib/features/<feature>/{data,domain,presentation}`, shared code in `lib/core`.
@@ -53,14 +64,16 @@ Secrets are git-ignored. **Never commit them.**
 3. Download and place the files (both are git-ignored):
    - `android/app/google-services.json`
    - `ios/Runner/GoogleService-Info.plist`
+   - `lib/firebase_options.dart` (`flutterfire configure`; `main.dart` imports it for the web options)
 4. Android: add the Google Services Gradle plugin (`com.google.gms.google-services`) to `android/settings.gradle.kts` and `android/app/build.gradle.kts` as shown in the FlutterFire docs. iOS: add the plist to the Runner target in Xcode and enable Push Notifications + Background Modes.
 5. Copy `.env.example` to `.env` (placeholders only, kept for your own tooling).
 6. Security rules: `firestore.rules` and `storage.rules` (each landlord can only access `landlords/{uid}/**`). Deploy with `firebase deploy --only firestore:rules,storage --project ledgix-rent`.
-7. Run with Firebase on:
+7. Google and Apple sign-in: enable both under Authentication → Sign-in method. Google on Android also needs the debug and release SHA-1 fingerprints in Project settings, then a fresh `google-services.json`. The iOS Google callback (`REVERSED_CLIENT_ID`) is in `Info.plist` under `CFBundleURLTypes`; update it if you ever change the iOS Firebase app. Apple shows on iOS and web only.
+8. Run with Firebase on:
    ```bash
    flutter run --dart-define=USE_FIREBASE=true
    ```
-8. Cloud Functions (reminders), run these yourself:
+9. Cloud Functions (reminders), run these yourself:
    ```bash
    cd functions && npm install && npm run build
    firebase deploy --only functions --project ledgix-rent   # Node 22, us-central1 (same area as Firestore nam5)
