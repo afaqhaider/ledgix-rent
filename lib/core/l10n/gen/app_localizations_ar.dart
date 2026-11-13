@@ -1339,4 +1339,308 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get scheduleNote => 'يُنشأ جدول الشيكات عند الحفظ.';
+
+  @override
+  String get inspections => 'المعاينات';
+
+  @override
+  String get moveInInspection => 'معاينة الاستلام';
+
+  @override
+  String get moveOutInspection => 'معاينة التسليم';
+
+  @override
+  String get newInspection => 'معاينة جديدة';
+
+  @override
+  String get inspectionStatusDraft => 'مسودة';
+
+  @override
+  String get inspectionStatusAwaitingTenant => 'بانتظار المستأجر';
+
+  @override
+  String get inspectionStatusCompleted => 'مكتملة';
+
+  @override
+  String get conditionExcellent => 'ممتازة';
+
+  @override
+  String get conditionGood => 'جيدة';
+
+  @override
+  String get conditionFair => 'مقبولة';
+
+  @override
+  String get conditionPoor => 'سيئة';
+
+  @override
+  String get conditionDamaged => 'تالفة';
+
+  @override
+  String get conditionMissing => 'مفقودة';
+
+  @override
+  String get conditionNa => 'لا ينطبق';
+
+  @override
+  String get inspectionRooms => 'الغرف';
+
+  @override
+  String get addRoom => 'إضافة غرفة';
+
+  @override
+  String get renameRoom => 'إعادة تسمية الغرفة';
+
+  @override
+  String get deleteRoom => 'حذف الغرفة';
+
+  @override
+  String get roomNameLabel => 'اسم الغرفة';
+
+  @override
+  String get addItem => 'إضافة عنصر';
+
+  @override
+  String get itemNameLabel => 'اسم العنصر';
+
+  @override
+  String get renameItem => 'إعادة تسمية العنصر';
+
+  @override
+  String get deleteItem => 'حذف العنصر';
+
+  @override
+  String itemsRated(int rated, int total) {
+    return 'تم تقييم $rated من $total';
+  }
+
+  @override
+  String get metersAndKeys => 'العدادات والمفاتيح';
+
+  @override
+  String get meterReadings => 'قراءات العدادات';
+
+  @override
+  String get meterElectricity => 'عداد الكهرباء';
+
+  @override
+  String get meterWater => 'عداد المياه';
+
+  @override
+  String get meterGas => 'عداد الغاز';
+
+  @override
+  String get meterPhotos => 'صور العدادات';
+
+  @override
+  String get keysHandedOver => 'المفاتيح المسلّمة';
+
+  @override
+  String get keysMainDoor => 'مفاتيح الباب الرئيسي';
+
+  @override
+  String get keysMailbox => 'مفاتيح صندوق البريد';
+
+  @override
+  String get keysParking => 'موقف السيارات';
+
+  @override
+  String get keysAccessCards => 'بطاقات الدخول';
+
+  @override
+  String get keysRemotes => 'أجهزة التحكم';
+
+  @override
+  String get keysOther => 'أخرى';
+
+  @override
+  String get generalNotes => 'ملاحظات عامة';
+
+  @override
+  String get roomNotes => 'ملاحظات الغرفة';
+
+  @override
+  String get roomPhotos => 'صور ومقاطع الغرفة';
+
+  @override
+  String get recordVideo => 'تسجيل فيديو';
+
+  @override
+  String get fromGallery => 'من المعرض';
+
+  @override
+  String uploadingMedia(int count) {
+    return 'جارٍ رفع $count…';
+  }
+
+  @override
+  String uploadFailed(String error) {
+    return 'تعذّر الرفع: $error';
+  }
+
+  @override
+  String get reviewAndSend => 'المراجعة والإرسال';
+
+  @override
+  String get sendToTenant => 'إرسال إلى المستأجر';
+
+  @override
+  String get sendToTenantHint =>
+      'يمكن للمستأجر مراجعتها وإضافة تعليقات وصور وتأكيدها من تطبيقه.';
+
+  @override
+  String get inspectionSent => 'تم الإرسال إلى المستأجر.';
+
+  @override
+  String get markCompleted => 'تحديدها كمكتملة';
+
+  @override
+  String get markCompletedHint =>
+      'استخدم هذا إذا لم يكن المستأجر على التطبيق، مثل \"وُقّعت ورقيًا في 12/11\".';
+
+  @override
+  String get completionNoteLabel => 'ملاحظة';
+
+  @override
+  String get downloadReport => 'تقرير PDF';
+
+  @override
+  String get moveInVsMoveOut => 'الاستلام مقابل التسليم';
+
+  @override
+  String get atMoveIn => 'عند الاستلام';
+
+  @override
+  String get atMoveOut => 'عند التسليم';
+
+  @override
+  String get worsenedItems => 'عناصر حالتها أسوأ';
+
+  @override
+  String get noWorsenedItems =>
+      'لا يوجد عنصر حالته أسوأ مما كانت عند الاستلام.';
+
+  @override
+  String get worsenedHint =>
+      'استخدم هذه القائمة عند الاتفاق على خصومات التأمين.';
+
+  @override
+  String get tenantComments => 'تعليقات المستأجر';
+
+  @override
+  String get tenantMedia => 'صور ومقاطع المستأجر';
+
+  @override
+  String get addComment => 'إضافة تعليق';
+
+  @override
+  String get commentLabel => 'التعليق';
+
+  @override
+  String get addPhotoOrVideo => 'إضافة صورة أو فيديو';
+
+  @override
+  String get confirmInspection => 'تأكيد المعاينة';
+
+  @override
+  String get confirmInspectionBody =>
+      'أكّد أن هذه المعاينة تطابق حالة الوحدة. أضف تعليقاتك أولًا إن كان هناك خطأ.';
+
+  @override
+  String get inspectionConfirmed => 'تم تأكيد المعاينة.';
+
+  @override
+  String get landlordSigned => 'توقيع المالك';
+
+  @override
+  String get tenantConfirmed => 'تأكيد المستأجر';
+
+  @override
+  String get notYet => 'ليس بعد';
+
+  @override
+  String get completedWithoutTenant => 'اكتملت دون تأكيد المستأجر';
+
+  @override
+  String get bedroomsLabel => 'غرف النوم';
+
+  @override
+  String get bathroomsLabel => 'الحمامات';
+
+  @override
+  String get roomsToInclude => 'الغرف المشمولة';
+
+  @override
+  String get rentAgreementLabel => 'عقد الإيجار';
+
+  @override
+  String get inspectionTypeLabel => 'النوع';
+
+  @override
+  String get startInspection => 'بدء المعاينة';
+
+  @override
+  String get continueInspection => 'متابعة';
+
+  @override
+  String get viewInspection => 'عرض';
+
+  @override
+  String get deleteInspection => 'حذف المعاينة';
+
+  @override
+  String get deleteInspectionConfirm =>
+      'حذف هذه المعاينة وملاحظاتها؟ تبقى الصور المرفوعة في التخزين حتى حذف الحساب.';
+
+  @override
+  String unratedItems(int count) {
+    return '$count عناصر لم تُقيَّم بعد. هل تريد الإرسال على أي حال؟';
+  }
+
+  @override
+  String get prefilledFromMoveIn =>
+      'نُسخت الغرف من معاينة الاستلام. تظهر حالة الاستلام على كل عنصر.';
+
+  @override
+  String get noInspectionsYet =>
+      'لا توجد معاينات بعد. ابدأ واحدة من عقد إيجار.';
+
+  @override
+  String get noAgreementsForInspection => 'أضف عقد إيجار أولًا.';
+
+  @override
+  String inspectionCreated(String date) {
+    return 'أُنشئت $date';
+  }
+
+  @override
+  String photosOmitted(int count) {
+    return '$count صور إضافية في التطبيق';
+  }
+
+  @override
+  String get videosLabel => 'مقاطع الفيديو';
+
+  @override
+  String get itemLabel => 'العنصر';
+
+  @override
+  String get conditionLabel => 'الحالة';
+
+  @override
+  String get inspectionStatusLabel => 'الحالة';
+
+  @override
+  String get createdLabel => 'تاريخ الإنشاء';
+
+  @override
+  String get completedLabel => 'تاريخ الاكتمال';
+
+  @override
+  String get confirmationsLabel => 'التأكيدات';
+
+  @override
+  String worsenedCount(int count) {
+    return '$count أسوأ';
+  }
 }

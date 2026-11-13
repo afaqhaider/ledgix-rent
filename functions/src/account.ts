@@ -18,6 +18,8 @@ export const deleteAccount = onCall(async (req) => {
   const db = getFirestore();
   await db.recursiveDelete(db.doc(`landlords/${uid}`));
   await getStorage().bucket().deleteFiles({ prefix: `landlords/${uid}/` });
+  // Photos and videos this person added to inspections as a tenant.
+  await getStorage().bucket().deleteFiles({ prefix: `tenantUploads/${uid}/` });
   const links = await db.collection(LINKS).where("localUid", "==", uid).get();
   await Promise.all(links.docs.map((d) => d.ref.delete()));
   await getAuth().deleteUser(uid);

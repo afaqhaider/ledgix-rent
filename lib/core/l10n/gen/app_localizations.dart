@@ -2551,6 +2551,570 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The cheque schedule is created when you save.'**
   String get scheduleNote;
+
+  /// No description provided for @inspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get inspections;
+
+  /// No description provided for @moveInInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-in inspection'**
+  String get moveInInspection;
+
+  /// No description provided for @moveOutInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-out inspection'**
+  String get moveOutInspection;
+
+  /// No description provided for @newInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'New inspection'**
+  String get newInspection;
+
+  /// No description provided for @inspectionStatusDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get inspectionStatusDraft;
+
+  /// No description provided for @inspectionStatusAwaitingTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for tenant'**
+  String get inspectionStatusAwaitingTenant;
+
+  /// No description provided for @inspectionStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get inspectionStatusCompleted;
+
+  /// No description provided for @conditionExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get conditionExcellent;
+
+  /// No description provided for @conditionGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get conditionGood;
+
+  /// No description provided for @conditionFair.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get conditionFair;
+
+  /// No description provided for @conditionPoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get conditionPoor;
+
+  /// No description provided for @conditionDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged'**
+  String get conditionDamaged;
+
+  /// No description provided for @conditionMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get conditionMissing;
+
+  /// No description provided for @conditionNa.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get conditionNa;
+
+  /// No description provided for @inspectionRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get inspectionRooms;
+
+  /// No description provided for @addRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Add room'**
+  String get addRoom;
+
+  /// No description provided for @renameRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename room'**
+  String get renameRoom;
+
+  /// No description provided for @deleteRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete room'**
+  String get deleteRoom;
+
+  /// No description provided for @roomNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Room name'**
+  String get roomNameLabel;
+
+  /// No description provided for @addItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get addItem;
+
+  /// No description provided for @itemNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item name'**
+  String get itemNameLabel;
+
+  /// No description provided for @renameItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename item'**
+  String get renameItem;
+
+  /// No description provided for @deleteItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete item'**
+  String get deleteItem;
+
+  /// No description provided for @itemsRated.
+  ///
+  /// In en, this message translates to:
+  /// **'{rated} of {total} rated'**
+  String itemsRated(int rated, int total);
+
+  /// No description provided for @metersAndKeys.
+  ///
+  /// In en, this message translates to:
+  /// **'Meters & keys'**
+  String get metersAndKeys;
+
+  /// No description provided for @meterReadings.
+  ///
+  /// In en, this message translates to:
+  /// **'Meter readings'**
+  String get meterReadings;
+
+  /// No description provided for @meterElectricity.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity meter'**
+  String get meterElectricity;
+
+  /// No description provided for @meterWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water meter'**
+  String get meterWater;
+
+  /// No description provided for @meterGas.
+  ///
+  /// In en, this message translates to:
+  /// **'Gas meter'**
+  String get meterGas;
+
+  /// No description provided for @meterPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Meter photos'**
+  String get meterPhotos;
+
+  /// No description provided for @keysHandedOver.
+  ///
+  /// In en, this message translates to:
+  /// **'Keys handed over'**
+  String get keysHandedOver;
+
+  /// No description provided for @keysMainDoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Main door keys'**
+  String get keysMainDoor;
+
+  /// No description provided for @keysMailbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Mailbox keys'**
+  String get keysMailbox;
+
+  /// No description provided for @keysParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get keysParking;
+
+  /// No description provided for @keysAccessCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Access cards'**
+  String get keysAccessCards;
+
+  /// No description provided for @keysRemotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Remotes'**
+  String get keysRemotes;
+
+  /// No description provided for @keysOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get keysOther;
+
+  /// No description provided for @generalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'General notes'**
+  String get generalNotes;
+
+  /// No description provided for @roomNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Room notes'**
+  String get roomNotes;
+
+  /// No description provided for @roomPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Room photos & videos'**
+  String get roomPhotos;
+
+  /// No description provided for @recordVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Record video'**
+  String get recordVideo;
+
+  /// No description provided for @fromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'From gallery'**
+  String get fromGallery;
+
+  /// No description provided for @uploadingMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading {count}…'**
+  String uploadingMedia(int count);
+
+  /// No description provided for @uploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed: {error}'**
+  String uploadFailed(String error);
+
+  /// No description provided for @reviewAndSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Review & send'**
+  String get reviewAndSend;
+
+  /// No description provided for @sendToTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to tenant'**
+  String get sendToTenant;
+
+  /// No description provided for @sendToTenantHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The tenant can review it, add comments and photos, and confirm in their app.'**
+  String get sendToTenantHint;
+
+  /// No description provided for @inspectionSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to the tenant.'**
+  String get inspectionSent;
+
+  /// No description provided for @markCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as completed'**
+  String get markCompleted;
+
+  /// No description provided for @markCompletedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this when the tenant isn\'t on the app, e.g. \"Signed on paper on 12/11\".'**
+  String get markCompletedHint;
+
+  /// No description provided for @completionNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get completionNoteLabel;
+
+  /// No description provided for @downloadReport.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF report'**
+  String get downloadReport;
+
+  /// No description provided for @moveInVsMoveOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-in vs move-out'**
+  String get moveInVsMoveOut;
+
+  /// No description provided for @atMoveIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-in'**
+  String get atMoveIn;
+
+  /// No description provided for @atMoveOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-out'**
+  String get atMoveOut;
+
+  /// No description provided for @worsenedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Items in worse condition'**
+  String get worsenedItems;
+
+  /// No description provided for @noWorsenedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No item is in worse condition than at move-in.'**
+  String get noWorsenedItems;
+
+  /// No description provided for @worsenedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this list when agreeing deposit deductions.'**
+  String get worsenedHint;
+
+  /// No description provided for @tenantComments.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant\'s comments'**
+  String get tenantComments;
+
+  /// No description provided for @tenantMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant\'s photos & videos'**
+  String get tenantMedia;
+
+  /// No description provided for @addComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add comment'**
+  String get addComment;
+
+  /// No description provided for @commentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get commentLabel;
+
+  /// No description provided for @addPhotoOrVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo or video'**
+  String get addPhotoOrVideo;
+
+  /// No description provided for @confirmInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm inspection'**
+  String get confirmInspection;
+
+  /// No description provided for @confirmInspectionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm that this inspection matches the unit\'s condition. Add comments first if anything is wrong.'**
+  String get confirmInspectionBody;
+
+  /// No description provided for @inspectionConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection confirmed.'**
+  String get inspectionConfirmed;
+
+  /// No description provided for @landlordSigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord signed'**
+  String get landlordSigned;
+
+  /// No description provided for @tenantConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant confirmed'**
+  String get tenantConfirmed;
+
+  /// No description provided for @notYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get notYet;
+
+  /// No description provided for @completedWithoutTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed without tenant confirmation'**
+  String get completedWithoutTenant;
+
+  /// No description provided for @bedroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms'**
+  String get bedroomsLabel;
+
+  /// No description provided for @bathroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms'**
+  String get bathroomsLabel;
+
+  /// No description provided for @roomsToInclude.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms to include'**
+  String get roomsToInclude;
+
+  /// No description provided for @rentAgreementLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent agreement'**
+  String get rentAgreementLabel;
+
+  /// No description provided for @inspectionTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get inspectionTypeLabel;
+
+  /// No description provided for @startInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Start inspection'**
+  String get startInspection;
+
+  /// No description provided for @continueInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueInspection;
+
+  /// No description provided for @viewInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get viewInspection;
+
+  /// No description provided for @deleteInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete inspection'**
+  String get deleteInspection;
+
+  /// No description provided for @deleteInspectionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this inspection and its notes? Uploaded photos stay in storage until the account is deleted.'**
+  String get deleteInspectionConfirm;
+
+  /// No description provided for @unratedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items aren\'t rated yet. Send anyway?'**
+  String unratedItems(int count);
+
+  /// No description provided for @prefilledFromMoveIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms copied from the move-in inspection. The move-in condition shows on each item.'**
+  String get prefilledFromMoveIn;
+
+  /// No description provided for @noInspectionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspections yet. Start one from a rent agreement.'**
+  String get noInspectionsYet;
+
+  /// No description provided for @noAgreementsForInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a rent agreement first.'**
+  String get noAgreementsForInspection;
+
+  /// No description provided for @inspectionCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {date}'**
+  String inspectionCreated(String date);
+
+  /// No description provided for @photosOmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more photos in the app'**
+  String photosOmitted(int count);
+
+  /// No description provided for @videosLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get videosLabel;
+
+  /// No description provided for @itemLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get itemLabel;
+
+  /// No description provided for @conditionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition'**
+  String get conditionLabel;
+
+  /// No description provided for @inspectionStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get inspectionStatusLabel;
+
+  /// No description provided for @createdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get createdLabel;
+
+  /// No description provided for @completedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedLabel;
+
+  /// No description provided for @confirmationsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmations'**
+  String get confirmationsLabel;
+
+  /// No description provided for @worsenedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} worse'**
+  String worsenedCount(int count);
 }
 
 class _AppLocalizationsDelegate

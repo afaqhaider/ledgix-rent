@@ -44,7 +44,7 @@ void main() {
       const paths = [
         '/', '/portfolio', '/cheques', '/maintenance', '/settings', '/profile', '/utilities', '/service-charges',
         '/property/new', '/property/p1', '/property/p1/edit', '/property/p1/bills',
-        '/tenants', '/tenants/new', '/leases', '/leases/new',
+        '/tenants', '/tenants/new', '/leases', '/leases/new', '/inspections',
         '/debits', '/holds', '/tickets/new', '/tickets/t1',
         '/reports', '/vendors', '/vendors/new',
       ];

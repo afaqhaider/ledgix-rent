@@ -2,13 +2,37 @@ rules_version = '2';
 
 // Files live under landlords/{uid}/... (see lib/core/data/file_storage.dart).
 // Only the owning landlord can read, upload (max 20 MB) or delete them.
+//
+// Inspection photos and videos (lib/features/inspections/data/inspection_media.dart):
+//   landlords/{uid}/inspections/{inspectionId}/{file}      landlord's own
+//   tenantUploads/{uid}/inspections/{inspectionId}/{file}  a tenant's, attached to the
+//                                                          landlord's inspection by the
+//                                                          attachInspectionTenantMedia function
+// Images up to 20 MB, videos up to 200 MB. Rules are OR-ed, so the general
+// landlord rule below still covers every other file at 20 MB.
 service firebase.storage {
   match /b/{bucket}/o {
+    function isImage() { return request.resource.contentType.matches('image/.*'); }
+    function isVideo() { return request.resource.contentType.matches('video/.*'); }
+    function mediaSizeOk() {
+      return (isImage() && request.resource.size < 20 * 1024 * 1024)
+          || (isVideo() && request.resource.size < 200 * 1024 * 1024);
+    }
+
     match /landlords/{uid}/{allPaths=**} {
       allow read, delete: if request.auth != null && request.auth.uid == uid;
       allow create, update: if request.auth != null
                             && request.auth.uid == uid
                             && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    match /landlords/{uid}/inspections/{inspectionId}/{file} {
+      allow create, update: if request.auth != null && request.auth.uid == uid && mediaSizeOk();
+    }
+
+    match /tenantUploads/{uid}/inspections/{inspectionId}/{file} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid && mediaSizeOk();
     }
   }
 }

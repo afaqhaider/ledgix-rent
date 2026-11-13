@@ -1336,4 +1336,307 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scheduleNote => 'The cheque schedule is created when you save.';
+
+  @override
+  String get inspections => 'Inspections';
+
+  @override
+  String get moveInInspection => 'Move-in inspection';
+
+  @override
+  String get moveOutInspection => 'Move-out inspection';
+
+  @override
+  String get newInspection => 'New inspection';
+
+  @override
+  String get inspectionStatusDraft => 'Draft';
+
+  @override
+  String get inspectionStatusAwaitingTenant => 'Waiting for tenant';
+
+  @override
+  String get inspectionStatusCompleted => 'Completed';
+
+  @override
+  String get conditionExcellent => 'Excellent';
+
+  @override
+  String get conditionGood => 'Good';
+
+  @override
+  String get conditionFair => 'Fair';
+
+  @override
+  String get conditionPoor => 'Poor';
+
+  @override
+  String get conditionDamaged => 'Damaged';
+
+  @override
+  String get conditionMissing => 'Missing';
+
+  @override
+  String get conditionNa => 'N/A';
+
+  @override
+  String get inspectionRooms => 'Rooms';
+
+  @override
+  String get addRoom => 'Add room';
+
+  @override
+  String get renameRoom => 'Rename room';
+
+  @override
+  String get deleteRoom => 'Delete room';
+
+  @override
+  String get roomNameLabel => 'Room name';
+
+  @override
+  String get addItem => 'Add item';
+
+  @override
+  String get itemNameLabel => 'Item name';
+
+  @override
+  String get renameItem => 'Rename item';
+
+  @override
+  String get deleteItem => 'Delete item';
+
+  @override
+  String itemsRated(int rated, int total) {
+    return '$rated of $total rated';
+  }
+
+  @override
+  String get metersAndKeys => 'Meters & keys';
+
+  @override
+  String get meterReadings => 'Meter readings';
+
+  @override
+  String get meterElectricity => 'Electricity meter';
+
+  @override
+  String get meterWater => 'Water meter';
+
+  @override
+  String get meterGas => 'Gas meter';
+
+  @override
+  String get meterPhotos => 'Meter photos';
+
+  @override
+  String get keysHandedOver => 'Keys handed over';
+
+  @override
+  String get keysMainDoor => 'Main door keys';
+
+  @override
+  String get keysMailbox => 'Mailbox keys';
+
+  @override
+  String get keysParking => 'Parking';
+
+  @override
+  String get keysAccessCards => 'Access cards';
+
+  @override
+  String get keysRemotes => 'Remotes';
+
+  @override
+  String get keysOther => 'Other';
+
+  @override
+  String get generalNotes => 'General notes';
+
+  @override
+  String get roomNotes => 'Room notes';
+
+  @override
+  String get roomPhotos => 'Room photos & videos';
+
+  @override
+  String get recordVideo => 'Record video';
+
+  @override
+  String get fromGallery => 'From gallery';
+
+  @override
+  String uploadingMedia(int count) {
+    return 'Uploading $count…';
+  }
+
+  @override
+  String uploadFailed(String error) {
+    return 'Upload failed: $error';
+  }
+
+  @override
+  String get reviewAndSend => 'Review & send';
+
+  @override
+  String get sendToTenant => 'Send to tenant';
+
+  @override
+  String get sendToTenantHint =>
+      'The tenant can review it, add comments and photos, and confirm in their app.';
+
+  @override
+  String get inspectionSent => 'Sent to the tenant.';
+
+  @override
+  String get markCompleted => 'Mark as completed';
+
+  @override
+  String get markCompletedHint =>
+      'Use this when the tenant isn\'t on the app, e.g. \"Signed on paper on 12/11\".';
+
+  @override
+  String get completionNoteLabel => 'Note';
+
+  @override
+  String get downloadReport => 'PDF report';
+
+  @override
+  String get moveInVsMoveOut => 'Move-in vs move-out';
+
+  @override
+  String get atMoveIn => 'Move-in';
+
+  @override
+  String get atMoveOut => 'Move-out';
+
+  @override
+  String get worsenedItems => 'Items in worse condition';
+
+  @override
+  String get noWorsenedItems =>
+      'No item is in worse condition than at move-in.';
+
+  @override
+  String get worsenedHint => 'Use this list when agreeing deposit deductions.';
+
+  @override
+  String get tenantComments => 'Tenant\'s comments';
+
+  @override
+  String get tenantMedia => 'Tenant\'s photos & videos';
+
+  @override
+  String get addComment => 'Add comment';
+
+  @override
+  String get commentLabel => 'Comment';
+
+  @override
+  String get addPhotoOrVideo => 'Add photo or video';
+
+  @override
+  String get confirmInspection => 'Confirm inspection';
+
+  @override
+  String get confirmInspectionBody =>
+      'Confirm that this inspection matches the unit\'s condition. Add comments first if anything is wrong.';
+
+  @override
+  String get inspectionConfirmed => 'Inspection confirmed.';
+
+  @override
+  String get landlordSigned => 'Landlord signed';
+
+  @override
+  String get tenantConfirmed => 'Tenant confirmed';
+
+  @override
+  String get notYet => 'Not yet';
+
+  @override
+  String get completedWithoutTenant => 'Completed without tenant confirmation';
+
+  @override
+  String get bedroomsLabel => 'Bedrooms';
+
+  @override
+  String get bathroomsLabel => 'Bathrooms';
+
+  @override
+  String get roomsToInclude => 'Rooms to include';
+
+  @override
+  String get rentAgreementLabel => 'Rent agreement';
+
+  @override
+  String get inspectionTypeLabel => 'Type';
+
+  @override
+  String get startInspection => 'Start inspection';
+
+  @override
+  String get continueInspection => 'Continue';
+
+  @override
+  String get viewInspection => 'View';
+
+  @override
+  String get deleteInspection => 'Delete inspection';
+
+  @override
+  String get deleteInspectionConfirm =>
+      'Delete this inspection and its notes? Uploaded photos stay in storage until the account is deleted.';
+
+  @override
+  String unratedItems(int count) {
+    return '$count items aren\'t rated yet. Send anyway?';
+  }
+
+  @override
+  String get prefilledFromMoveIn =>
+      'Rooms copied from the move-in inspection. The move-in condition shows on each item.';
+
+  @override
+  String get noInspectionsYet =>
+      'No inspections yet. Start one from a rent agreement.';
+
+  @override
+  String get noAgreementsForInspection => 'Add a rent agreement first.';
+
+  @override
+  String inspectionCreated(String date) {
+    return 'Created $date';
+  }
+
+  @override
+  String photosOmitted(int count) {
+    return '$count more photos in the app';
+  }
+
+  @override
+  String get videosLabel => 'Videos';
+
+  @override
+  String get itemLabel => 'Item';
+
+  @override
+  String get conditionLabel => 'Condition';
+
+  @override
+  String get inspectionStatusLabel => 'Status';
+
+  @override
+  String get createdLabel => 'Created';
+
+  @override
+  String get completedLabel => 'Completed';
+
+  @override
+  String get confirmationsLabel => 'Confirmations';
+
+  @override
+  String worsenedCount(int count) {
+    return '$count worse';
+  }
 }
