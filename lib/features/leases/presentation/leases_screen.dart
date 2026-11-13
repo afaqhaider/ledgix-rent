@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../payments/domain/payment_scheduler.dart';
@@ -16,11 +17,18 @@ String ejariLabel(AppLocalizations l, EjariStatus s) => switch (s) {
       EjariStatus.unknown => l.ejariUnknown,
     };
 
-Color ejariColor(EjariStatus s) => switch (s) {
-      EjariStatus.active => const Color(0xFF1A7F37),
-      EjariStatus.expiring => const Color(0xFF9A6700),
-      EjariStatus.expired => const Color(0xFFCF222E),
-      EjariStatus.unknown => Colors.blueGrey,
+Color ejariColor(BuildContext context, EjariStatus s) => switch (s) {
+      EjariStatus.active => context.status.success,
+      EjariStatus.expiring => context.status.warning,
+      EjariStatus.expired => context.status.danger,
+      EjariStatus.unknown => context.status.neutral,
+    };
+
+IconData ejariIcon(EjariStatus s) => switch (s) {
+      EjariStatus.active => Icons.verified_outlined,
+      EjariStatus.expiring => Icons.schedule,
+      EjariStatus.expired => Icons.error_outline,
+      EjariStatus.unknown => Icons.help_outline,
     };
 
 String methodLabel(AppLocalizations l, PaymentMethod m) =>
@@ -49,7 +57,7 @@ class LeasesScreen extends ConsumerWidget {
             isThreeLine: true,
             trailing: FeatureFlags.ejari && le.ejariNo.isNotEmpty
                 ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    StatusChip(ejariLabel(c.l, le.ejariStatus), ejariColor(le.ejariStatus)),
+                    StatusChip(ejariLabel(c.l, le.ejariStatus), ejariColor(c, le.ejariStatus), icon: ejariIcon(le.ejariStatus)),
                     GestureDetector(
                       onTap: () async {
                         final r = await ref.read(ejariServiceProvider).lookupContract(le.ejariNo);
@@ -118,7 +126,7 @@ class _LeaseFormScreenState extends ConsumerState<LeaseFormScreen> {
     final props = ref.watch(propertiesProvider).value ?? [];
     final tenants = ref.watch(tenantsProvider).value ?? [];
     Widget dateField(String label, DateTime v, ValueChanged<DateTime> set) => ListTile(
-          shape: RoundedRectangleBorder(side: const BorderSide(color: Colors.black26), borderRadius: BorderRadius.circular(4)),
+          shape: RoundedRectangleBorder(side: BorderSide(color: Theme.of(context).colorScheme.outline), borderRadius: BorderRadius.circular(4)),
           title: Text(label),
           trailing: Text(formatDate(v)),
           onTap: () async {
@@ -173,7 +181,7 @@ class _LeaseFormScreenState extends ConsumerState<LeaseFormScreen> {
             ),
             const SizedBox(width: 12),
             if (_ejariExpiry != null) ...[
-              StatusChip(ejariLabel(l, _ejariStatus), ejariColor(_ejariStatus)),
+              StatusChip(ejariLabel(l, _ejariStatus), ejariColor(context, _ejariStatus), icon: ejariIcon(_ejariStatus)),
               const SizedBox(width: 8),
               Flexible(child: Text('${l.ejariExpiry}: ${formatDate(_ejariExpiry!)}', style: const TextStyle(fontSize: 12))),
             ],

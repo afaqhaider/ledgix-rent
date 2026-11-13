@@ -109,7 +109,7 @@ class PaymentCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l;
-    final color = AppTheme.statusColor(payment.status);
+    final color = AppTheme.statusColor(context, payment.status);
     final isCheque = payment.type == PaymentMethod.cheque;
     final failedDebit = !isCheque && payment.status == PaymentStatus.bounced;
     return Card(
@@ -118,7 +118,7 @@ class PaymentCard extends ConsumerWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
             Expanded(child: Text(formatAed(payment.amount), style: Theme.of(context).textTheme.titleLarge)),
-            StatusChip(failedDebit ? l.failedDebit : statusLabel(l, payment.status), color),
+            StatusChip(failedDebit ? l.failedDebit : statusLabel(l, payment.status), color, icon: AppTheme.statusIcon(payment.status)),
           ]),
           const SizedBox(height: 4),
           Text('${l.dueDate}: ${formatDate(payment.dueDate)}'),

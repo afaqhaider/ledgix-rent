@@ -30,6 +30,8 @@ class LedgixApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'LedGix Rent',
       theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.system,
       routerConfig: ref.watch(routerProvider),
       locale: Locale(ref.watch(localeProvider)),
       supportedLocales: AppLocalizations.supportedLocales,

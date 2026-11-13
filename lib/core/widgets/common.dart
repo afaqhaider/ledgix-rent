@@ -39,18 +39,24 @@ class AsyncList<T> extends StatelessWidget {
   }
 }
 
+/// Coloured status label. Pass [icon] so the status is not shown by colour alone.
 class StatusChip extends StatelessWidget {
-  const StatusChip(this.label, this.color, {super.key});
+  const StatusChip(this.label, this.color, {super.key, this.icon});
   final String label;
   final Color color;
+  final IconData? icon;
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 10, 4),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.withValues(alpha: 0.35)),
         ),
-        child: Text(label, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 12)),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          if (icon != null) ...[Icon(icon, size: 14, color: color), const SizedBox(width: 4)],
+          Text(label, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 12)),
+        ]),
       );
 }
 

@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../leases/domain/lease.dart';
@@ -178,8 +179,9 @@ class _TicketDetailScreenState extends ConsumerState<TicketDetailScreen> {
         const SizedBox(height: 8),
         Wrap(spacing: 8, children: [
           StatusChip(ticketStatusLabel(l, t.status), Theme.of(context).colorScheme.primary),
-          StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
-          StatusChip(categoryLabel(l, t.category), Colors.blueGrey),
+          StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? context.status.danger : context.status.neutral,
+                icon: t.priority.index >= 2 ? Icons.priority_high : Icons.low_priority),
+          StatusChip(categoryLabel(l, t.category), context.status.neutral),
         ]),
         if (property != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(property.name)),
         if (t.description.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 8), child: Text(t.description)),
@@ -233,7 +235,7 @@ class _TicketDetailScreenState extends ConsumerState<TicketDetailScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
                   Expanded(child: Text('${formatAed(q.total)}  (${l.vat} ${formatAed(q.vat)})', style: Theme.of(context).textTheme.titleMedium)),
-                  StatusChip(_quoteLabel(l, q.status), q.status == QuoteStatus.approved ? Colors.green : Colors.blueGrey),
+                  StatusChip(_quoteLabel(l, q.status), q.status == QuoteStatus.approved ? context.status.success : context.status.neutral),
                 ]),
                 Text(vendorNames[q.vendorId] ?? ''),
                 if (q.scope.isNotEmpty) Text(q.scope),

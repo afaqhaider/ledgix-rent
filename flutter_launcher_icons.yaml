@@ -1,0 +1,11 @@
+# Regenerate with: dart run flutter_launcher_icons
+# Sources are padded squares made from assets/ledgix-rent-logo-mark.png.
+flutter_launcher_icons:
+  image_path: "assets/icon/app-icon.png"          # white background, used for iOS + legacy Android
+  android: "ic_launcher"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/app-icon-foreground.png"
+  adaptive_icon_monochrome: "assets/icon/app-icon-foreground.png"
+  ios: true
+  remove_alpha_ios: true

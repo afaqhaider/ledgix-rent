@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../domain/hold_request.dart';
@@ -46,7 +47,9 @@ class HoldsScreen extends ConsumerWidget {
                   OutlinedButton(onPressed: () => _decide(ref, r, approve: false), child: Text(l.reject)),
                 ])
               else
-                StatusChip(_label(l, r.status), r.status == HoldStatus.approved ? Colors.green : Colors.red),
+                r.status == HoldStatus.approved
+                    ? StatusChip(_label(l, r.status), context.status.success, icon: Icons.check_circle_outline)
+                    : StatusChip(_label(l, r.status), context.status.danger, icon: Icons.cancel_outlined),
             ]),
           ),
         ),

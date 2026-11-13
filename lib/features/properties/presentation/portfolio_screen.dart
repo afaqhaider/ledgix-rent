@@ -7,6 +7,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
@@ -277,7 +278,8 @@ class ServiceChargeCard extends ConsumerWidget {
               subtitle: Text('${l.dueDate}: ${formatDate(c.dueDate)}'),
               trailing: StatusChip(
                 chargeStatusLabel(l, c.effectiveStatus(today)),
-                switch (c.effectiveStatus(today)) { ChargeStatus.paid => Colors.green, ChargeStatus.overdue => Colors.red, ChargeStatus.due => Colors.orange },
+                switch (c.effectiveStatus(today)) { ChargeStatus.paid => context.status.success, ChargeStatus.overdue => context.status.danger, ChargeStatus.due => context.status.warning },
+                icon: switch (c.effectiveStatus(today)) { ChargeStatus.paid => Icons.check_circle_outline, ChargeStatus.overdue => Icons.error_outline, ChargeStatus.due => Icons.schedule },
               ),
             ),
         ]),

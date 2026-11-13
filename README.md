@@ -15,6 +15,28 @@ flutter test integration_test -d <device-id>   # same flows + every screen, on a
 
 Demo mode is the default. It uses in-memory repositories and a fake login so you can click through the whole app.
 
+## Branding
+
+Amber brand colours live in `lib/core/theme/app_colors.dart`; the light and dark Material 3 themes and the
+semantic status colours (`context.status`) are in `lib/core/theme/app_theme.dart`. Don't create colours elsewhere.
+Logos: `assets/ledgix-rent-logo.png` (mark + "Rent") and `assets/ledgix-rent-logo-mark.png`.
+
+After changing a logo, regenerate the icons and splash screens:
+
+```bash
+dart run flutter_launcher_icons        # config: flutter_launcher_icons.yaml (sources in assets/icon/)
+dart run flutter_native_splash:create  # config: flutter_native_splash.yaml
+```
+
+## Releasing to test tracks
+
+Bump `version:` in `pubspec.yaml` (the `+N` build number must increase every upload), then:
+
+```bash
+flutter build ipa --release --dart-define=USE_FIREBASE=true --export-options-plist=ios/ExportOptions.plist   # upload build/ios/ipa/*.ipa with Transporter
+flutter build appbundle --release --dart-define=USE_FIREBASE=true   # upload build/app/outputs/bundle/release/app-release.aab in Play Console
+```
+
 ## Architecture
 
 - `lib/features/<feature>/{data,domain,presentation}`, shared code in `lib/core`.

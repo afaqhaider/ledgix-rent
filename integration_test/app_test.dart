@@ -2,6 +2,7 @@
 // Run: flutter test integration_test -d <device-id>
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart' show Brightness;
 import 'package:integration_test/integration_test.dart';
 import 'package:ledgix_rent/core/providers.dart';
 import 'package:ledgix_rent/core/routing/app_router.dart';
@@ -18,8 +19,13 @@ void main() {
   // The same end-to-end flows as test/widget_test.dart, on a real device.
   group('flows', widget_flows.main);
 
-  for (final locale in ['en', 'ar']) {
-    testWidgets('every screen renders without errors ($locale)', (tester) async {
+  for (final (brightness, locale) in [
+    for (final b in Brightness.values)
+      for (final l in ['en', 'ar']) (b, l),
+  ]) {
+    testWidgets('every screen renders without errors ($locale, ${brightness.name})', (tester) async {
+      tester.platformDispatcher.platformBrightnessTestValue = brightness;
+      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
       final container = ProviderContainer();
       addTearDown(container.dispose);
       container.read(localeProvider.notifier).set(locale);

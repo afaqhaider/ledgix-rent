@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/providers.dart';
+import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -37,7 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(l.appName),
+          title: BrandTitle(l.appName),
           actions: [
             TextButton(
               onPressed: () => ref
@@ -50,6 +51,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
         body: TabBarView(children: [
           ListView(padding: const EdgeInsets.all(16), children: [
+            const Center(child: BrandLogo(height: 112)),
+            const SizedBox(height: 24),
             TextField(controller: _email, decoration: InputDecoration(labelText: l.email), keyboardType: TextInputType.emailAddress),
             const SizedBox(height: 12),
             TextField(controller: _password, decoration: InputDecoration(labelText: l.password), obscureText: true),
@@ -68,6 +71,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ]),
           ListView(padding: const EdgeInsets.all(16), children: [
+            const Center(child: BrandLogo(height: 112)),
+            const SizedBox(height: 24),
             TextField(controller: _phone, decoration: InputDecoration(labelText: l.phone), keyboardType: TextInputType.phone),
             const SizedBox(height: 12),
             if (_verificationId != null) ...[

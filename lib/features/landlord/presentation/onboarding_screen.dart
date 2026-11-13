@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/providers.dart';
+import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
 import '../../properties/domain/property.dart';
 import '../domain/landlord.dart';
@@ -35,7 +36,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final l = context.l;
     final lang = ref.watch(localeProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(l.welcomeTitle)),
+      appBar: AppBar(title: BrandTitle(l.welcomeTitle)),
       body: Form(
         key: _key,
         child: ListView(padding: const EdgeInsets.all(16), children: [

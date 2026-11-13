@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../properties/domain/property.dart';
@@ -151,16 +152,17 @@ class UtilityBillsScreen extends ConsumerWidget {
             items: bills,
             builder: (c, b) {
               final st = b.effectiveStatus(today);
-              final color = switch (st) { BillStatus.paid => Colors.green, BillStatus.overdue => Colors.red, BillStatus.unpaid => Colors.orange };
+              final color = switch (st) { BillStatus.paid => c.status.success, BillStatus.overdue => c.status.danger, BillStatus.unpaid => c.status.warning };
+              final icon = switch (st) { BillStatus.paid => Icons.check_circle_outline, BillStatus.overdue => Icons.error_outline, BillStatus.unpaid => Icons.schedule };
               return Card(
                 child: ListTile(
                   title: Text('${providerLabel(l, b.provider)} · ${b.period}  ${formatAed(b.amount)}'),
                   subtitle: Text('${l.dueDate}: ${formatDate(b.dueDate)} · ${l.paidBy}: ${b.paidBy == PaidBy.landlord ? l.landlord : l.tenant}'
                       '${b.pdfUrl != null ? ' · 📎' : ''}'),
                   trailing: st == BillStatus.paid
-                      ? StatusChip(billStatusLabel(l, st), color)
+                      ? StatusChip(billStatusLabel(l, st), color, icon: icon)
                       : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          StatusChip(billStatusLabel(l, st), color),
+                          StatusChip(billStatusLabel(l, st), color, icon: icon),
                           GestureDetector(
                             onTap: () => ref.read(utilityBillRepositoryProvider).save(b.copyWith(status: BillStatus.paid)),
                             child: Text(l.markPaid, style: const TextStyle(fontSize: 12, decoration: TextDecoration.underline)),

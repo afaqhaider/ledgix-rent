@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../domain/maintenance_ticket.dart';
@@ -68,7 +69,8 @@ class MaintenanceScreen extends ConsumerWidget {
               const SizedBox(height: 8),
               Wrap(spacing: 6, runSpacing: 6, children: [
                 StatusChip(ticketStatusLabel(l, t.status), Theme.of(c).colorScheme.primary),
-                StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? Colors.red : Colors.blueGrey),
+                StatusChip(priorityLabel(l, t.priority), t.priority.index >= 2 ? context.status.danger : context.status.neutral,
+                icon: t.priority.index >= 2 ? Icons.priority_high : Icons.low_priority),
               ]),
             ]),
             onTap: () => c.push('/tickets/${t.id}'),
