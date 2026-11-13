@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ledgix_rent/core/layout/app_shell.dart';
 import 'package:ledgix_rent/core/providers.dart';
 import 'package:ledgix_rent/features/landlord/domain/landlord.dart';
 import 'package:ledgix_rent/features/maintenance/domain/maintenance_ticket.dart';
@@ -11,10 +12,18 @@ import 'package:ledgix_rent/main.dart';
 /// Scrolls a lazily built list until [finder] is on screen, then taps it.
 /// Needed on real phones, where buttons can sit below the fold.
 Future<void> tapVisible(WidgetTester tester, Finder finder) async {
-  await tester.scrollUntilVisible(finder, 200, scrollable: find.byType(Scrollable).first);
+  await tester.scrollUntilVisible(finder, 200, scrollable: pageScrollable);
   await tester.pumpAndSettle();
   await tester.tap(finder);
 }
+
+/// The page's own vertical list (not the navigation sidebar/rail).
+final pageScrollable = find
+    .byElementPredicate((e) =>
+        e.widget is Scrollable &&
+        axisDirectionToAxis((e.widget as Scrollable).axisDirection) == Axis.vertical &&
+        e.findAncestorWidgetOfExactType<Sidebar>() == null)
+    .first;
 
 void main() {
   testWidgets('demo flow: sign in, onboard, see dashboard', (tester) async {
@@ -35,7 +44,7 @@ void main() {
 
     // Dashboard, then portfolio lists the first property.
     expect(find.text('Collected this month'), findsOneWidget);
-    await tester.tap(find.text('Portfolio'));
+    await tester.tap(find.byKey(const Key('nav-/portfolio')));
     await tester.pumpAndSettle();
     expect(find.text('Marina Studio'), findsOneWidget);
   });
@@ -68,8 +77,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    await tester.tap(find.text('More'));
+    await tester.tap(find.byKey(const Key('nav-/settings')));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Privacy policy'), 200, scrollable: pageScrollable);
     expect(find.text('Privacy policy'), findsOneWidget);
 
     // Cancel keeps the account.
@@ -115,7 +125,7 @@ void main() {
 
     await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const LedgixApp()));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Maintenance'));
+    await tester.tap(find.byKey(const Key('nav-/maintenance')));
     await tester.pumpAndSettle();
     await tester.tap(find.text('AC leak'));
     await tester.pumpAndSettle();

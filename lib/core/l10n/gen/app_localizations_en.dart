@@ -691,4 +691,233 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aadcLabel => 'AADC';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get operations => 'Operations';
+
+  @override
+  String get insights => 'Insights';
+
+  @override
+  String get properties => 'Properties';
+
+  @override
+  String get rentAgreements => 'Rent agreements';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get noNotifications => 'You\'re all caught up.';
+
+  @override
+  String get openMenu => 'Open menu';
+
+  @override
+  String goodMorning(String name) {
+    return 'Good morning, $name';
+  }
+
+  @override
+  String goodAfternoon(String name) {
+    return 'Good afternoon, $name';
+  }
+
+  @override
+  String goodEvening(String name) {
+    return 'Good evening, $name';
+  }
+
+  @override
+  String get dashboardSubtitle =>
+      'Here\'s how your properties are doing today.';
+
+  @override
+  String get occupancy => 'Occupancy';
+
+  @override
+  String occupiedOf(int occupied, int total) {
+    return '$occupied of $total occupied';
+  }
+
+  @override
+  String get dueNext30 => 'Due in next 30 days';
+
+  @override
+  String paymentsCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString payments',
+      one: '1 payment',
+      zero: 'No payments',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get collections6m => 'Collections, last 6 months';
+
+  @override
+  String get leaseRenewals => 'Lease renewals';
+
+  @override
+  String get next90Days => 'Next 90 days';
+
+  @override
+  String endsInDays(num days) {
+    final intl.NumberFormat daysNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String daysString = daysNumberFormat.format(days);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Ends in $daysString days',
+      one: 'Ends tomorrow',
+      zero: 'Ends today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noRenewals => 'No leases end in the next 90 days.';
+
+  @override
+  String get noUpcoming => 'No cheques due soon.';
+
+  @override
+  String get noOpenTickets => 'No open maintenance requests.';
+
+  @override
+  String get quickActions => 'Quick actions';
+
+  @override
+  String get newRentAgreement => 'New rent agreement';
+
+  @override
+  String get recordPayment => 'Record payment';
+
+  @override
+  String get newMaintenanceRequest => 'New maintenance request';
+
+  @override
+  String get viewAll => 'View all';
+
+  @override
+  String get getStartedTitle => 'Let\'s set up your portfolio';
+
+  @override
+  String get getStartedBody =>
+      'Add a property, then a tenant and a rent agreement. Cheques and reminders are created for you.';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get profileComingSoon => 'Profile editing is coming soon.';
+
+  @override
+  String get preferences => 'Preferences';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get remindersInfo => 'Reminders we send';
+
+  @override
+  String get reminderDeposit =>
+      'Cheque deposit reminders 3 days and 1 day before the due date';
+
+  @override
+  String get reminderRenewal =>
+      'Lease renewal alerts 90, 60 and 30 days before the end date';
+
+  @override
+  String get remindersDelivery =>
+      'Sent as push notifications at 8:00 AM UAE time.';
+
+  @override
+  String get securitySignIn => 'Security & sign-in';
+
+  @override
+  String signedInAs(String email) {
+    return 'Signed in as $email';
+  }
+
+  @override
+  String get legal => 'Legal';
+
+  @override
+  String get dangerZone => 'Danger zone';
+
+  @override
+  String get deleteAccountHint =>
+      'Permanently delete your account and all of its data.';
+
+  @override
+  String get selectPropertyForBills =>
+      'Choose a property to see its utility bills.';
+
+  @override
+  String get serviceChargesHint =>
+      'Service charges are synced from Mollak for jointly owned properties.';
+
+  @override
+  String unpaidBills(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString unpaid bills',
+      one: '1 unpaid bill',
+      zero: 'All paid',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String get thisYear => 'This year';
+
+  @override
+  String get authTagline => 'Rent, cheques and maintenance in one place.';
+
+  @override
+  String get authSubtagline =>
+      'Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop.';
 }

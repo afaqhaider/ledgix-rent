@@ -690,4 +690,237 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aadcLabel => 'العين للتوزيع';
+
+  @override
+  String get overview => 'نظرة عامة';
+
+  @override
+  String get operations => 'العمليات';
+
+  @override
+  String get insights => 'التحليلات';
+
+  @override
+  String get properties => 'العقارات';
+
+  @override
+  String get rentAgreements => 'عقود الإيجار';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get noNotifications => 'لا توجد إشعارات جديدة.';
+
+  @override
+  String get openMenu => 'فتح القائمة';
+
+  @override
+  String goodMorning(String name) {
+    return 'صباح الخير، $name';
+  }
+
+  @override
+  String goodAfternoon(String name) {
+    return 'مساء الخير، $name';
+  }
+
+  @override
+  String goodEvening(String name) {
+    return 'مساء الخير، $name';
+  }
+
+  @override
+  String get dashboardSubtitle => 'إليك نظرة على أداء عقاراتك اليوم.';
+
+  @override
+  String get occupancy => 'نسبة الإشغال';
+
+  @override
+  String occupiedOf(int occupied, int total) {
+    return '$occupied من $total مشغولة';
+  }
+
+  @override
+  String get dueNext30 => 'مستحق خلال 30 يومًا';
+
+  @override
+  String paymentsCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString دفعة',
+      many: '$countString دفعة',
+      few: '$countString دفعات',
+      two: 'دفعتان',
+      one: 'دفعة واحدة',
+      zero: 'لا توجد دفعات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get collections6m => 'التحصيلات خلال آخر 6 أشهر';
+
+  @override
+  String get leaseRenewals => 'تجديد العقود';
+
+  @override
+  String get next90Days => 'خلال 90 يومًا';
+
+  @override
+  String endsInDays(num days) {
+    final intl.NumberFormat daysNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String daysString = daysNumberFormat.format(days);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'ينتهي خلال $daysString يوم',
+      one: 'ينتهي غدًا',
+      zero: 'ينتهي اليوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noRenewals => 'لا توجد عقود تنتهي خلال 90 يومًا.';
+
+  @override
+  String get noUpcoming => 'لا توجد شيكات مستحقة قريبًا.';
+
+  @override
+  String get noOpenTickets => 'لا توجد طلبات صيانة مفتوحة.';
+
+  @override
+  String get quickActions => 'إجراءات سريعة';
+
+  @override
+  String get newRentAgreement => 'عقد إيجار جديد';
+
+  @override
+  String get recordPayment => 'تسجيل دفعة';
+
+  @override
+  String get newMaintenanceRequest => 'طلب صيانة جديد';
+
+  @override
+  String get viewAll => 'عرض الكل';
+
+  @override
+  String get getStartedTitle => 'لنبدأ بإعداد محفظتك العقارية';
+
+  @override
+  String get getStartedBody =>
+      'أضف عقارًا ثم مستأجرًا وعقد إيجار، وسيتم إنشاء الشيكات والتذكيرات تلقائيًا.';
+
+  @override
+  String get account => 'الحساب';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get profileComingSoon => 'تعديل الملف الشخصي قريبًا.';
+
+  @override
+  String get preferences => 'التفضيلات';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get themeSystem => 'حسب النظام';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get remindersInfo => 'التذكيرات التي نرسلها';
+
+  @override
+  String get reminderDeposit =>
+      'تذكير بإيداع الشيك قبل 3 أيام ويوم واحد من تاريخ الاستحقاق';
+
+  @override
+  String get reminderRenewal =>
+      'تنبيهات تجديد العقد قبل 90 و60 و30 يومًا من تاريخ الانتهاء';
+
+  @override
+  String get remindersDelivery =>
+      'تُرسل كإشعارات الساعة 8:00 صباحًا بتوقيت الإمارات.';
+
+  @override
+  String get securitySignIn => 'الأمان وتسجيل الدخول';
+
+  @override
+  String signedInAs(String email) {
+    return 'مسجّل الدخول باسم $email';
+  }
+
+  @override
+  String get legal => 'قانوني';
+
+  @override
+  String get dangerZone => 'منطقة الخطر';
+
+  @override
+  String get deleteAccountHint => 'حذف حسابك وجميع بياناته نهائيًا.';
+
+  @override
+  String get selectPropertyForBills =>
+      'اختر عقارًا لعرض فواتير المرافق الخاصة به.';
+
+  @override
+  String get serviceChargesHint =>
+      'تتم مزامنة رسوم الخدمات من ملاك للعقارات المشتركة.';
+
+  @override
+  String unpaidBills(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString فاتورة غير مدفوعة',
+      many: '$countString فاتورة غير مدفوعة',
+      few: '$countString فواتير غير مدفوعة',
+      two: 'فاتورتان غير مدفوعتين',
+      one: 'فاتورة واحدة غير مدفوعة',
+      zero: 'كلها مدفوعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get thisMonth => 'هذا الشهر';
+
+  @override
+  String get thisYear => 'هذا العام';
+
+  @override
+  String get authTagline => 'الإيجارات والشيكات والصيانة في مكان واحد.';
+
+  @override
+  String get authSubtagline =>
+      'مصمم للملاك في الإمارات: تابع كل شيك، وجدّد العقود في وقتها، وابقَ على تواصل مع المستأجرين.';
 }

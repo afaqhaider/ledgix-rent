@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
@@ -173,7 +174,7 @@ class _TicketDetailScreenState extends ConsumerState<TicketDetailScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(l.ticketDetails)),
+      appBar: ShellAppBar(title: Text(l.ticketDetails)),
       body: ListView(padding: const EdgeInsets.all(16), children: [
         Text(t.title, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 8),

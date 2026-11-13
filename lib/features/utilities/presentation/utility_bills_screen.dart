@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
@@ -127,7 +128,7 @@ class UtilityBillsScreen extends ConsumerWidget {
     final bills = ref.watch(utilityBillsProvider).whenData((all) =>
         all.where((b) => b.propertyId == propertyId).toList()..sort((a, b) => b.dueDate.compareTo(a.dueDate)));
     return Scaffold(
-      appBar: AppBar(title: Text('${l.utilityBills} · ${p.name}'), actions: [
+      appBar: ShellAppBar(title: Text('${l.utilityBills} · ${p.name}'), actions: [
         IconButton(tooltip: l.fetchBill, icon: const Icon(Icons.cloud_download_outlined), onPressed: () => _fetch(context, ref, p)),
       ]),
       floatingActionButton: FloatingActionButton.extended(heroTag: null, 

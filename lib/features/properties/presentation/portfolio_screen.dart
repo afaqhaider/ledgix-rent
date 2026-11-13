@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
@@ -29,7 +30,7 @@ class PortfolioScreen extends ConsumerWidget {
     final payments = ref.watch(paymentsProvider).value ?? const <Payment>[];
     final today = todayGst();
     return Scaffold(
-      appBar: AppBar(title: Text(context.l.portfolio)),
+      appBar: ShellAppBar(title: Text(context.l.properties)),
       floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/property/new'),
         icon: const Icon(Icons.add),
@@ -172,7 +173,7 @@ class PropertyDetailScreen extends ConsumerWidget {
     if (p == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     final l = context.l;
     return Scaffold(
-      appBar: AppBar(title: Text(p.name), actions: [
+      appBar: ShellAppBar(title: Text(p.name), actions: [
         IconButton(
           icon: const Icon(Icons.delete_outline),
           onPressed: () async {

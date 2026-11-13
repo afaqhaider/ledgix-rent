@@ -1459,6 +1459,342 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AADC'**
   String get aadcLabel;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @operations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get operations;
+
+  /// No description provided for @insights.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get insights;
+
+  /// No description provided for @properties.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get properties;
+
+  /// No description provided for @rentAgreements.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent agreements'**
+  String get rentAgreements;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get noNotifications;
+
+  /// No description provided for @openMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu'**
+  String get openMenu;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning, {name}'**
+  String goodMorning(String name);
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon, {name}'**
+  String goodAfternoon(String name);
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening, {name}'**
+  String goodEvening(String name);
+
+  /// No description provided for @dashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s how your properties are doing today.'**
+  String get dashboardSubtitle;
+
+  /// No description provided for @occupancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupancy'**
+  String get occupancy;
+
+  /// No description provided for @occupiedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{occupied} of {total} occupied'**
+  String occupiedOf(int occupied, int total);
+
+  /// No description provided for @dueNext30.
+  ///
+  /// In en, this message translates to:
+  /// **'Due in next 30 days'**
+  String get dueNext30;
+
+  /// No description provided for @paymentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No payments} =1{1 payment} other{{count} payments}}'**
+  String paymentsCount(num count);
+
+  /// No description provided for @collections6m.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections, last 6 months'**
+  String get collections6m;
+
+  /// No description provided for @leaseRenewals.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease renewals'**
+  String get leaseRenewals;
+
+  /// No description provided for @next90Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Next 90 days'**
+  String get next90Days;
+
+  /// No description provided for @endsInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Ends today} =1{Ends tomorrow} other{Ends in {days} days}}'**
+  String endsInDays(num days);
+
+  /// No description provided for @noRenewals.
+  ///
+  /// In en, this message translates to:
+  /// **'No leases end in the next 90 days.'**
+  String get noRenewals;
+
+  /// No description provided for @noUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'No cheques due soon.'**
+  String get noUpcoming;
+
+  /// No description provided for @noOpenTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'No open maintenance requests.'**
+  String get noOpenTickets;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get quickActions;
+
+  /// No description provided for @newRentAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'New rent agreement'**
+  String get newRentAgreement;
+
+  /// No description provided for @recordPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get recordPayment;
+
+  /// No description provided for @newMaintenanceRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New maintenance request'**
+  String get newMaintenanceRequest;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAll;
+
+  /// No description provided for @getStartedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s set up your portfolio'**
+  String get getStartedTitle;
+
+  /// No description provided for @getStartedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a property, then a tenant and a rent agreement. Cheques and reminders are created for you.'**
+  String get getStartedBody;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfile;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @profileComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile editing is coming soon.'**
+  String get profileComingSoon;
+
+  /// No description provided for @preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get preferences;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @remindersInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders we send'**
+  String get remindersInfo;
+
+  /// No description provided for @reminderDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque deposit reminders 3 days and 1 day before the due date'**
+  String get reminderDeposit;
+
+  /// No description provided for @reminderRenewal.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease renewal alerts 90, 60 and 30 days before the end date'**
+  String get reminderRenewal;
+
+  /// No description provided for @remindersDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent as push notifications at 8:00 AM UAE time.'**
+  String get remindersDelivery;
+
+  /// No description provided for @securitySignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Security & sign-in'**
+  String get securitySignIn;
+
+  /// No description provided for @signedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {email}'**
+  String signedInAs(String email);
+
+  /// No description provided for @legal.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get legal;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get dangerZone;
+
+  /// No description provided for @deleteAccountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete your account and all of its data.'**
+  String get deleteAccountHint;
+
+  /// No description provided for @selectPropertyForBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a property to see its utility bills.'**
+  String get selectPropertyForBills;
+
+  /// No description provided for @serviceChargesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charges are synced from Mollak for jointly owned properties.'**
+  String get serviceChargesHint;
+
+  /// No description provided for @unpaidBills.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{All paid} =1{1 unpaid bill} other{{count} unpaid bills}}'**
+  String unpaidBills(num count);
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get thisMonth;
+
+  /// No description provided for @thisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get thisYear;
+
+  /// No description provided for @authTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent, cheques and maintenance in one place.'**
+  String get authTagline;
+
+  /// No description provided for @authSubtagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop.'**
+  String get authSubtagline;
 }
 
 class _AppLocalizationsDelegate

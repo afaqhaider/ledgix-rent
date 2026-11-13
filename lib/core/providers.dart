@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:uuid/uuid.dart';
 
 import '../features/auth/data/demo_auth_repository.dart';
@@ -130,3 +131,12 @@ class LocaleNotifier extends Notifier<String> {
 }
 
 final localeProvider = NotifierProvider<LocaleNotifier, String>(LocaleNotifier.new);
+
+/// Light / dark / follow the system. Kept for the session, like the locale.
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() => ThemeMode.system;
+  void set(ThemeMode mode) => state = mode;
+}
+
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);

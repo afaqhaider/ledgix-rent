@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
@@ -48,7 +49,7 @@ class MaintenanceScreen extends ConsumerWidget {
     final l = context.l;
     final props = {for (final p in ref.watch(propertiesProvider).value ?? []) p.id: p.name};
     return Scaffold(
-      appBar: AppBar(title: Text(l.maintenance)),
+      appBar: ShellAppBar(title: Text(l.maintenance)),
       floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/tickets/new'),
         icon: const Icon(Icons.add),
