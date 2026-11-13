@@ -56,7 +56,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const SplashScreen()),
-      GoRoute(path: '/login', builder: (_, _) => const AuthFrame(child: LoginScreen())),
+      GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/onboarding', builder: (_, _) => const AuthFrame(child: OnboardingScreen())),
       GoRoute(path: '/more', redirect: (_, _) => '/settings'),
       // Every signed-in page renders inside the responsive shell (sidebar on
