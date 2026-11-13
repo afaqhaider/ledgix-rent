@@ -4,16 +4,17 @@ Flutter app (iOS + Android) for UAE landlords to manage rented units without an 
 Version 1 = landlord app: portfolio, tenants and leases, cheque manager, direct debits,
 hold requests, reminders, maintenance, vendors, dashboard and documents. English and Arabic (RTL), AED, `dd/MM/yyyy`, GST.
 
-## Run it now (no Firebase needed)
+## Run it
 
 ```bash
 flutter pub get
-flutter run          # demo mode: in-memory data, any login works
-flutter test
-flutter test integration_test -d <device-id>   # same flows + every screen, on a real phone
+flutter run                                   # real Firebase backend (the default)
+flutter run --dart-define=USE_FIREBASE=false  # demo mode: in-memory data, any login works
+flutter test                                  # always demo mode
+flutter test integration_test -d <device-id> --dart-define=USE_FIREBASE=false   # same flows + every screen, on a real phone
 ```
 
-Demo mode is the default. It uses in-memory repositories and a fake login so you can click through the whole app.
+Firebase is the default, so builds from Xcode, Xcode Cloud and Android Studio use the real backend without any extra flags. Demo mode (in-memory repositories and a fake login, forgotten on every launch) is only used by `flutter test` or when you pass `--dart-define=USE_FIREBASE=false`.
 
 ## Branding
 

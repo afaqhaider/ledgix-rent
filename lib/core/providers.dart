@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -27,9 +30,15 @@ import 'data/in_memory_repository.dart';
 import 'domain/entity.dart';
 import 'utils/dates.dart';
 
-/// Build with `--dart-define=USE_FIREBASE=true` once Firebase is configured.
-/// Without it the app runs in demo mode with in-memory data.
-const useFirebase = bool.fromEnvironment('USE_FIREBASE');
+/// Firebase is on by default, so builds from Xcode, Xcode Cloud and Android
+/// Studio (which pass no dart-defines) use the real backend. `flutter test`
+/// runs in demo mode with in-memory data. Force either mode with
+/// `--dart-define=USE_FIREBASE=true|false`.
+final bool useFirebase = const bool.hasEnvironment('USE_FIREBASE')
+    ? const bool.fromEnvironment('USE_FIREBASE')
+    : !_isFlutterTest;
+
+bool get _isFlutterTest => !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
 
 const _uuid = Uuid();
 String newId() => _uuid.v4();

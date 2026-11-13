@@ -69,3 +69,6 @@ functions/lib/
 # Web push service worker holds the Firebase web config (copy in secrets/)
 web/firebase-messaging-sw.js
 .firebase/
+
+# Agent worktrees (other branches checked out inside this project)
+.worktrees/
