@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
@@ -29,7 +30,7 @@ class HoldsScreen extends ConsumerWidget {
     final l = context.l;
     final holds = ref.watch(holdsProvider).whenData((h) => [...h]..sort((a, b) => b.originalDate.compareTo(a.originalDate)));
     return Scaffold(
-      appBar: AppBar(title: Text(l.holdRequests)),
+      appBar: ShellAppBar(title: Text(l.holdRequests)),
       body: AsyncList<HoldRequest>(
         items: holds,
         builder: (c, r) => Card(

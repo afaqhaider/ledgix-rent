@@ -31,8 +31,11 @@ class AsyncList<T> extends StatelessWidget {
     final data = items.value;
     if (data == null) return const Center(child: CircularProgressIndicator());
     if (data.isEmpty) return const EmptyState();
+    // Same page gutters as the dashboard: 24 on tablets/desktop, 16 on phones
+    // (cards add 4 of their own).
+    final gutter = MediaQuery.sizeOf(context).width >= 600 ? 20.0 : 12.0;
     return ListView.builder(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.fromLTRB(gutter, 8, gutter, 88),
       itemCount: data.length,
       itemBuilder: (c, i) => builder(c, data[i]),
     );

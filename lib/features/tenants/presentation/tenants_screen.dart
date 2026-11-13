@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/widgets/common.dart';
 import '../domain/tenant.dart';
@@ -11,7 +12,7 @@ class TenantsScreen extends ConsumerWidget {
   const TenantsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-        appBar: AppBar(title: Text(context.l.tenants)),
+        appBar: ShellAppBar(title: Text(context.l.tenants)),
         floatingActionButton: FloatingActionButton.extended(heroTag: null, 
           onPressed: () => context.push('/tenants/new'),
           icon: const Icon(Icons.person_add),

@@ -226,5 +226,123 @@
   "chillerLabel": "Chiller",
   "sewaLabel": "SEWA",
   "addcLabel": "ADDC",
-  "aadcLabel": "AADC"
+  "aadcLabel": "AADC",
+  "overview": "Overview",
+  "operations": "Operations",
+  "insights": "Insights",
+  "properties": "Properties",
+  "rentAgreements": "Rent agreements",
+  "settings": "Settings",
+  "notifications": "Notifications",
+  "noNotifications": "You're all caught up.",
+  "openMenu": "Open menu",
+  "goodMorning": "Good morning, {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodAfternoon": "Good afternoon, {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "Good evening, {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardSubtitle": "Here's how your properties are doing today.",
+  "occupancy": "Occupancy",
+  "occupiedOf": "{occupied} of {total} occupied",
+  "@occupiedOf": {
+    "placeholders": {
+      "occupied": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dueNext30": "Due in next 30 days",
+  "paymentsCount": "{count, plural, =0{No payments} =1{1 payment} other{{count} payments}}",
+  "@paymentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "collections6m": "Collections, last 6 months",
+  "leaseRenewals": "Lease renewals",
+  "next90Days": "Next 90 days",
+  "endsInDays": "{days, plural, =0{Ends today} =1{Ends tomorrow} other{Ends in {days} days}}",
+  "@endsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "noRenewals": "No leases end in the next 90 days.",
+  "noUpcoming": "No cheques due soon.",
+  "noOpenTickets": "No open maintenance requests.",
+  "quickActions": "Quick actions",
+  "newRentAgreement": "New rent agreement",
+  "recordPayment": "Record payment",
+  "newMaintenanceRequest": "New maintenance request",
+  "viewAll": "View all",
+  "getStartedTitle": "Let's set up your portfolio",
+  "getStartedBody": "Add a property, then a tenant and a rent agreement. Cheques and reminders are created for you.",
+  "account": "Account",
+  "editProfile": "Edit profile",
+  "profile": "Profile",
+  "profileComingSoon": "Profile editing is coming soon.",
+  "preferences": "Preferences",
+  "theme": "Theme",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "remindersInfo": "Reminders we send",
+  "reminderDeposit": "Cheque deposit reminders 3 days and 1 day before the due date",
+  "reminderRenewal": "Lease renewal alerts 90, 60 and 30 days before the end date",
+  "remindersDelivery": "Sent as push notifications at 8:00 AM UAE time.",
+  "securitySignIn": "Security & sign-in",
+  "signedInAs": "Signed in as {email}",
+  "@signedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "legal": "Legal",
+  "dangerZone": "Danger zone",
+  "deleteAccountHint": "Permanently delete your account and all of its data.",
+  "selectPropertyForBills": "Choose a property to see its utility bills.",
+  "serviceChargesHint": "Service charges are synced from Mollak for jointly owned properties.",
+  "unpaidBills": "{count, plural, =0{All paid} =1{1 unpaid bill} other{{count} unpaid bills}}",
+  "@unpaidBills": {
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "thisMonth": "This month",
+  "thisYear": "This year",
+  "authTagline": "Rent, cheques and maintenance in one place.",
+  "authSubtagline": "Built for landlords in the UAE: track every cheque, renew leases on time and keep tenants in the loop."
 }

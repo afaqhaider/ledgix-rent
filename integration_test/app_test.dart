@@ -42,7 +42,7 @@ void main() {
 
       final router = container.read(routerProvider);
       const paths = [
-        '/', '/portfolio', '/cheques', '/maintenance', '/more',
+        '/', '/portfolio', '/cheques', '/maintenance', '/settings', '/profile', '/utilities', '/service-charges',
         '/property/new', '/property/p1', '/property/p1/bills',
         '/tenants', '/tenants/new', '/leases', '/leases/new',
         '/debits', '/holds', '/tickets/new', '/tickets/t1',

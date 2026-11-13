@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
@@ -30,7 +31,7 @@ class ReportsScreen extends ConsumerWidget {
           ]),
         );
     return Scaffold(
-      appBar: AppBar(title: Text('${l.reports} · ${todayGst().year}')),
+      appBar: ShellAppBar(title: Text('${l.reports} · ${todayGst().year}')),
       body: reports.isEmpty
           ? const EmptyState()
           : ListView(padding: const EdgeInsets.all(12), children: [

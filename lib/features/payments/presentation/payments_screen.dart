@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
@@ -37,7 +38,7 @@ class _PaymentsScreenState extends ConsumerState<PaymentsScreen> {
       ..sort((a, b) => a.dueDate.compareTo(b.dueDate))));
     final title = widget.type == PaymentMethod.cheque ? l.cheques : l.directDebits;
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: ShellAppBar(title: Text(title)),
       body: Column(children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,

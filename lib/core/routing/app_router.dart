@@ -16,9 +16,13 @@ import '../../features/payments/presentation/payments_screen.dart';
 import '../../features/properties/presentation/portfolio_screen.dart';
 import '../../features/tenants/presentation/tenants_screen.dart';
 import '../../features/vendors/presentation/vendors_screen.dart';
+import '../../features/servicecharges/presentation/service_charges_screen.dart';
+import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/utilities/presentation/utilities_overview_screen.dart';
+import '../layout/app_shell.dart';
+import '../layout/auth_frame.dart';
 import '../providers.dart';
-import '../widgets/common.dart';
-import '../widgets/privacy.dart';
+import '../widgets/brand.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
@@ -26,145 +30,92 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(landlordProvider, (_, _) => refresh.value++);
   ref.onDispose(refresh.dispose);
 
+  // Pushed pages (details, forms) show in the browser address bar, so a
+  // refresh or shared link on the web reopens the same page.
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   return GoRouter(
     refreshListenable: refresh,
     redirect: (context, state) {
-      final uid = ref.read(userIdProvider);
-      if (uid.isLoading) return null;
       final loc = state.matchedLocation;
+      final uid = ref.read(userIdProvider);
+      final landlord = uid.value == null ? null : ref.read(landlordProvider);
+      // While sign-in state loads, show a splash (not the dashboard) and
+      // remember where the user was going.
+      if (uid.isLoading || (landlord?.isLoading ?? false)) {
+        return loc == '/splash' ? null : '/splash?from=${Uri.encodeComponent(state.uri.toString())}';
+      }
       if (uid.value == null) return loc == '/login' ? null : '/login';
-      final landlord = ref.read(landlordProvider);
-      if (landlord.isLoading) return null;
-      if (landlord.value == null) return loc == '/onboarding' ? null : '/onboarding';
+      if (landlord?.value == null) return loc == '/onboarding' ? null : '/onboarding';
+      if (loc == '/splash') {
+        final from = state.uri.queryParameters['from'];
+        const entry = ['/splash', '/login', '/onboarding'];
+        return from == null || entry.any(from.startsWith) ? '/' : from;
+      }
       if (loc == '/login' || loc == '/onboarding') return '/';
       return null;
     },
     routes: [
-      GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
-      GoRoute(path: '/onboarding', builder: (_, _) => const OnboardingScreen()),
-      StatefulShellRoute.indexedStack(
-        builder: (c, s, shell) => Scaffold(
-          body: shell,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: shell.currentIndex,
-            onDestinationSelected: (i) => shell.goBranch(i, initialLocation: i == shell.currentIndex),
-            destinations: [
-              NavigationDestination(icon: const Icon(Icons.dashboard_outlined), label: c.l.dashboard),
-              NavigationDestination(icon: const Icon(Icons.apartment), label: c.l.portfolio),
-              NavigationDestination(icon: const Icon(Icons.payments_outlined), label: c.l.cheques),
-              NavigationDestination(icon: const Icon(Icons.build_outlined), label: c.l.maintenance),
-              NavigationDestination(icon: const Icon(Icons.menu), label: c.l.more),
-            ],
-          ),
-        ),
-        branches: [
-          StatefulShellBranch(routes: [GoRoute(path: '/', builder: (_, _) => const DashboardScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/portfolio', builder: (_, _) => const PortfolioScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/cheques', builder: (_, _) => const PaymentsScreen(type: PaymentMethod.cheque))]),
-          StatefulShellBranch(routes: [GoRoute(path: '/maintenance', builder: (_, _) => const MaintenanceScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/more', builder: (_, _) => const MoreScreen())]),
+      GoRoute(path: '/splash', builder: (_, _) => const SplashScreen()),
+      GoRoute(path: '/login', builder: (_, _) => const AuthFrame(child: LoginScreen())),
+      GoRoute(path: '/onboarding', builder: (_, _) => const AuthFrame(child: OnboardingScreen())),
+      GoRoute(path: '/more', redirect: (_, _) => '/settings'),
+      // Every signed-in page renders inside the responsive shell (sidebar on
+      // desktop, rail on tablets, drawer + bottom bar on phones).
+      ShellRoute(
+        builder: (c, s, child) => AppShell(location: s.matchedLocation, child: child),
+        routes: [
+          GoRoute(path: '/', pageBuilder: (_, s) => _section(s, const DashboardScreen())),
+          GoRoute(path: '/portfolio', pageBuilder: (_, s) => _section(s, const PortfolioScreen())),
+          GoRoute(path: '/cheques', pageBuilder: (_, s) => _section(s, const PaymentsScreen(type: PaymentMethod.cheque))),
+          GoRoute(path: '/maintenance', pageBuilder: (_, s) => _section(s, const MaintenanceScreen())),
+          GoRoute(path: '/property/new', builder: (_, _) => const PropertyFormScreen()),
+          GoRoute(path: '/property/:id', builder: (_, s) => PropertyDetailScreen(id: s.pathParameters['id']!)),
+          GoRoute(path: '/tenants', pageBuilder: (_, s) => _section(s, const TenantsScreen())),
+          GoRoute(path: '/tenants/new', builder: (_, _) => const TenantFormScreen()),
+          GoRoute(path: '/leases', pageBuilder: (_, s) => _section(s, const LeasesScreen())),
+          GoRoute(path: '/leases/new', builder: (_, _) => const LeaseFormScreen()),
+          GoRoute(path: '/debits', pageBuilder: (_, s) => _section(s, const PaymentsScreen(type: PaymentMethod.directDebit))),
+          GoRoute(path: '/holds', pageBuilder: (_, s) => _section(s, const HoldsScreen())),
+          GoRoute(path: '/tickets/new', builder: (_, _) => const TicketFormScreen()),
+          GoRoute(path: '/tickets/:id', builder: (_, s) => TicketDetailScreen(id: s.pathParameters['id']!)),
+          GoRoute(path: '/property/:id/bills', builder: (_, s) => UtilityBillsScreen(propertyId: s.pathParameters['id']!)),
+          GoRoute(path: '/reports', pageBuilder: (_, s) => _section(s, const ReportsScreen())),
+          GoRoute(path: '/vendors', pageBuilder: (_, s) => _section(s, const VendorsScreen())),
+          GoRoute(path: '/vendors/new', builder: (_, _) => const VendorFormScreen()),
+          GoRoute(path: '/utilities', pageBuilder: (_, s) => _section(s, const UtilitiesOverviewScreen())),
+          GoRoute(path: '/service-charges', pageBuilder: (_, s) => _section(s, const ServiceChargesScreen())),
+          GoRoute(path: '/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
+          // PLACEHOLDER: the forms branch adds the real profile editor; point this route at it on merge.
+          GoRoute(path: '/profile', builder: (_, _) => const ProfilePlaceholderScreen()),
         ],
       ),
-      GoRoute(path: '/property/new', builder: (_, _) => const PropertyFormScreen()),
-      GoRoute(path: '/property/:id', builder: (_, s) => PropertyDetailScreen(id: s.pathParameters['id']!)),
-      GoRoute(path: '/tenants', builder: (_, _) => const TenantsScreen()),
-      GoRoute(path: '/tenants/new', builder: (_, _) => const TenantFormScreen()),
-      GoRoute(path: '/leases', builder: (_, _) => const LeasesScreen()),
-      GoRoute(path: '/leases/new', builder: (_, _) => const LeaseFormScreen()),
-      GoRoute(path: '/debits', builder: (_, _) => const PaymentsScreen(type: PaymentMethod.directDebit)),
-      GoRoute(path: '/holds', builder: (_, _) => const HoldsScreen()),
-      GoRoute(path: '/tickets/new', builder: (_, _) => const TicketFormScreen()),
-      GoRoute(path: '/tickets/:id', builder: (_, s) => TicketDetailScreen(id: s.pathParameters['id']!)),
-      GoRoute(path: '/property/:id/bills', builder: (_, s) => UtilityBillsScreen(propertyId: s.pathParameters['id']!)),
-      GoRoute(path: '/reports', builder: (_, _) => const ReportsScreen()),
-      GoRoute(path: '/vendors', builder: (_, _) => const VendorsScreen()),
-      GoRoute(path: '/vendors/new', builder: (_, _) => const VendorFormScreen()),
     ],
   );
 });
 
-class MoreScreen extends ConsumerWidget {
-  const MoreScreen({super.key});
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l = context.l;
-    Widget item(IconData i, String t, String path) =>
-        ListTile(leading: Icon(i), title: Text(t), trailing: const Icon(Icons.chevron_right), onTap: () => context.push(path));
-    return Scaffold(
-      appBar: AppBar(title: Text(l.more)),
-      body: ListView(children: [
-        item(Icons.people_outline, l.tenants, '/tenants'),
-        item(Icons.description_outlined, l.leases, '/leases'),
-        item(Icons.account_balance_outlined, l.directDebits, '/debits'),
-        item(Icons.pause_circle_outline, l.holdRequests, '/holds'),
-        item(Icons.handyman_outlined, l.vendors, '/vendors'),
-        item(Icons.bar_chart, l.reports, '/reports'),
-        const Divider(),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: Text(l.language),
-          trailing: SegmentedButton<String>(
-            segments: [ButtonSegment(value: 'en', label: Text(l.english)), ButtonSegment(value: 'ar', label: Text(l.arabic))],
-            selected: {ref.watch(localeProvider)},
-            onSelectionChanged: (s) => ref.read(localeProvider.notifier).set(s.first),
-          ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.privacy_tip_outlined),
-          title: Text(l.privacyPolicy),
-          trailing: const Icon(Icons.open_in_new),
-          onTap: () => openPrivacyPolicy(context),
-        ),
-        ListTile(
-          leading: const Icon(Icons.logout),
-          title: Text(l.signOut),
-          onTap: () => ref.read(authRepositoryProvider).signOut(),
-        ),
-        ListTile(
-          key: const Key('delete-account'),
-          leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
-          title: Text(l.deleteAccount, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-          onTap: () => _confirmDelete(context, ref),
-        ),
-      ]),
+/// Sidebar sections switch with a quick fade instead of a page slide;
+/// pages pushed on top (forms, details) keep the platform transition.
+Page<void> _section(GoRouterState state, Widget child) => CustomTransitionPage<void>(
+      key: state.pageKey,
+      child: child,
+      transitionDuration: const Duration(milliseconds: 160),
+      reverseTransitionDuration: const Duration(milliseconds: 120),
+      transitionsBuilder: (_, animation, _, child) =>
+          FadeTransition(opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut), child: child),
     );
-  }
 
-  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
-    final l = context.l;
-    final error = Theme.of(context).colorScheme.error;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (c) => AlertDialog(
-        icon: Icon(Icons.warning_amber_rounded, color: error),
-        title: Text(l.deleteAccountTitle),
-        content: Text(l.deleteAccountBody),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(c, false), child: Text(l.cancel)),
-          FilledButton(
-            key: const Key('confirm-delete-account'),
-            style: FilledButton.styleFrom(backgroundColor: error, foregroundColor: Theme.of(context).colorScheme.onError),
-            onPressed: () => Navigator.pop(c, true),
-            child: Text(l.delete),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !context.mounted) return;
-    final messenger = ScaffoldMessenger.of(context);
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
-    );
-    final nav = Navigator.of(context, rootNavigator: true);
-    try {
-      final deleted = await ref.read(authRepositoryProvider).deleteAccount();
-      nav.pop();
-      if (deleted) messenger.showSnackBar(SnackBar(content: Text(l.accountDeleted)));
-    } catch (e) {
-      nav.pop();
-      messenger.showSnackBar(SnackBar(content: Text('$e')));
-    }
-  }
+/// Shown while the sign-in state loads, so the dashboard never flashes.
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Scaffold(
+        body: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            LogoMark(size: 72),
+            SizedBox(height: 24),
+            SizedBox(width: 28, height: 28, child: CircularProgressIndicator(strokeWidth: 3)),
+          ]),
+        ),
+      );
 }

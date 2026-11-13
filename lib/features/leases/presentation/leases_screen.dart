@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/layout/app_shell.dart';
 import '../../../core/feature_flags.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
@@ -41,7 +42,7 @@ class LeasesScreen extends ConsumerWidget {
     final props = {for (final p in ref.watch(propertiesProvider).value ?? []) p.id: p.name};
     final tenants = {for (final t in ref.watch(tenantsProvider).value ?? []) t.id: t.name};
     return Scaffold(
-      appBar: AppBar(title: Text(context.l.leases)),
+      appBar: ShellAppBar(title: Text(context.l.rentAgreements)),
       floatingActionButton: FloatingActionButton.extended(heroTag: null, 
         onPressed: () => context.push('/leases/new'),
         icon: const Icon(Icons.add),
