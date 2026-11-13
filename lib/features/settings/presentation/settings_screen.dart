@@ -6,6 +6,7 @@ import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/widgets/common.dart';
 import '../../../core/widgets/privacy.dart';
+import '../../account/account_providers.dart';
 import '../../landlord/presentation/onboarding_screen.dart' show landlordProvider;
 
 class SettingsScreen extends ConsumerWidget {
@@ -16,9 +17,9 @@ class SettingsScreen extends ConsumerWidget {
     final l = context.l;
     final scheme = Theme.of(context).colorScheme;
     final landlord = ref.watch(landlordProvider).value;
-    final name = landlord?.name.trim() ?? '';
-    final email = landlord?.email.trim() ?? '';
+    final (name, email) = signedInIdentity(ref);
     final phone = landlord?.phone.trim() ?? '';
+    final tenant = ref.watch(roleProvider).value?.isTenant ?? false;
 
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.settings)),
@@ -32,16 +33,25 @@ class SettingsScreen extends ConsumerWidget {
                 foregroundColor: scheme.onPrimaryContainer,
                 child: Text((name.isNotEmpty ? name : (email.isNotEmpty ? email : '?')).characters.first.toUpperCase()),
               ),
-              title: Text(name.isEmpty ? l.landlord : name),
+              title: Text(name.isEmpty ? (tenant ? l.tpRoleTenant : l.landlord) : name),
               subtitle: Text([email, phone].where((e) => e.isNotEmpty).join(' · ')),
             ),
-            ListTile(
-              key: const Key('edit-profile'),
-              leading: const Icon(Icons.person_outline),
-              title: Text(l.editProfile),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push('/profile'),
-            ),
+            if (tenant)
+              ListTile(
+                key: const Key('manage-landlords'),
+                leading: const Icon(Icons.person_pin_outlined),
+                title: Text(l.tpManageLandlords),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.go('/t/landlords'),
+              )
+            else
+              ListTile(
+                key: const Key('edit-profile'),
+                leading: const Icon(Icons.person_outline),
+                title: Text(l.editProfile),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/profile'),
+              ),
           ]),
           _Section(title: l.preferences, children: [
             _SettingRow(
@@ -80,16 +90,22 @@ class SettingsScreen extends ConsumerWidget {
               title: Text(l.remindersInfo),
               subtitle: Text(l.remindersDelivery),
             ),
-            ListTile(
-              dense: true,
-              leading: const Icon(Icons.payments_outlined),
-              title: Text(l.reminderDeposit),
-            ),
-            ListTile(
-              dense: true,
-              leading: const Icon(Icons.event_repeat_outlined),
-              title: Text(l.reminderRenewal),
-            ),
+            if (tenant) ...[
+              ListTile(dense: true, leading: const Icon(Icons.payments_outlined), title: Text(l.tpRentReminders)),
+              ListTile(dense: true, leading: const Icon(Icons.event_repeat_outlined), title: Text(l.tpRenewalReminders)),
+              ListTile(dense: true, leading: const Icon(Icons.error_outline), title: Text(l.tpBounced)),
+            ] else ...[
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.payments_outlined),
+                title: Text(l.reminderDeposit),
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.event_repeat_outlined),
+                title: Text(l.reminderRenewal),
+              ),
+            ],
           ]),
           _Section(title: l.securitySignIn, children: [
             if (email.isNotEmpty)

@@ -25,6 +25,16 @@ final pageScrollable = find
         e.findAncestorWidgetOfExactType<Sidebar>() == null)
     .first;
 
+/// Completes landlord onboarding if it is showing (demo data is shared
+/// across tests, so it may already be done).
+Future<void> onboardLandlord(WidgetTester tester) async {
+  if (find.byKey(const Key('onboarding-units')).evaluate().isEmpty) return;
+  await tester.enterText(find.byKey(const Key('onboarding-name')), 'Afaq');
+  await tester.enterText(find.byKey(const Key('onboarding-units')), '3');
+  await tapVisible(tester, find.byKey(const Key('onboarding-continue')));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   testWidgets('demo flow: sign in, onboard, see dashboard', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: LedgixApp()));
@@ -35,18 +45,16 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    // Onboarding.
-    expect(find.text('Welcome, landlord!'), findsOneWidget);
-    await tester.enterText(find.byType(TextFormField).at(0), 'Afaq');
-    await tester.enterText(find.byType(TextFormField).at(1), 'Marina Studio');
-    await tapVisible(tester, find.widgetWithText(FilledButton, 'Continue'));
-    await tester.pumpAndSettle();
+    // Onboarding: name, number of units and role only.
+    expect(find.text('Set up your account'), findsOneWidget);
+    expect(find.byKey(const Key('onboarding-role')), findsOneWidget);
+    await onboardLandlord(tester);
 
-    // Dashboard, then portfolio lists the first property.
+    // Dashboard, then the (empty) portfolio.
     expect(find.text('Collected this month'), findsOneWidget);
     await tester.tap(find.byKey(const Key('nav-/portfolio')));
     await tester.pumpAndSettle();
-    expect(find.text('Marina Studio'), findsOneWidget);
+    expect(find.byKey(const Key('nav-/portfolio')), findsOneWidget);
   });
 
   testWidgets('Continue with LedGix ID signs in (demo)', (tester) async {
@@ -58,7 +66,7 @@ void main() {
     // Signed in: login is gone (onboarding or dashboard, depending on demo state).
     expect(find.byKey(const Key('ledgix-sign-in')), findsNothing);
     expect(
-      find.text('Welcome, landlord!').evaluate().isNotEmpty || find.text('Collected this month').evaluate().isNotEmpty,
+      find.text('Set up your account').evaluate().isNotEmpty || find.text('Collected this month').evaluate().isNotEmpty,
       isTrue,
     );
     await tester.pumpWidget(const SizedBox()); // reset for the next test
@@ -70,12 +78,7 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
     await tester.pumpAndSettle();
     // Demo data is shared across tests, so onboarding may already be done.
-    if (find.text('Welcome, landlord!').evaluate().isNotEmpty) {
-      await tester.enterText(find.byType(TextFormField).at(0), 'Afaq');
-      await tester.enterText(find.byType(TextFormField).at(1), 'Marina Studio');
-      await tapVisible(tester, find.widgetWithText(FilledButton, 'Continue'));
-      await tester.pumpAndSettle();
-    }
+    await onboardLandlord(tester);
 
     await tester.tap(find.byKey(const Key('nav-/settings')));
     await tester.pumpAndSettle();

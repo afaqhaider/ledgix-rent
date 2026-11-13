@@ -10,7 +10,9 @@ import 'core/l10n/gen/app_localizations.dart';
 import 'core/providers.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/data/demo_auth_repository.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
+import 'features/tenant_portal/data/demo_seed.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -20,7 +22,12 @@ Future<void> main() async {
   // git-ignored and kept in secrets/.
   if (useFirebase) await Firebase.initializeApp(options: kIsWeb ? DefaultFirebaseOptions.web : null);
   if (useFirebase && kIsWeb) await _finishLedgixWebSignIn();
-  runApp(const ProviderScope(child: LedgixApp()));
+  final container = ProviderContainer();
+  // Demo builds only: /app/?demo=tenant previews the tenant app with sample data.
+  if (!useFirebase && kIsWeb && Uri.base.queryParameters['demo'] == 'tenant') {
+    await seedTenantDemo(container.read(authRepositoryProvider) as DemoAuthRepository);
+  }
+  runApp(UncontrolledProviderScope(container: container, child: const LedgixApp()));
 }
 
 /// The browser comes back from LedGix ID to /hub-callback?code=…; redeem it

@@ -70,6 +70,26 @@ Phone sign-in is not wired up for web (it needs reCAPTCHA); LedGix ID, email, Go
   - Parsing is plain Dart in `lib/features/documents/domain/` (unit-tested with made-up documents).
   - **Your own ID is never a tenant:** if a scanned ID, passport or tenant section matches your profile (or a property's owner ID), nothing is filled in as a tenant and saving a tenant with it is blocked. Add your own Emirates ID in My profile so this works.
 
+## Roles and the tenant app
+
+- **Onboarding** asks only for your name, number of units and role (Landlord or Property manager). Properties are added afterwards from the property form.
+- **Tenant sign-up**: on "Create account", choose "I'm a tenant". Tenant onboarding asks for a name and, optionally, an invite code.
+- **Invite codes**: after adding a tenant (or a rent agreement for a tenant who hasn't joined) the landlord gets an 8-character code to copy or share; "Invite to app" on the tenant list makes a new one. Codes expire after 30 days and work once.
+- **Several landlords**: a tenant adds more landlords with codes under Landlords. When every lease with a landlord has ended, that landlord moves to "Former" (read-only) and can be removed.
+- **Sharing**: each document row has a "Share with tenant" switch (off by default). Cheque copies are shared with that lease's tenant by default and can be switched off per cheque.
+- **Tenant app** (`/t/...`): Home, Landlords (name, email, phone, Emirates ID), Properties ("{name} · Agreement AED x", expand for details and shared documents), Payments (status and cheque copies), Inspections, Maintenance requests, Settings.
+- **Reminders for tenants**: 7, 3 and 1 days before each payment and on the due day, when a cheque bounces or is put on hold, and 60/30 days before a lease ends.
+- **Demo preview**: a demo web build (`USE_FIREBASE=false`) opened at `/app/?demo=tenant` signs in as a sample tenant with made-up data.
+
+How it works: tenants never read `landlords/{uid}/**`. Cloud Functions (`functions/src/tenants.ts`) keep a filtered copy per tenant in `tenantViews/{tenantUid}/…` and the links in `tenantLinks/{tenantUid}/landlords/{landlordUid}`; both are read-only to the tenant. Invite codes live server-side in `invites/`. Test the whole flow offline:
+
+```bash
+cd functions && npm run build && cd ..
+firebase emulators:exec --only firestore,functions,auth,storage --project demo-ledgix-rent "node functions/scripts/tenant_flow_emulator_test.mjs"
+```
+
+(`firebase.json` needs an `emulators` block with auth 9099, firestore 8080, functions 5001 and storage 9199.)
+
 ## Architecture
 
 - `lib/features/<feature>/{data,domain,presentation}`, shared code in `lib/core`.
@@ -130,6 +150,8 @@ Never commit keys. Deploy yourself with `firebase deploy --only functions`.
 **Not built yet**: the maintenance company's own in-app inbox (work orders are stored and pushed to a linked company account, but the company-side screens are a later version), bill payment, Ejari registration/renewal and fee payment, and PDF bill upload (needs a file-picker package; photos work now).
 
 ## Data layout (Firestore)
+
+`users/{uid}` (role, name, units, push tokens) · `landlords/{uid}/…` (landlord data) · `tenantViews/{uid}/…` and `tenantLinks/{uid}/…` (tenant read model, server-written) · `invites/{code}` (server-only).
 
 `landlords/{uid}/{profile|properties|tenants|leases|payments|holdRequests|maintenanceTickets|vendors|workOrders|quotes|utilityBills|serviceCharges}/{id}`
 

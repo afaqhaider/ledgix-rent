@@ -69,13 +69,14 @@ final fileStorageProvider =
 /// Demo repositories live for the whole app session.
 final _demoStore = <String, Object>{};
 
+/// Any demo user's collection (the demo tenant portal reads its landlords' data).
+InMemoryRepository<T> demoRepo<T extends Entity>(String uid, String collection) =>
+    _demoStore.putIfAbsent('$uid/$collection', () => InMemoryRepository<T>()) as InMemoryRepository<T>;
+
 CrudRepository<T> _repo<T extends Entity>(
     Ref ref, String collection, T Function(Map<String, dynamic>) fromMap) {
   final uid = ref.watch(userIdProvider).value ?? 'anon';
-  if (!useFirebase) {
-    return _demoStore.putIfAbsent('$uid/$collection', () => InMemoryRepository<T>())
-        as InMemoryRepository<T>;
-  }
+  if (!useFirebase) return demoRepo<T>(uid, collection);
   return FirestoreRepository<T>(
       FirebaseFirestore.instance.collection('landlords/$uid/$collection'), fromMap);
 }

@@ -63,8 +63,12 @@ Future<XFile?> pickDocumentFile(BuildContext context, {bool allowCamera = true})
 /// One row in a documents list: either already saved ([saved]) or picked and
 /// waiting to upload ([file]).
 class DocumentDraft {
-  DocumentDraft({required this.kind, this.saved, this.file, this.size});
+  DocumentDraft({required this.kind, this.saved, this.file, this.size, bool? shared})
+      : shared = shared ?? saved?.sharedWithTenant ?? false;
   String kind;
+
+  /// Visible to the linked tenant in their app.
+  bool shared;
   final AppDocument? saved;
   final XFile? file;
   final int? size;
@@ -100,6 +104,11 @@ class DocumentsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShared(DocumentDraft d, bool shared) {
+    d.shared = shared;
+    notifyListeners();
+  }
+
   void remove(DocumentDraft d) {
     drafts.remove(d);
     notifyListeners();
@@ -109,12 +118,13 @@ class DocumentsController extends ChangeNotifier {
   Future<List<AppDocument>> uploadAll(FileStorage storage, String folder, AppLocalizations l) async => [
         for (final d in drafts)
           if (d.saved != null && d.file == null)
-            AppDocument(name: d.saved!.name, url: d.saved!.url, kind: d.kind)
+            AppDocument(name: d.saved!.name, url: d.saved!.url, kind: d.kind, sharedWithTenant: d.shared)
           else if (d.file != null)
             AppDocument(
               name: documentKindLabel(l, d.kind),
               url: await storage.uploadFile('$folder/${newId()}_${_safe(d.file!.name)}', d.file!),
               kind: d.kind,
+              sharedWithTenant: d.shared,
             ),
       ];
 
@@ -222,6 +232,14 @@ class _DocumentRow extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
             ),
           ]),
+        ),
+        IconButton(
+          key: Key('share-doc-${controller.drafts.indexOf(draft)}'),
+          tooltip: draft.shared ? l.tpSharedWithTenant : l.tpShareWithTenant,
+          isSelected: draft.shared,
+          icon: const Icon(Icons.person_add_alt_outlined),
+          selectedIcon: Icon(Icons.how_to_reg, color: scheme.primary),
+          onPressed: () => controller.setShared(draft, !draft.shared),
         ),
         if (!draft.isPdf)
           IconButton(tooltip: l.preview, icon: const Icon(Icons.visibility_outlined), onPressed: () => showDocumentPreview(context, draft)),

@@ -161,8 +161,14 @@ void main() {
     expect(find.text('Example'), findsOneWidget);
     await tester.enterText(find.byKey(const ValueKey('field-phone')), '0501234567');
     await _save(tester);
+    // A new tenant gets an app invite code straight away.
+    expect(find.byKey(const Key('tenant-invite-dialog')), findsOneWidget);
+    expect(find.byKey(const Key('invite-code')), findsOneWidget);
+    await tester.tap(find.text('Later'));
+    await tester.pumpAndSettle();
     final t = (await tester.runAsync(() => c.read(tenantRepositoryProvider).watchAll().first))!.single;
     expect(t.name, 'Alex Tenant Example');
+    expect(t.inviteCode, hasLength(8));
     expect(t.emiratesIdNo, '784-1990-2222222-2');
     expect(t.documents.single.kind, DocumentKinds.emiratesId); // the scanned card was attached
   });

@@ -3,13 +3,22 @@
 /// [kind] is one of the [DocumentKinds] ids. Older records used
 /// `lease` and `emiratesId`; they still load.
 class AppDocument {
-  const AppDocument({required this.name, required this.url, this.kind = DocumentKinds.other});
+  const AppDocument({required this.name, required this.url, this.kind = DocumentKinds.other, this.sharedWithTenant = false});
   final String name, url;
   final String kind;
 
-  Map<String, dynamic> toMap() => {'name': name, 'url': url, 'kind': kind};
-  factory AppDocument.fromMap(Map<String, dynamic> m) =>
-      AppDocument(name: '${m['name'] ?? ''}', url: '${m['url'] ?? ''}', kind: '${m['kind'] ?? DocumentKinds.other}');
+  /// Visible to the linked tenant in their app (off unless the landlord shares it).
+  final bool sharedWithTenant;
+
+  AppDocument withShared(bool shared) => AppDocument(name: name, url: url, kind: kind, sharedWithTenant: shared);
+
+  Map<String, dynamic> toMap() => {'name': name, 'url': url, 'kind': kind, 'shared': sharedWithTenant};
+  factory AppDocument.fromMap(Map<String, dynamic> m) => AppDocument(
+        name: '${m['name'] ?? ''}',
+        url: '${m['url'] ?? ''}',
+        kind: '${m['kind'] ?? DocumentKinds.other}',
+        sharedWithTenant: m['shared'] == true,
+      );
 
   static List<AppDocument> listFrom(Object? raw) => [
         for (final d in (raw as List? ?? const []))

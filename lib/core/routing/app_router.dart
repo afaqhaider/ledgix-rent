@@ -22,7 +22,10 @@ import '../../features/vendors/presentation/vendors_screen.dart';
 import '../../features/servicecharges/presentation/service_charges_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/utilities/presentation/utilities_overview_screen.dart';
+import '../../features/account/account_providers.dart';
+import '../../features/tenant_portal/presentation/tenant_screens.dart';
 import '../layout/app_shell.dart';
+import '../layout/navigation.dart';
 import '../layout/auth_frame.dart';
 import '../providers.dart';
 import '../widgets/brand.dart';
@@ -30,7 +33,7 @@ import '../widgets/brand.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
   ref.listen(userIdProvider, (_, _) => refresh.value++);
-  ref.listen(landlordProvider, (_, _) => refresh.value++);
+  ref.listen(roleProvider, (_, _) => refresh.value++);
   ref.onDispose(refresh.dispose);
 
   // Pushed pages (details, forms) show in the browser address bar, so a
@@ -41,20 +44,26 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final loc = state.matchedLocation;
       final uid = ref.read(userIdProvider);
-      final landlord = uid.value == null ? null : ref.read(landlordProvider);
+      final role = uid.value == null ? null : ref.read(roleProvider);
       // While sign-in state loads, show a splash (not the dashboard) and
       // remember where the user was going.
-      if (uid.isLoading || (landlord?.isLoading ?? false)) {
+      if (uid.isLoading || (role?.isLoading ?? false)) {
         return loc == '/splash' ? null : '/splash?from=${Uri.encodeComponent(state.uri.toString())}';
       }
       if (uid.value == null) return loc == '/login' ? null : '/login';
-      if (landlord?.value == null) return loc == '/onboarding' ? null : '/onboarding';
+      final r = role?.value;
+      if (r == null) return loc == '/onboarding' ? null : '/onboarding';
+      final home = r.isTenant ? '/t' : '/';
       if (loc == '/splash') {
         final from = state.uri.queryParameters['from'];
         const entry = ['/splash', '/login', '/onboarding'];
-        return from == null || entry.any(from.startsWith) ? '/' : from;
+        if (from == null || entry.any(from.startsWith)) return home;
+        final fromPath = Uri.parse(from).path;
+        return isTenantLocation(fromPath) == r.isTenant ? from : home;
       }
-      if (loc == '/login' || loc == '/onboarding') return '/';
+      if (loc == '/login' || loc == '/onboarding') return home;
+      // Tenants only see the tenant app; landlords never see it.
+      if (isTenantLocation(loc) != r.isTenant) return home;
       return null;
     },
     routes: [
@@ -77,7 +86,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/tenants', pageBuilder: (_, s) => _section(s, const TenantsScreen())),
           GoRoute(
             path: '/tenants/new',
-            builder: (_, s) => TenantFormScreen(prefill: (s.extra as Map?)?.cast<String, String>()),
+            builder: (_, s) => TenantFormScreen(
+              prefill: (s.extra as Map?)?.cast<String, String>(),
+              inviteAfterSave: s.uri.queryParameters['from'] != 'agreement',
+            ),
           ),
           GoRoute(path: '/tenants/:id/edit', builder: (_, s) => TenantFormScreen(id: s.pathParameters['id']!)),
           GoRoute(path: '/leases', pageBuilder: (_, s) => _section(s, const LeasesScreen())),
@@ -95,6 +107,26 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/service-charges', pageBuilder: (_, s) => _section(s, const ServiceChargesScreen())),
           GoRoute(path: '/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
           GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
+          // Tenant app.
+          GoRoute(path: '/t', pageBuilder: (_, s) => _section(s, const TenantHomeScreen())),
+          GoRoute(path: '/t/landlords', pageBuilder: (_, s) => _section(s, const TenantLandlordsScreen())),
+          GoRoute(
+            path: '/t/landlords/:uid',
+            builder: (_, s) => TenantLandlordDetailScreen(landlordUid: s.pathParameters['uid']!),
+          ),
+          GoRoute(path: '/t/properties', pageBuilder: (_, s) => _section(s, const TenantPropertiesScreen())),
+          GoRoute(path: '/t/payments', pageBuilder: (_, s) => _section(s, const TenantPaymentsScreen())),
+          GoRoute(path: '/t/inspections', pageBuilder: (_, s) => _section(s, const TenantInspectionsScreen())),
+          GoRoute(
+            path: '/t/inspections/:landlordUid/:id',
+            builder: (_, s) => TenantInspectionDetailScreen(
+              landlordUid: s.pathParameters['landlordUid']!,
+              id: s.pathParameters['id']!,
+            ),
+          ),
+          GoRoute(path: '/t/maintenance', pageBuilder: (_, s) => _section(s, const TenantMaintenanceScreen())),
+          GoRoute(path: '/t/maintenance/new', builder: (_, _) => const TenantRequestFormScreen()),
+          GoRoute(path: '/t/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
         ],
       ),
     ],

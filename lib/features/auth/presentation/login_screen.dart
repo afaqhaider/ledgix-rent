@@ -5,6 +5,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/auth/ledgix_hub.dart';
 import '../../../core/providers.dart';
+import '../../account/account_providers.dart';
+import '../../account/domain/app_user.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
@@ -84,7 +86,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // Demo mode accepts anything, including empty fields.
     if (useFirebase && !(_formKey.currentState?.validate() ?? true)) return;
     final auth = ref.read(authRepositoryProvider);
-    final email = _email.text.trim();
+    var email = _email.text.trim();
+    // Demo mode: "I'm a tenant" signs in as the demo tenant.
+    if (!useFirebase && _signUp && email.isEmpty && ref.read(signupRoleProvider).isTenant) email = 'tenant@demo';
     _run(_Busy.email, () {
       TextInput.finishAutofillContext();
       return _signUp ? auth.signUpWithEmail(email, _password.text) : auth.signInWithEmail(email, _password.text);
@@ -160,6 +164,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         const SizedBox(height: 6),
         Text(l.loginSubtitle, style: text.bodyMedium?.copyWith(color: scheme.onSurfaceVariant)),
         const SizedBox(height: 24),
+        if (_signUp) ...[
+          // Landlords / property managers and tenants get different apps.
+          SegmentedButton<bool>(
+            key: const Key('signup-role'),
+            showSelectedIcon: false,
+            segments: [
+              ButtonSegment(value: false, label: Text(l.tpRoleLandlord), icon: const Icon(Icons.key_outlined)),
+              ButtonSegment(value: true, label: Text(l.tpImTenant), icon: const Icon(Icons.person_pin_outlined)),
+            ],
+            selected: {ref.watch(signupRoleProvider).isTenant},
+            onSelectionChanged: (v) =>
+                ref.read(signupRoleProvider.notifier).set(v.first ? UserRole.tenant : UserRole.landlord),
+          ),
+          const SizedBox(height: 20),
+        ],
         if (_error != null) ...[
           _ErrorBanner(message: _error!, onClose: () => setState(() => _error = null)),
           const SizedBox(height: 16),

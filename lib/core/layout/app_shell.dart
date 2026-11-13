@@ -4,7 +4,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../features/dashboard/domain/dashboard_insights.dart';
 import '../../features/leases/domain/lease.dart' show PaymentMethod;
+import '../../features/account/account_providers.dart';
 import '../../features/landlord/presentation/onboarding_screen.dart' show landlordProvider;
+import '../../features/payments/domain/payment.dart' show PaymentStatus;
+import '../../features/tenant_portal/domain/tenant_view.dart' show TvPayment;
+import '../../features/tenant_portal/tenant_providers.dart';
 import '../providers.dart';
 import '../utils/dates.dart';
 import '../widgets/brand.dart';
@@ -97,7 +101,8 @@ class _AppShellState extends State<AppShell> {
         ]);
     }
 
-    final primaryIndex = primaryItems.indexWhere((i) => i.owns(location));
+    final primary = primaryItemsFor(location);
+    final primaryIndex = primary.indexWhere((i) => i.owns(location));
     return Title(
       title: current == null ? 'LedGix Rent' : '${current.label(l)} · LedGix Rent',
       color: Theme.of(context).colorScheme.primary,
@@ -114,9 +119,9 @@ class _AppShellState extends State<AppShell> {
           bottomNavigationBar: size == WindowSize.compact && primaryIndex >= 0
               ? NavigationBar(
                   selectedIndex: primaryIndex,
-                  onDestinationSelected: (i) => _go(primaryItems[i].path),
+                  onDestinationSelected: (i) => _go(primary[i].path),
                   destinations: [
-                    for (final i in primaryItems)
+                    for (final i in primary)
                       NavigationDestination(icon: Icon(i.icon), selectedIcon: Icon(i.selectedIcon), label: i.label(l)),
                   ],
                 )
@@ -209,9 +214,8 @@ class Sidebar extends ConsumerWidget {
       );
     }
 
-    final landlord = ref.watch(landlordProvider).value;
-    final name = landlord?.name.trim() ?? '';
-    final email = landlord?.email.trim() ?? '';
+    final (name, email) = signedInIdentity(ref);
+    final tenant = isTenantLocation(location);
 
     return Material(
       color: scheme.surfaceContainerLow,
@@ -245,7 +249,7 @@ class Sidebar extends ConsumerWidget {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: collapsed ? 10 : 12),
               children: [
-                for (final section in navSections) ...[
+                for (final section in navSectionsFor(location)) ...[
                   if (!collapsed)
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(12, 14, 12, 6),
@@ -263,7 +267,7 @@ class Sidebar extends ConsumerWidget {
           const Divider(height: 1),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: collapsed ? 10 : 12, vertical: 8),
-            child: tile(settingsItem),
+            child: tile(settingsItemFor(location)),
           ),
           // Signed-in user.
           Padding(
@@ -275,7 +279,7 @@ class Sidebar extends ConsumerWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text(name.isEmpty ? l.landlord : name,
+                        Text(name.isEmpty ? (tenant ? l.tpRoleTenant : l.landlord) : name,
                             overflow: TextOverflow.ellipsis,
                             style: text.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
                         if (email.isNotEmpty)
@@ -349,7 +353,7 @@ class ShellAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       actions: [
         ...actions,
-        const NotificationsButton(),
+        if (isTenantLocation(shell.location)) const TenantNotificationsButton() else const NotificationsButton(),
         if (wide) const AccountMenuButton(),
         SizedBox(width: wide ? 16 : 4),
       ],
@@ -421,9 +425,8 @@ class AccountMenuButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l;
-    final landlord = ref.watch(landlordProvider).value;
-    final name = landlord?.name.trim() ?? '';
-    final email = landlord?.email.trim() ?? '';
+    final (name, email) = signedInIdentity(ref);
+    final tenant = isTenantLocation(ShellScope.maybeOf(context)?.location ?? '');
     return MenuAnchor(
       alignmentOffset: const Offset(-180, 4),
       menuChildren: [
@@ -432,7 +435,8 @@ class AccountMenuButton extends ConsumerWidget {
           child: SizedBox(
             width: 200,
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(name.isEmpty ? l.landlord : name, style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(name.isEmpty ? (tenant ? l.tpRoleTenant : l.landlord) : name,
+                  style: const TextStyle(fontWeight: FontWeight.w700)),
               if (email.isNotEmpty) Text(email, style: Theme.of(context).textTheme.bodySmall),
             ]),
           ),
@@ -440,7 +444,7 @@ class AccountMenuButton extends ConsumerWidget {
         const Divider(height: 1),
         MenuItemButton(
           leadingIcon: const Icon(Icons.settings_outlined),
-          onPressed: () => context.go('/settings'),
+          onPressed: () => context.go(tenant ? '/t/settings' : '/settings'),
           child: Text(l.settings),
         ),
         MenuItemButton(
@@ -454,6 +458,53 @@ class AccountMenuButton extends ConsumerWidget {
         tooltip: l.account,
         onPressed: () => menu.isOpen ? menu.close() : menu.open(),
         icon: _Avatar(name: name, email: email, radius: 16),
+      ),
+    );
+  }
+}
+
+/// Name and email for the sidebar and account menu: the account record,
+/// else the landlord profile.
+(String, String) signedInIdentity(WidgetRef ref) {
+  final user = ref.watch(appUserProvider).value;
+  final landlord = ref.watch(landlordProvider).value;
+  final name = (user?.name.trim().isNotEmpty ?? false) ? user!.name.trim() : (landlord?.name.trim() ?? '');
+  final email = (landlord?.email.trim().isNotEmpty ?? false) ? landlord!.email.trim() : (user?.email.trim() ?? '');
+  return (name, email);
+}
+
+/// Tenant bell: payments due in the next 7 days.
+class TenantNotificationsButton extends ConsumerWidget {
+  const TenantNotificationsButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l;
+    final today = todayGst();
+    final due = [
+      for (final TvPayment p in ref.watch(tenantPaymentsProvider).value ?? const <TvPayment>[])
+        if (p.status == PaymentStatus.pending && !p.dueDate.isBefore(today) && p.dueDate.difference(today).inDays <= 7) p,
+    ];
+    return MenuAnchor(
+      alignmentOffset: const Offset(-220, 4),
+      menuChildren: [
+        if (due.isEmpty) MenuItemButton(onPressed: null, child: Text(l.noNotifications)),
+        for (final p in due.take(6))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.payments_outlined),
+            onPressed: () => context.go('/t/payments'),
+            child: SizedBox(
+              width: 260,
+              child: Text('${formatDate(p.dueDate)} · ${formatAed(p.amount)}\n${p.propertyName}',
+                  maxLines: 2, overflow: TextOverflow.ellipsis),
+            ),
+          ),
+      ],
+      builder: (context, menu, _) => IconButton(
+        key: const Key('notifications'),
+        tooltip: l.notifications,
+        onPressed: () => menu.isOpen ? menu.close() : menu.open(),
+        icon: Badge(isLabelVisible: due.isNotEmpty, label: Text('${due.length}'), child: const Icon(Icons.notifications_none)),
       ),
     );
   }

@@ -1336,4 +1336,284 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scheduleNote => 'The cheque schedule is created when you save.';
+
+  @override
+  String get tpSetupTitle => 'Set up your account';
+
+  @override
+  String get tpSetupSub =>
+      'A few details to get started. You can add properties right after.';
+
+  @override
+  String get tpUnits => 'Number of units';
+
+  @override
+  String get tpUnitsHelper => 'How many units you own or manage';
+
+  @override
+  String get tpInvalidNumber => 'Enter a number (1 or more)';
+
+  @override
+  String get tpRole => 'Your role';
+
+  @override
+  String get tpRoleLandlord => 'Landlord';
+
+  @override
+  String get tpRolePropertyManager => 'Property manager';
+
+  @override
+  String get tpRoleTenant => 'Tenant';
+
+  @override
+  String get tpImTenant => 'I\'m a tenant';
+
+  @override
+  String get tpImLandlord => 'I\'m a landlord or property manager';
+
+  @override
+  String get tpAccountType => 'Account type';
+
+  @override
+  String get tpTenantWelcome => 'Welcome to LedGix Rent';
+
+  @override
+  String get tpTenantWelcomeSub =>
+      'Enter your name. If your landlord gave you an invite code, add it to see your lease, payments and documents.';
+
+  @override
+  String get tpInviteCode => 'Invite code';
+
+  @override
+  String get tpInviteCodeHint => '8 characters, e.g. K7MP3QXA';
+
+  @override
+  String get tpSkip => 'Skip for now';
+
+  @override
+  String get tpCodeInvalid => 'That code isn\'t valid. Check it and try again.';
+
+  @override
+  String get tpCodeExpired =>
+      'That code has expired. Ask your landlord for a new one.';
+
+  @override
+  String get tpCodeUsed =>
+      'That code has already been used. Ask your landlord for a new one.';
+
+  @override
+  String get tpCodeOwn =>
+      'That\'s an invite code you created. Share it with your tenant instead.';
+
+  @override
+  String get tpCodeAlreadyLinked =>
+      'This tenant record is already linked to another account.';
+
+  @override
+  String get tpLandlordAdded => 'Landlord added.';
+
+  @override
+  String get tpInviteToApp => 'Invite to app';
+
+  @override
+  String tpInviteTitle(String name) {
+    return 'Invite $name to LedGix Rent';
+  }
+
+  @override
+  String tpInviteBody(String date) {
+    return 'Share this code with your tenant. They enter it in the LedGix Rent app to see their lease, payments and the documents you share. It expires on $date.';
+  }
+
+  @override
+  String get tpCopyCode => 'Copy code';
+
+  @override
+  String get tpShare => 'Share';
+
+  @override
+  String get tpCodeCopied => 'Code copied';
+
+  @override
+  String tpInviteShareText(String code) {
+    return 'Join me on LedGix Rent to see your lease, payments and documents. Your invite code: $code. Open https://rent.getledgix.com/app/ to sign up as a tenant.';
+  }
+
+  @override
+  String get tpNewCode => 'New code';
+
+  @override
+  String get tpNotInvited => 'Not invited';
+
+  @override
+  String get tpInvited => 'Invited';
+
+  @override
+  String get tpJoined => 'Joined the app';
+
+  @override
+  String get tpLater => 'Later';
+
+  @override
+  String get tpShareWithTenant => 'Share with tenant';
+
+  @override
+  String get tpSharedWithTenant => 'Shared with tenant';
+
+  @override
+  String get tpShareChequeCopy => 'Cheque copy shared with tenant';
+
+  @override
+  String get tpHome => 'Home';
+
+  @override
+  String get tpLandlords => 'Landlords';
+
+  @override
+  String get tpPayments => 'Payments';
+
+  @override
+  String get tpInspections => 'Inspections';
+
+  @override
+  String get tpManageLandlords => 'Manage landlords';
+
+  @override
+  String get tpAddLandlord => 'Add landlord';
+
+  @override
+  String get tpAddLandlordHint =>
+      'Enter the invite code your landlord shared with you.';
+
+  @override
+  String get tpCurrent => 'Current';
+
+  @override
+  String get tpFormer => 'Former';
+
+  @override
+  String get tpRemove => 'Remove';
+
+  @override
+  String tpRemoveTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get tpRemoveBody =>
+      'Your past lease with this landlord will no longer show in your app. They can add you again with a new code.';
+
+  @override
+  String get tpNoLandlords =>
+      'No landlords yet. Ask your landlord for an invite code.';
+
+  @override
+  String get tpLandlordDetails => 'Landlord details';
+
+  @override
+  String get tpAgreement => 'Agreement';
+
+  @override
+  String get tpSharedDocuments => 'Shared documents';
+
+  @override
+  String get tpNoSharedDocuments => 'No documents shared yet.';
+
+  @override
+  String get tpOpenDocument => 'Open';
+
+  @override
+  String get tpNextPayment => 'Next payment';
+
+  @override
+  String get tpNoUpcoming => 'No upcoming payments.';
+
+  @override
+  String get tpYourLeases => 'Your leases';
+
+  @override
+  String tpLeaseWith(String name) {
+    return 'with $name';
+  }
+
+  @override
+  String get tpRecentDocuments => 'Recent documents';
+
+  @override
+  String get tpChequeCopy => 'Cheque copy';
+
+  @override
+  String get tpViewChequeCopy => 'View cheque copy';
+
+  @override
+  String get tpNewRequest => 'New request';
+
+  @override
+  String get tpRequestSent => 'Request sent to your landlord.';
+
+  @override
+  String get tpRequestTitle => 'What needs fixing?';
+
+  @override
+  String get tpRequestDetails => 'Details';
+
+  @override
+  String get tpAddPhotos => 'Add photos';
+
+  @override
+  String tpPhotosAdded(int count) {
+    return '$count photo(s) added';
+  }
+
+  @override
+  String get tpMyRequests =>
+      'Requests are tracked by your landlord. You\'ll get updates when they act on them.';
+
+  @override
+  String get tpNoInspections => 'No inspections yet.';
+
+  @override
+  String get tpMoveIn => 'Move-in inspection';
+
+  @override
+  String get tpMoveOut => 'Move-out inspection';
+
+  @override
+  String get tpInspection => 'Inspection';
+
+  @override
+  String get tpEnded => 'Ended';
+
+  @override
+  String get tpActive => 'Active';
+
+  @override
+  String get tpPropertyDetails => 'Property details';
+
+  @override
+  String get tpNoProperties =>
+      'No properties yet. They appear once your landlord adds your rent agreement.';
+
+  @override
+  String get tpRentReminders =>
+      'Rent reminders 7, 3 and 1 days before each payment, and on the due day';
+
+  @override
+  String get tpRenewalReminders => 'Lease end reminders 60 and 30 days before';
+
+  @override
+  String get tpBounced => 'Alerts if a cheque bounces or is put on hold';
+
+  @override
+  String tpLeasePeriod(String start, String end) {
+    return '$start to $end';
+  }
+
+  @override
+  String get tpChoosePropertyFirst => 'Choose a property';
+
+  @override
+  String tpSince(String date) {
+    return 'Since $date';
+  }
 }

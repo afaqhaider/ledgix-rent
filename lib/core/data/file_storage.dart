@@ -28,12 +28,15 @@ class LocalFileStorage implements FileStorage {
 /// Stores every file under `landlords/{uid}/` so Storage rules can scope
 /// access to the signed-in landlord.
 class FirebaseFileStorage implements FileStorage {
-  FirebaseFileStorage(this.uid);
+  FirebaseFileStorage(this.uid, {this.root = 'landlords'});
   final String uid;
+
+  /// `landlords` for landlord files, `tenants` for tenants' own uploads.
+  final String root;
 
   @override
   Future<String> upload(String remotePath, String localPath) async {
-    final ref = FirebaseStorage.instance.ref('landlords/$uid/$remotePath');
+    final ref = FirebaseStorage.instance.ref('$root/$uid/$remotePath');
     if (kIsWeb) {
       // In a browser the picker gives a blob: URL, not a file on disk.
       final bytes = await XFile(localPath).readAsBytes();
@@ -47,7 +50,7 @@ class FirebaseFileStorage implements FileStorage {
   @override
   Future<String> uploadFile(String remotePath, XFile file) async {
     if (!kIsWeb && file.path.isNotEmpty) return upload(remotePath, file.path);
-    final ref = FirebaseStorage.instance.ref('landlords/$uid/$remotePath');
+    final ref = FirebaseStorage.instance.ref('$root/$uid/$remotePath');
     await ref.putData(await file.readAsBytes(), SettableMetadata(contentType: _contentType(remotePath)));
     return ref.getDownloadURL();
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +16,7 @@ import '../../documents/presentation/auto_fill.dart';
 import '../../documents/presentation/documents_editor.dart';
 import '../../documents/presentation/scan_to_fill.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
+import '../../tenant_portal/presentation/invite_dialog.dart';
 import '../domain/tenant.dart';
 
 class TenantsScreen extends ConsumerWidget {
@@ -33,13 +36,26 @@ class TenantsScreen extends ConsumerWidget {
             child: ListTile(
               leading: const CircleAvatar(child: Icon(Icons.person)),
               title: Text(t.name),
-              subtitle: Text([t.phone, t.email].where((s) => s.isNotEmpty).join(' · ')),
+              subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text([t.phone, t.email].where((s) => s.isNotEmpty).join(' · ')),
+                const SizedBox(height: 2),
+                TenantInviteStatusChip(tenant: t),
+              ]),
               onTap: () => c.push('/tenants/${t.id}/edit'),
-              trailing: IconButton(
-                tooltip: c.l.delete,
-                icon: const Icon(Icons.delete_outline),
-                onPressed: () => ref.read(tenantRepositoryProvider).delete(t.id),
-              ),
+              trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                if (t.appUid == null)
+                  IconButton(
+                    key: Key('invite-${t.id}'),
+                    tooltip: c.l.tpInviteToApp,
+                    icon: const Icon(Icons.forward_to_inbox_outlined),
+                    onPressed: () => showTenantInviteDialog(c, ref, t),
+                  ),
+                IconButton(
+                  tooltip: c.l.delete,
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () => ref.read(tenantRepositoryProvider).delete(t.id),
+                ),
+              ]),
             ),
           ),
         ),
@@ -53,9 +69,13 @@ final _emailFormat = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 /// so a Rent Agreement can select a tenant it just created. [prefill] holds
 /// form values (see [FormKeys]) from a scan made elsewhere.
 class TenantFormScreen extends ConsumerStatefulWidget {
-  const TenantFormScreen({super.key, this.id, this.prefill});
+  const TenantFormScreen({super.key, this.id, this.prefill, this.inviteAfterSave = true});
   final String? id;
   final Map<String, String>? prefill;
+
+  /// Offer the app invite code after adding a tenant. Off when the form was
+  /// opened from a rent agreement, which offers it after the agreement is saved.
+  final bool inviteAfterSave;
   @override
   ConsumerState<TenantFormScreen> createState() => _TenantFormScreenState();
 }
@@ -144,18 +164,43 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
     final l = context.l;
     final id = _existing?.id ?? newId();
     final docs = await _docs.uploadAll(ref.read(fileStorageProvider), 'tenants/$id', l);
-    await ref.read(tenantRepositoryProvider).save(Tenant(
-          id: id,
-          firstName: _f.text(FormKeys.firstName),
-          middleName: _f.text(FormKeys.middleName),
-          lastName: _f.text(FormKeys.lastName),
-          email: _f.text(FormKeys.email),
-          phone: _f.text(FormKeys.phone),
-          emiratesIdNo: _f.text(FormKeys.emiratesId),
-          passportNo: _f.text(FormKeys.passport),
+    final details = (
+      firstName: _f.text(FormKeys.firstName),
+      middleName: _f.text(FormKeys.middleName),
+      lastName: _f.text(FormKeys.lastName),
+      email: _f.text(FormKeys.email),
+      phone: _f.text(FormKeys.phone),
+      emiratesIdNo: _f.text(FormKeys.emiratesId),
+      passportNo: _f.text(FormKeys.passport),
+    );
+    // Editing keeps the app link and any invite code.
+    final tenant = _existing?.copyDetails(
+          firstName: details.firstName,
+          middleName: details.middleName,
+          lastName: details.lastName,
+          email: details.email,
+          phone: details.phone,
+          emiratesIdNo: details.emiratesIdNo,
+          passportNo: details.passportNo,
           documents: docs,
-        ));
-    if (mounted) context.pop(id);
+        ) ??
+        Tenant(
+          id: id,
+          firstName: details.firstName,
+          middleName: details.middleName,
+          lastName: details.lastName,
+          email: details.email,
+          phone: details.phone,
+          emiratesIdNo: details.emiratesIdNo,
+          passportNo: details.passportNo,
+          documents: docs,
+        );
+    await ref.read(tenantRepositoryProvider).save(tenant);
+    if (!mounted) return;
+    final root = Navigator.of(context, rootNavigator: true).context;
+    context.pop(id);
+    // Offer the app invite once the form has closed.
+    if (_existing == null && widget.inviteAfterSave && root.mounted) unawaited(showTenantInviteDialog(root, ref, tenant));
   }
 
   @override

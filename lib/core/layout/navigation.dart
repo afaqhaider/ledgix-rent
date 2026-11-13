@@ -24,7 +24,7 @@ class NavItem {
   final List<String> matches;
 
   bool owns(String location) {
-    if (path == '/') return location == '/';
+    if (path == '/' || path == '/t') return location == path; // home items match exactly
     bool under(String p) => location == p || location.startsWith('$p/');
     return under(path) || matches.any((m) => m.startsWith('^') ? RegExp(m).hasMatch(location) : under(m));
   }
@@ -72,10 +72,39 @@ List<NavSection> get navSections => [
 /// Bottom bar on phones: the four places landlords go most.
 final primaryItems = [dashboardItem, propertiesItem, chequesItem, maintenanceItem];
 
+// ---- Tenant app (every tenant route starts with /t) ----
+
+bool isTenantLocation(String location) => location == '/t' || location.startsWith('/t/');
+
+final tenantHomeItem = NavItem('/t', Icons.home_outlined, Icons.home, (l) => l.tpHome);
+final tenantLandlordsItem = NavItem('/t/landlords', Icons.person_pin_outlined, Icons.person_pin, (l) => l.tpLandlords);
+final tenantPropertiesItem = NavItem('/t/properties', Icons.apartment_outlined, Icons.apartment, (l) => l.properties);
+final tenantPaymentsItem = NavItem('/t/payments', Icons.payments_outlined, Icons.payments, (l) => l.tpPayments);
+final tenantInspectionsItem =
+    NavItem('/t/inspections', Icons.fact_check_outlined, Icons.fact_check, (l) => l.tpInspections);
+final tenantMaintenanceItem = NavItem('/t/maintenance', Icons.build_outlined, Icons.build, (l) => l.maintenance);
+final tenantSettingsItem = NavItem('/t/settings', Icons.settings_outlined, Icons.settings, (l) => l.settings);
+
+List<NavSection> get tenantNavSections => [
+      NavSection((l) => l.overview, [tenantHomeItem]),
+      NavSection((l) => l.tpYourLeases, [tenantLandlordsItem, tenantPropertiesItem, tenantPaymentsItem]),
+      NavSection((l) => l.operations, [tenantInspectionsItem, tenantMaintenanceItem]),
+    ];
+
+final tenantPrimaryItems = [tenantHomeItem, tenantPropertiesItem, tenantPaymentsItem, tenantMaintenanceItem];
+
+/// The landlord or tenant navigation, by route.
+List<NavSection> navSectionsFor(String location) => isTenantLocation(location) ? tenantNavSections : navSections;
+List<NavItem> primaryItemsFor(String location) => isTenantLocation(location) ? tenantPrimaryItems : primaryItems;
+NavItem settingsItemFor(String location) => isTenantLocation(location) ? tenantSettingsItem : settingsItem;
+
 Iterable<NavItem> get allNavItems => [for (final s in navSections) ...s.items, settingsItem];
 
 NavItem? navItemFor(String location) {
-  for (final i in allNavItems) {
+  final items = isTenantLocation(location)
+      ? [for (final s in tenantNavSections) ...s.items, tenantSettingsItem]
+      : allNavItems;
+  for (final i in items) {
     if (i.owns(location)) return i;
   }
   return null;
@@ -83,4 +112,8 @@ NavItem? navItemFor(String location) {
 
 /// Detail and settings pages read better in a narrower column than lists.
 bool isNarrowPage(String location) =>
-    location == '/settings' || location == '/profile' || RegExp(r'^/(property|tickets)/[^/]+$').hasMatch(location);
+    location == '/settings' ||
+    location == '/profile' ||
+    location == '/t/settings' ||
+    RegExp(r'^/(property|tickets)/[^/]+$').hasMatch(location) ||
+    RegExp(r'^/t/(landlords|inspections)/.+$').hasMatch(location);

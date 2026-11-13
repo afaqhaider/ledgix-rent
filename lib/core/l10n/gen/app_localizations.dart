@@ -2551,6 +2551,510 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The cheque schedule is created when you save.'**
   String get scheduleNote;
+
+  /// No description provided for @tpSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your account'**
+  String get tpSetupTitle;
+
+  /// No description provided for @tpSetupSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A few details to get started. You can add properties right after.'**
+  String get tpSetupSub;
+
+  /// No description provided for @tpUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of units'**
+  String get tpUnits;
+
+  /// No description provided for @tpUnitsHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'How many units you own or manage'**
+  String get tpUnitsHelper;
+
+  /// No description provided for @tpInvalidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number (1 or more)'**
+  String get tpInvalidNumber;
+
+  /// No description provided for @tpRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role'**
+  String get tpRole;
+
+  /// No description provided for @tpRoleLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord'**
+  String get tpRoleLandlord;
+
+  /// No description provided for @tpRolePropertyManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Property manager'**
+  String get tpRolePropertyManager;
+
+  /// No description provided for @tpRoleTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get tpRoleTenant;
+
+  /// No description provided for @tpImTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m a tenant'**
+  String get tpImTenant;
+
+  /// No description provided for @tpImLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m a landlord or property manager'**
+  String get tpImLandlord;
+
+  /// No description provided for @tpAccountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account type'**
+  String get tpAccountType;
+
+  /// No description provided for @tpTenantWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to LedGix Rent'**
+  String get tpTenantWelcome;
+
+  /// No description provided for @tpTenantWelcomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name. If your landlord gave you an invite code, add it to see your lease, payments and documents.'**
+  String get tpTenantWelcomeSub;
+
+  /// No description provided for @tpInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get tpInviteCode;
+
+  /// No description provided for @tpInviteCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'8 characters, e.g. K7MP3QXA'**
+  String get tpInviteCodeHint;
+
+  /// No description provided for @tpSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get tpSkip;
+
+  /// No description provided for @tpCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'That code isn\'t valid. Check it and try again.'**
+  String get tpCodeInvalid;
+
+  /// No description provided for @tpCodeExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'That code has expired. Ask your landlord for a new one.'**
+  String get tpCodeExpired;
+
+  /// No description provided for @tpCodeUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'That code has already been used. Ask your landlord for a new one.'**
+  String get tpCodeUsed;
+
+  /// No description provided for @tpCodeOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s an invite code you created. Share it with your tenant instead.'**
+  String get tpCodeOwn;
+
+  /// No description provided for @tpCodeAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'This tenant record is already linked to another account.'**
+  String get tpCodeAlreadyLinked;
+
+  /// No description provided for @tpLandlordAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord added.'**
+  String get tpLandlordAdded;
+
+  /// No description provided for @tpInviteToApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite to app'**
+  String get tpInviteToApp;
+
+  /// No description provided for @tpInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite {name} to LedGix Rent'**
+  String tpInviteTitle(String name);
+
+  /// No description provided for @tpInviteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this code with your tenant. They enter it in the LedGix Rent app to see their lease, payments and the documents you share. It expires on {date}.'**
+  String tpInviteBody(String date);
+
+  /// No description provided for @tpCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get tpCopyCode;
+
+  /// No description provided for @tpShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get tpShare;
+
+  /// No description provided for @tpCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied'**
+  String get tpCodeCopied;
+
+  /// No description provided for @tpInviteShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Join me on LedGix Rent to see your lease, payments and documents. Your invite code: {code}. Open https://rent.getledgix.com/app/ to sign up as a tenant.'**
+  String tpInviteShareText(String code);
+
+  /// No description provided for @tpNewCode.
+  ///
+  /// In en, this message translates to:
+  /// **'New code'**
+  String get tpNewCode;
+
+  /// No description provided for @tpNotInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Not invited'**
+  String get tpNotInvited;
+
+  /// No description provided for @tpInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited'**
+  String get tpInvited;
+
+  /// No description provided for @tpJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined the app'**
+  String get tpJoined;
+
+  /// No description provided for @tpLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get tpLater;
+
+  /// No description provided for @tpShareWithTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Share with tenant'**
+  String get tpShareWithTenant;
+
+  /// No description provided for @tpSharedWithTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with tenant'**
+  String get tpSharedWithTenant;
+
+  /// No description provided for @tpShareChequeCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque copy shared with tenant'**
+  String get tpShareChequeCopy;
+
+  /// No description provided for @tpHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tpHome;
+
+  /// No description provided for @tpLandlords.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlords'**
+  String get tpLandlords;
+
+  /// No description provided for @tpPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get tpPayments;
+
+  /// No description provided for @tpInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get tpInspections;
+
+  /// No description provided for @tpManageLandlords.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage landlords'**
+  String get tpManageLandlords;
+
+  /// No description provided for @tpAddLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Add landlord'**
+  String get tpAddLandlord;
+
+  /// No description provided for @tpAddLandlordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the invite code your landlord shared with you.'**
+  String get tpAddLandlordHint;
+
+  /// No description provided for @tpCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get tpCurrent;
+
+  /// No description provided for @tpFormer.
+  ///
+  /// In en, this message translates to:
+  /// **'Former'**
+  String get tpFormer;
+
+  /// No description provided for @tpRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get tpRemove;
+
+  /// No description provided for @tpRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String tpRemoveTitle(String name);
+
+  /// No description provided for @tpRemoveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your past lease with this landlord will no longer show in your app. They can add you again with a new code.'**
+  String get tpRemoveBody;
+
+  /// No description provided for @tpNoLandlords.
+  ///
+  /// In en, this message translates to:
+  /// **'No landlords yet. Ask your landlord for an invite code.'**
+  String get tpNoLandlords;
+
+  /// No description provided for @tpLandlordDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord details'**
+  String get tpLandlordDetails;
+
+  /// No description provided for @tpAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreement'**
+  String get tpAgreement;
+
+  /// No description provided for @tpSharedDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared documents'**
+  String get tpSharedDocuments;
+
+  /// No description provided for @tpNoSharedDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents shared yet.'**
+  String get tpNoSharedDocuments;
+
+  /// No description provided for @tpOpenDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get tpOpenDocument;
+
+  /// No description provided for @tpNextPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Next payment'**
+  String get tpNextPayment;
+
+  /// No description provided for @tpNoUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming payments.'**
+  String get tpNoUpcoming;
+
+  /// No description provided for @tpYourLeases.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leases'**
+  String get tpYourLeases;
+
+  /// No description provided for @tpLeaseWith.
+  ///
+  /// In en, this message translates to:
+  /// **'with {name}'**
+  String tpLeaseWith(String name);
+
+  /// No description provided for @tpRecentDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent documents'**
+  String get tpRecentDocuments;
+
+  /// No description provided for @tpChequeCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque copy'**
+  String get tpChequeCopy;
+
+  /// No description provided for @tpViewChequeCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'View cheque copy'**
+  String get tpViewChequeCopy;
+
+  /// No description provided for @tpNewRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New request'**
+  String get tpNewRequest;
+
+  /// No description provided for @tpRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to your landlord.'**
+  String get tpRequestSent;
+
+  /// No description provided for @tpRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What needs fixing?'**
+  String get tpRequestTitle;
+
+  /// No description provided for @tpRequestDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get tpRequestDetails;
+
+  /// No description provided for @tpAddPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get tpAddPhotos;
+
+  /// No description provided for @tpPhotosAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} photo(s) added'**
+  String tpPhotosAdded(int count);
+
+  /// No description provided for @tpMyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests are tracked by your landlord. You\'ll get updates when they act on them.'**
+  String get tpMyRequests;
+
+  /// No description provided for @tpNoInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspections yet.'**
+  String get tpNoInspections;
+
+  /// No description provided for @tpMoveIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-in inspection'**
+  String get tpMoveIn;
+
+  /// No description provided for @tpMoveOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Move-out inspection'**
+  String get tpMoveOut;
+
+  /// No description provided for @tpInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get tpInspection;
+
+  /// No description provided for @tpEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get tpEnded;
+
+  /// No description provided for @tpActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get tpActive;
+
+  /// No description provided for @tpPropertyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Property details'**
+  String get tpPropertyDetails;
+
+  /// No description provided for @tpNoProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties yet. They appear once your landlord adds your rent agreement.'**
+  String get tpNoProperties;
+
+  /// No description provided for @tpRentReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent reminders 7, 3 and 1 days before each payment, and on the due day'**
+  String get tpRentReminders;
+
+  /// No description provided for @tpRenewalReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease end reminders 60 and 30 days before'**
+  String get tpRenewalReminders;
+
+  /// No description provided for @tpBounced.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts if a cheque bounces or is put on hold'**
+  String get tpBounced;
+
+  /// No description provided for @tpLeasePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} to {end}'**
+  String tpLeasePeriod(String start, String end);
+
+  /// No description provided for @tpChoosePropertyFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a property'**
+  String get tpChoosePropertyFirst;
+
+  /// No description provided for @tpSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {date}'**
+  String tpSince(String date);
 }
 
 class _AppLocalizationsDelegate

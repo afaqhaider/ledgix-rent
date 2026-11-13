@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +18,7 @@ import '../../documents/presentation/scan_to_fill.dart';
 import '../../payments/domain/payment_scheduler.dart';
 import '../../properties/domain/property.dart';
 import '../../tenants/domain/tenant.dart';
+import '../../tenant_portal/presentation/invite_dialog.dart';
 import '../domain/lease.dart';
 import 'leases_screen.dart';
 
@@ -84,7 +87,7 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
   }
 
   Future<void> _addTenant([Map<String, String>? prefill]) async {
-    final id = await context.push<String>('/tenants/new', extra: prefill);
+    final id = await context.push<String>('/tenants/new?from=agreement', extra: prefill);
     if (id != null && mounted) {
       setState(() {
         _tenant = id;
@@ -201,7 +204,14 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
     }
     if (!mounted) return;
     if (e == null) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.scheduleGenerated)));
+    // New agreement: offer the tenant an app invite code if they haven't joined.
+    final tenant = await ref.read(tenantRepositoryProvider).get(lease.tenantId);
+    if (!mounted) return;
+    final root = Navigator.of(context, rootNavigator: true).context;
     context.pop();
+    if (e == null && tenant != null && tenant.appUid == null && root.mounted) {
+      unawaited(showTenantInviteDialog(root, ref, tenant, leaseId: lease.id));
+    }
   }
 
   @override

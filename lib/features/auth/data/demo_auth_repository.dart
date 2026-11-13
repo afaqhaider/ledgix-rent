@@ -21,11 +21,16 @@ class DemoAuthRepository implements AuthRepository {
     yield* _c.stream;
   }
 
-  @override
-  Future<void> signInWithEmail(String email, String password) async => _set('demo');
+  /// Demo tenant account: any email starting with "tenant" signs in as it.
+  static const tenantUid = 'demo-tenant';
+
+  static String uidFor(String email) => email.trim().toLowerCase().startsWith('tenant') ? tenantUid : 'demo';
 
   @override
-  Future<void> signUpWithEmail(String email, String password) async => _set('demo');
+  Future<void> signInWithEmail(String email, String password) async => _set(uidFor(email));
+
+  @override
+  Future<void> signUpWithEmail(String email, String password) async => _set(uidFor(email));
 
   @override
   Future<void> sendPasswordReset(String email) async {}

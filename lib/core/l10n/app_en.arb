@@ -515,5 +515,148 @@
   "profileSaved": "Profile saved.",
   "tenantRequired": "Choose or add a tenant",
   "noTenantsYet": "No tenants yet. Add one to continue.",
-  "scheduleNote": "The cheque schedule is created when you save."
+  "scheduleNote": "The cheque schedule is created when you save.",
+  "tpSetupTitle": "Set up your account",
+  "tpSetupSub": "A few details to get started. You can add properties right after.",
+  "tpUnits": "Number of units",
+  "tpUnitsHelper": "How many units you own or manage",
+  "tpInvalidNumber": "Enter a number (1 or more)",
+  "tpRole": "Your role",
+  "tpRoleLandlord": "Landlord",
+  "tpRolePropertyManager": "Property manager",
+  "tpRoleTenant": "Tenant",
+  "tpImTenant": "I'm a tenant",
+  "tpImLandlord": "I'm a landlord or property manager",
+  "tpAccountType": "Account type",
+  "tpTenantWelcome": "Welcome to LedGix Rent",
+  "tpTenantWelcomeSub": "Enter your name. If your landlord gave you an invite code, add it to see your lease, payments and documents.",
+  "tpInviteCode": "Invite code",
+  "tpInviteCodeHint": "8 characters, e.g. K7MP3QXA",
+  "tpSkip": "Skip for now",
+  "tpCodeInvalid": "That code isn't valid. Check it and try again.",
+  "tpCodeExpired": "That code has expired. Ask your landlord for a new one.",
+  "tpCodeUsed": "That code has already been used. Ask your landlord for a new one.",
+  "tpCodeOwn": "That's an invite code you created. Share it with your tenant instead.",
+  "tpCodeAlreadyLinked": "This tenant record is already linked to another account.",
+  "tpLandlordAdded": "Landlord added.",
+  "tpInviteToApp": "Invite to app",
+  "tpInviteTitle": "Invite {name} to LedGix Rent",
+  "@tpInviteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tpInviteBody": "Share this code with your tenant. They enter it in the LedGix Rent app to see their lease, payments and the documents you share. It expires on {date}.",
+  "@tpInviteBody": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "tpCopyCode": "Copy code",
+  "tpShare": "Share",
+  "tpCodeCopied": "Code copied",
+  "tpInviteShareText": "Join me on LedGix Rent to see your lease, payments and documents. Your invite code: {code}. Open https://rent.getledgix.com/app/ to sign up as a tenant.",
+  "@tpInviteShareText": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "tpNewCode": "New code",
+  "tpNotInvited": "Not invited",
+  "tpInvited": "Invited",
+  "tpJoined": "Joined the app",
+  "tpLater": "Later",
+  "tpShareWithTenant": "Share with tenant",
+  "tpSharedWithTenant": "Shared with tenant",
+  "tpShareChequeCopy": "Cheque copy shared with tenant",
+  "tpHome": "Home",
+  "tpLandlords": "Landlords",
+  "tpPayments": "Payments",
+  "tpInspections": "Inspections",
+  "tpManageLandlords": "Manage landlords",
+  "tpAddLandlord": "Add landlord",
+  "tpAddLandlordHint": "Enter the invite code your landlord shared with you.",
+  "tpCurrent": "Current",
+  "tpFormer": "Former",
+  "tpRemove": "Remove",
+  "tpRemoveTitle": "Remove {name}?",
+  "@tpRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tpRemoveBody": "Your past lease with this landlord will no longer show in your app. They can add you again with a new code.",
+  "tpNoLandlords": "No landlords yet. Ask your landlord for an invite code.",
+  "tpLandlordDetails": "Landlord details",
+  "tpAgreement": "Agreement",
+  "tpSharedDocuments": "Shared documents",
+  "tpNoSharedDocuments": "No documents shared yet.",
+  "tpOpenDocument": "Open",
+  "tpNextPayment": "Next payment",
+  "tpNoUpcoming": "No upcoming payments.",
+  "tpYourLeases": "Your leases",
+  "tpLeaseWith": "with {name}",
+  "@tpLeaseWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tpRecentDocuments": "Recent documents",
+  "tpChequeCopy": "Cheque copy",
+  "tpViewChequeCopy": "View cheque copy",
+  "tpNewRequest": "New request",
+  "tpRequestSent": "Request sent to your landlord.",
+  "tpRequestTitle": "What needs fixing?",
+  "tpRequestDetails": "Details",
+  "tpAddPhotos": "Add photos",
+  "tpPhotosAdded": "{count} photo(s) added",
+  "@tpPhotosAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tpMyRequests": "Requests are tracked by your landlord. You'll get updates when they act on them.",
+  "tpNoInspections": "No inspections yet.",
+  "tpMoveIn": "Move-in inspection",
+  "tpMoveOut": "Move-out inspection",
+  "tpInspection": "Inspection",
+  "tpEnded": "Ended",
+  "tpActive": "Active",
+  "tpPropertyDetails": "Property details",
+  "tpNoProperties": "No properties yet. They appear once your landlord adds your rent agreement.",
+  "tpRentReminders": "Rent reminders 7, 3 and 1 days before each payment, and on the due day",
+  "tpRenewalReminders": "Lease end reminders 60 and 30 days before",
+  "tpBounced": "Alerts if a cheque bounces or is put on hold",
+  "tpLeasePeriod": "{start} to {end}",
+  "@tpLeasePeriod": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "tpChoosePropertyFirst": "Choose a property",
+  "tpSince": "Since {date}",
+  "@tpSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -2,6 +2,8 @@ import '../../../core/domain/entity.dart';
 import '../../documents/domain/app_document.dart';
 import '../../documents/domain/form_fill.dart';
 
+enum TenantInviteStatus { notInvited, invited, joined }
+
 class Tenant implements Entity {
   /// [name] is for callers that only have a full name (and old records); it
   /// is split into first / middle / last when those are not given.
@@ -16,6 +18,9 @@ class Tenant implements Entity {
     this.emiratesIdNo = '',
     this.passportNo = '',
     this.documents = const [],
+    this.appUid,
+    this.inviteCode,
+    this.inviteExpiresAt,
   })  : firstName = firstName.isNotEmpty || lastName.isNotEmpty ? firstName : splitName(name).first,
         middleName = firstName.isNotEmpty || lastName.isNotEmpty ? middleName : splitName(name).middle,
         lastName = firstName.isNotEmpty || lastName.isNotEmpty ? lastName : splitName(name).last;
@@ -24,6 +29,73 @@ class Tenant implements Entity {
   final String id;
   final String firstName, middleName, lastName, phone, email, emiratesIdNo, passportNo;
   final List<AppDocument> documents;
+
+  /// Set by the backend when the tenant joins the app with an invite code.
+  final String? appUid;
+
+  /// The current, unused invite code (written by the backend).
+  final String? inviteCode;
+  final DateTime? inviteExpiresAt;
+
+  TenantInviteStatus inviteStatus(DateTime now) => appUid != null
+      ? TenantInviteStatus.joined
+      : (inviteCode != null && (inviteExpiresAt == null || inviteExpiresAt!.isAfter(now)))
+          ? TenantInviteStatus.invited
+          : TenantInviteStatus.notInvited;
+
+  /// Same tenant with new details, keeping the app link and invite.
+  Tenant copyDetails({
+    required String firstName,
+    required String middleName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String emiratesIdNo,
+    required String passportNo,
+    required List<AppDocument> documents,
+  }) =>
+      Tenant(
+        id: id,
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        emiratesIdNo: emiratesIdNo,
+        passportNo: passportNo,
+        documents: documents,
+        appUid: appUid,
+        inviteCode: inviteCode,
+        inviteExpiresAt: inviteExpiresAt,
+      );
+
+  Tenant withInvite(String code, DateTime expiresAt) => Tenant(
+        id: id,
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        emiratesIdNo: emiratesIdNo,
+        passportNo: passportNo,
+        documents: documents,
+        appUid: appUid,
+        inviteCode: code,
+        inviteExpiresAt: expiresAt,
+      );
+
+  Tenant joined(String uid) => Tenant(
+        id: id,
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        emiratesIdNo: emiratesIdNo,
+        passportNo: passportNo,
+        documents: documents,
+        appUid: uid,
+      );
 
   String get name => [firstName, middleName, lastName].where((s) => s.trim().isNotEmpty).join(' ');
 
@@ -41,6 +113,9 @@ class Tenant implements Entity {
         'emiratesIdNo': emiratesIdNo,
         'passportNo': passportNo,
         'documents': documents.map((d) => d.toMap()).toList(),
+        'appUid': appUid,
+        'inviteCode': inviteCode,
+        'inviteExpiresAt': inviteExpiresAt?.toIso8601String(),
       };
 
   /// Reads current and pre-documents records (single `name`, separate
@@ -64,6 +139,9 @@ class Tenant implements Entity {
       emiratesIdNo: '${m['emiratesIdNo'] ?? ''}',
       passportNo: '${m['passportNo'] ?? ''}',
       documents: [...docs, ...legacy],
+      appUid: m['appUid'] as String?,
+      inviteCode: m['inviteCode'] as String?,
+      inviteExpiresAt: parseDate(m['inviteExpiresAt']),
     );
   }
 }

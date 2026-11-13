@@ -16,6 +16,7 @@ class Payment implements Entity {
     this.depositedDate,
     this.notes = '',
     this.imageUrl,
+    this.shareImageWithTenant = true,
   });
 
   @override
@@ -28,6 +29,9 @@ class Payment implements Entity {
   final DateTime? depositedDate;
   final String? imageUrl;
 
+  /// The cheque copy is visible to the lease's tenant (on by default).
+  final bool shareImageWithTenant;
+
   bool get isSettled => status == PaymentStatus.cleared;
 
   Payment copyWith({
@@ -38,6 +42,7 @@ class Payment implements Entity {
     DateTime? depositedDate,
     String? notes,
     String? imageUrl,
+    bool? shareImageWithTenant,
   }) =>
       Payment(
         id: id,
@@ -51,6 +56,7 @@ class Payment implements Entity {
         depositedDate: depositedDate ?? this.depositedDate,
         notes: notes ?? this.notes,
         imageUrl: imageUrl ?? this.imageUrl,
+        shareImageWithTenant: shareImageWithTenant ?? this.shareImageWithTenant,
       );
 
   @override
@@ -66,6 +72,7 @@ class Payment implements Entity {
         'depositedDate': depositedDate?.toIso8601String(),
         'notes': notes,
         'image': imageUrl,
+        'shareImage': shareImageWithTenant,
       };
 
   factory Payment.fromMap(Map<String, dynamic> m) => Payment(
@@ -80,5 +87,6 @@ class Payment implements Entity {
         depositedDate: parseDate(m['depositedDate']),
         notes: '${m['notes'] ?? ''}',
         imageUrl: m['image'] as String?,
+        shareImageWithTenant: m['shareImage'] != false,
       );
 }

@@ -125,7 +125,20 @@ class PaymentCard extends ConsumerWidget {
           Text('${l.dueDate}: ${formatDate(payment.dueDate)}'),
           if (payment.chequeNo.isNotEmpty || payment.bankName.isNotEmpty)
             Text('${payment.chequeNo} ${payment.bankName}'.trim()),
-          if (payment.imageUrl != null) Text('📎 ${l.attached}'),
+          if (payment.imageUrl != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Wrap(spacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                Text('📎 ${l.attached}'),
+                FilterChip(
+                  key: Key('share-cheque-${payment.id}'),
+                  avatar: const Icon(Icons.how_to_reg, size: 16),
+                  label: Text(l.tpShareChequeCopy),
+                  selected: payment.shareImageWithTenant,
+                  onSelected: (v) => ref.read(paymentRepositoryProvider).save(payment.copyWith(shareImageWithTenant: v)),
+                ),
+              ]),
+            ),
           const SizedBox(height: 8),
           Wrap(spacing: 8, children: [
             if (payment.status == PaymentStatus.pending && isCheque)

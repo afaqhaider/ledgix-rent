@@ -1339,4 +1339,281 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get scheduleNote => 'يُنشأ جدول الشيكات عند الحفظ.';
+
+  @override
+  String get tpSetupTitle => 'إعداد حسابك';
+
+  @override
+  String get tpSetupSub =>
+      'بعض التفاصيل للبدء. يمكنك إضافة العقارات مباشرة بعد ذلك.';
+
+  @override
+  String get tpUnits => 'عدد الوحدات';
+
+  @override
+  String get tpUnitsHelper => 'عدد الوحدات التي تملكها أو تديرها';
+
+  @override
+  String get tpInvalidNumber => 'أدخل رقمًا (1 أو أكثر)';
+
+  @override
+  String get tpRole => 'دورك';
+
+  @override
+  String get tpRoleLandlord => 'مالك';
+
+  @override
+  String get tpRolePropertyManager => 'مدير عقارات';
+
+  @override
+  String get tpRoleTenant => 'مستأجر';
+
+  @override
+  String get tpImTenant => 'أنا مستأجر';
+
+  @override
+  String get tpImLandlord => 'أنا مالك أو مدير عقارات';
+
+  @override
+  String get tpAccountType => 'نوع الحساب';
+
+  @override
+  String get tpTenantWelcome => 'مرحبًا بك في LedGix Rent';
+
+  @override
+  String get tpTenantWelcomeSub =>
+      'أدخل اسمك. إذا أعطاك المالك رمز دعوة، أضفه لترى عقدك ودفعاتك ومستنداتك.';
+
+  @override
+  String get tpInviteCode => 'رمز الدعوة';
+
+  @override
+  String get tpInviteCodeHint => '8 أحرف، مثل K7MP3QXA';
+
+  @override
+  String get tpSkip => 'تخطَّ الآن';
+
+  @override
+  String get tpCodeInvalid => 'هذا الرمز غير صالح. تحقق منه وحاول مرة أخرى.';
+
+  @override
+  String get tpCodeExpired =>
+      'انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا من المالك.';
+
+  @override
+  String get tpCodeUsed =>
+      'تم استخدام هذا الرمز من قبل. اطلب رمزًا جديدًا من المالك.';
+
+  @override
+  String get tpCodeOwn =>
+      'هذا رمز دعوة أنشأته أنت. شاركه مع المستأجر بدلًا من ذلك.';
+
+  @override
+  String get tpCodeAlreadyLinked => 'سجل المستأجر هذا مرتبط بالفعل بحساب آخر.';
+
+  @override
+  String get tpLandlordAdded => 'تمت إضافة المالك.';
+
+  @override
+  String get tpInviteToApp => 'دعوة إلى التطبيق';
+
+  @override
+  String tpInviteTitle(String name) {
+    return 'دعوة $name إلى LedGix Rent';
+  }
+
+  @override
+  String tpInviteBody(String date) {
+    return 'شارك هذا الرمز مع المستأجر. يدخله في تطبيق LedGix Rent ليرى عقده ودفعاته والمستندات التي تشاركها. تنتهي صلاحيته في $date.';
+  }
+
+  @override
+  String get tpCopyCode => 'نسخ الرمز';
+
+  @override
+  String get tpShare => 'مشاركة';
+
+  @override
+  String get tpCodeCopied => 'تم نسخ الرمز';
+
+  @override
+  String tpInviteShareText(String code) {
+    return 'انضم إليّ على LedGix Rent لترى عقدك ودفعاتك ومستنداتك. رمز الدعوة: $code. افتح https://rent.getledgix.com/app/ وسجّل كمستأجر.';
+  }
+
+  @override
+  String get tpNewCode => 'رمز جديد';
+
+  @override
+  String get tpNotInvited => 'لم تتم دعوته';
+
+  @override
+  String get tpInvited => 'تمت دعوته';
+
+  @override
+  String get tpJoined => 'انضم إلى التطبيق';
+
+  @override
+  String get tpLater => 'لاحقًا';
+
+  @override
+  String get tpShareWithTenant => 'مشاركة مع المستأجر';
+
+  @override
+  String get tpSharedWithTenant => 'مُشارك مع المستأجر';
+
+  @override
+  String get tpShareChequeCopy => 'صورة الشيك مُشاركة مع المستأجر';
+
+  @override
+  String get tpHome => 'الرئيسية';
+
+  @override
+  String get tpLandlords => 'الملاك';
+
+  @override
+  String get tpPayments => 'الدفعات';
+
+  @override
+  String get tpInspections => 'المعاينات';
+
+  @override
+  String get tpManageLandlords => 'إدارة الملاك';
+
+  @override
+  String get tpAddLandlord => 'إضافة مالك';
+
+  @override
+  String get tpAddLandlordHint => 'أدخل رمز الدعوة الذي شاركه المالك معك.';
+
+  @override
+  String get tpCurrent => 'الحاليون';
+
+  @override
+  String get tpFormer => 'السابقون';
+
+  @override
+  String get tpRemove => 'إزالة';
+
+  @override
+  String tpRemoveTitle(String name) {
+    return 'إزالة $name؟';
+  }
+
+  @override
+  String get tpRemoveBody =>
+      'لن يظهر عقدك السابق مع هذا المالك في تطبيقك بعد الآن. يمكنه إضافتك مجددًا برمز جديد.';
+
+  @override
+  String get tpNoLandlords => 'لا يوجد ملاك بعد. اطلب رمز دعوة من المالك.';
+
+  @override
+  String get tpLandlordDetails => 'تفاصيل المالك';
+
+  @override
+  String get tpAgreement => 'العقد';
+
+  @override
+  String get tpSharedDocuments => 'المستندات المُشاركة';
+
+  @override
+  String get tpNoSharedDocuments => 'لم تتم مشاركة أي مستندات بعد.';
+
+  @override
+  String get tpOpenDocument => 'فتح';
+
+  @override
+  String get tpNextPayment => 'الدفعة القادمة';
+
+  @override
+  String get tpNoUpcoming => 'لا توجد دفعات قادمة.';
+
+  @override
+  String get tpYourLeases => 'عقودك';
+
+  @override
+  String tpLeaseWith(String name) {
+    return 'مع $name';
+  }
+
+  @override
+  String get tpRecentDocuments => 'أحدث المستندات';
+
+  @override
+  String get tpChequeCopy => 'صورة الشيك';
+
+  @override
+  String get tpViewChequeCopy => 'عرض صورة الشيك';
+
+  @override
+  String get tpNewRequest => 'طلب جديد';
+
+  @override
+  String get tpRequestSent => 'تم إرسال الطلب إلى المالك.';
+
+  @override
+  String get tpRequestTitle => 'ما الذي يحتاج إلى إصلاح؟';
+
+  @override
+  String get tpRequestDetails => 'التفاصيل';
+
+  @override
+  String get tpAddPhotos => 'إضافة صور';
+
+  @override
+  String tpPhotosAdded(int count) {
+    return 'تمت إضافة $count صورة';
+  }
+
+  @override
+  String get tpMyRequests =>
+      'يتابع المالك الطلبات، وستصلك التحديثات عند اتخاذ إجراء.';
+
+  @override
+  String get tpNoInspections => 'لا توجد معاينات بعد.';
+
+  @override
+  String get tpMoveIn => 'معاينة الاستلام';
+
+  @override
+  String get tpMoveOut => 'معاينة التسليم';
+
+  @override
+  String get tpInspection => 'معاينة';
+
+  @override
+  String get tpEnded => 'منتهٍ';
+
+  @override
+  String get tpActive => 'ساري';
+
+  @override
+  String get tpPropertyDetails => 'تفاصيل العقار';
+
+  @override
+  String get tpNoProperties =>
+      'لا توجد عقارات بعد. ستظهر عندما يضيف المالك عقد الإيجار.';
+
+  @override
+  String get tpRentReminders =>
+      'تذكيرات بالإيجار قبل 7 و3 و1 يوم من كل دفعة وفي يوم الاستحقاق';
+
+  @override
+  String get tpRenewalReminders => 'تذكيرات بانتهاء العقد قبل 60 و30 يومًا';
+
+  @override
+  String get tpBounced => 'تنبيهات إذا ارتد شيك أو تم تأجيله';
+
+  @override
+  String tpLeasePeriod(String start, String end) {
+    return 'من $start إلى $end';
+  }
+
+  @override
+  String get tpChoosePropertyFirst => 'اختر عقارًا';
+
+  @override
+  String tpSince(String date) {
+    return 'منذ $date';
+  }
 }

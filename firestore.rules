@@ -1,12 +1,45 @@
 rules_version = '2';
 
-// Each landlord can only read and write their own tree: landlords/{uid} and
-// every subcollection under it. Cloud Functions use the Admin SDK and bypass
-// these rules. Everything else is denied.
+// Cloud Functions use the Admin SDK and bypass these rules. Everything not
+// matched below is denied.
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Each landlord can only read and write their own tree. Tenants never
+    // read it directly; they get a filtered copy in tenantViews.
     match /landlords/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if signedIn(uid);
+    }
+
+    // The account record: role, name, number of units, push tokens.
+    match /users/{uid} {
+      allow read: if signedIn(uid);
+      allow create, update: if signedIn(uid)
+        && request.resource.data.keys().hasOnly(['id', 'role', 'name', 'email', 'unitCount', 'fcmTokens', 'language', 'updatedAt'])
+        && (!('role' in request.resource.data) || request.resource.data.role in ['landlord', 'propertyManager', 'tenant']);
+      allow delete: if false; // deleteAccount (Cloud Function) removes it
+    }
+
+    // What a tenant may see of their landlords' data, and which landlords
+    // they are linked to. Written only by Cloud Functions.
+    match /tenantViews/{uid}/{document=**} {
+      allow read: if signedIn(uid);
+      allow write: if false;
+    }
+    match /tenantLinks/{uid}/{document=**} {
+      allow read: if signedIn(uid);
+      allow write: if false;
+    }
+
+    // Invite codes and their rate limits are server-only.
+    match /invites/{code} {
+      allow read, write: if false;
+    }
+    match /inviteQuota/{uid} {
+      allow read, write: if false;
     }
   }
 }
