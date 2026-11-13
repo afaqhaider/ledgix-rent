@@ -39,14 +39,23 @@ flutter build appbundle --release --dart-define=USE_FIREBASE=true   # upload bui
 
 ### Web (Firebase Hosting)
 
-Live at https://rent.getledgix.com (custom domain on Firebase Hosting; https://ledgix-rent.web.app also serves it). Privacy policy: https://rent.getledgix.com/privacy Needs the git-ignored `lib/firebase_options.dart` and `web/firebase-messaging-sw.js` (copies in `secrets/`).
+Live at https://rent.getledgix.com (custom domain on Firebase Hosting; https://ledgix-rent.web.app also serves it).
+
+| Path | What | Source |
+| --- | --- | --- |
+| `/` | Landing page (EN/AR, light/dark) | `landing/` |
+| `/privacy/` | Privacy policy | `landing/privacy/` |
+| `/app/` | The Flutter web app | `flutter build web --base-href /app/` |
+| `/hub-callback` | LedGix ID return URL, rewritten to the app | `firebase.json` |
+
+`tool/build_web.sh` builds the app and assembles everything into `build/hosting` (Hosting's public folder). It needs the git-ignored `lib/firebase_options.dart`, `web/firebase-messaging-sw.js` and `firebase.json` (copies in `secrets/`) and reads the Web Push key from `secrets/secrets.txt`.
 
 ```bash
-flutter build web --release --dart-define=USE_FIREBASE=true --dart-define=WEB_VAPID_KEY=<Web Push public key>
+tool/build_web.sh
 firebase deploy --only hosting --project ledgix-rent
 ```
 
-Phone sign-in is not wired up for web (it needs reCAPTCHA); email, Google and Apple work.
+Phone sign-in is not wired up for web (it needs reCAPTCHA); LedGix ID, email, Google and Apple work.
 
 ## Architecture
 

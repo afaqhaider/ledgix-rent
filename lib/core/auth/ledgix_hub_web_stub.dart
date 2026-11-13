@@ -7,5 +7,5 @@ void clearHubWebFlow() {}
 
 void navigateTo(String url) {}
 
-/// Drops the query and path from the address bar without reloading.
-void replaceUrlWithRoot() {}
+/// Swaps the callback URL for the app's root without reloading.
+void replaceUrlWithAppRoot() {}

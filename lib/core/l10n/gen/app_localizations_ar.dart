@@ -49,6 +49,143 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueWithApple => 'المتابعة باستخدام Apple';
 
   @override
+  String get loginTitle => 'تسجيل الدخول إلى LedGix Rent';
+
+  @override
+  String get signUpTitle => 'أنشئ حسابك في LedGix Rent';
+
+  @override
+  String get loginSubtitle => 'الإيجارات والشيكات والصيانة في مكان واحد.';
+
+  @override
+  String get orUseEmail => 'أو استخدم بريدك الإلكتروني';
+
+  @override
+  String get orUsePhone => 'أو استخدم رقم هاتفك';
+
+  @override
+  String get otherOptions => 'طرق أخرى للمتابعة';
+
+  @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get resetPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordBody =>
+      'أدخل البريد الإلكتروني الذي تسجّل الدخول به وسنرسل لك رابطًا لاختيار كلمة مرور جديدة.';
+
+  @override
+  String get sendResetLink => 'إرسال الرابط';
+
+  @override
+  String resetLinkSent(String email) {
+    return 'إذا كان هناك حساب مسجّل بـ $email فسيصلك رابط إعادة التعيين قريبًا.';
+  }
+
+  @override
+  String get noAccountYet => 'جديد في LedGix Rent؟';
+
+  @override
+  String get haveAccount => 'لديك حساب بالفعل؟';
+
+  @override
+  String get usePhoneInstead => 'استخدم رقم الهاتف بدلًا من ذلك';
+
+  @override
+  String get useEmailInstead => 'استخدم البريد الإلكتروني بدلًا من ذلك';
+
+  @override
+  String get showPassword => 'إظهار كلمة المرور';
+
+  @override
+  String get hidePassword => 'إخفاء كلمة المرور';
+
+  @override
+  String get brandHeadline => 'الإيجارات والشيكات والصيانة. في مكان واحد هادئ.';
+
+  @override
+  String get brandBullet1 => 'تذكير بالإيداع قبل موعد كل شيك';
+
+  @override
+  String get brandBullet2 => 'إيجاري وديوا والمستندات محفوظة مع كل وحدة';
+
+  @override
+  String get brandBullet3 => 'حوّل طلبات الصيانة ووافق على عروض الأسعار بلمسة';
+
+  @override
+  String get partOfLedgix => 'جزء من LedGix';
+
+  @override
+  String get emailRequired => 'أدخل بريدك الإلكتروني';
+
+  @override
+  String get emailInvalid => 'أدخل بريدًا إلكترونيًا صحيحًا';
+
+  @override
+  String get passwordRequired => 'أدخل كلمة المرور';
+
+  @override
+  String get passwordTooShort => 'استخدم 6 أحرف على الأقل';
+
+  @override
+  String get phoneRequired => 'أدخل رقم هاتفك مع رمز الدولة';
+
+  @override
+  String get errInvalidCredentials =>
+      'البريد الإلكتروني وكلمة المرور غير متطابقين. حاول مجددًا أو أعد تعيين كلمة المرور.';
+
+  @override
+  String get errEmailInUse =>
+      'يوجد حساب بهذا البريد الإلكتروني بالفعل. سجّل الدخول بدلًا من ذلك.';
+
+  @override
+  String get errWeakPassword => 'اختر كلمة مرور أقوى (6 أحرف على الأقل).';
+
+  @override
+  String get errInvalidEmail => 'يبدو أن عنوان البريد الإلكتروني غير صحيح.';
+
+  @override
+  String get errUserDisabled =>
+      'تم تعطيل هذا الحساب. تواصل مع support@getledgix.com.';
+
+  @override
+  String get errTooManyRequests =>
+      'محاولات كثيرة. انتظر بضع دقائق ثم حاول مجددًا.';
+
+  @override
+  String get errNetwork =>
+      'تعذّر الاتصال. تحقق من اتصالك بالإنترنت وحاول مجددًا.';
+
+  @override
+  String get errMethodDisabled =>
+      'طريقة تسجيل الدخول هذه غير متاحة بعد. جرّب طريقة أخرى.';
+
+  @override
+  String get errPopupBlocked =>
+      'منع المتصفح نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة لهذا الموقع وحاول مجددًا.';
+
+  @override
+  String get errAccountExists =>
+      'هذا البريد مسجّل بطريقة تسجيل دخول أخرى. استخدم الطريقة التي أنشأت بها حسابك.';
+
+  @override
+  String get errInvalidPhone =>
+      'أدخل رقمك مع رمز الدولة، مثل ‎+971 50 123 4567.';
+
+  @override
+  String get errInvalidCode =>
+      'الرمز غير صحيح أو انتهت صلاحيته. تحقق من الرسالة وحاول مجددًا.';
+
+  @override
+  String get errLedgix =>
+      'لم يكتمل تسجيل الدخول باستخدام LedGix ID. حاول مجددًا.';
+
+  @override
+  String get errGeneric => 'حدث خطأ ما. حاول مجددًا.';
+
+  @override
   String get emailTab => 'البريد';
 
   @override

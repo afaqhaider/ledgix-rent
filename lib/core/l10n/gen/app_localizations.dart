@@ -176,6 +176,252 @@ abstract class AppLocalizations {
   /// **'Continue with Apple'**
   String get continueWithApple;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to LedGix Rent'**
+  String get loginTitle;
+
+  /// No description provided for @signUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your LedGix Rent account'**
+  String get signUpTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent, cheques and maintenance in one place.'**
+  String get loginSubtitle;
+
+  /// No description provided for @orUseEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'or use your email'**
+  String get orUseEmail;
+
+  /// No description provided for @orUsePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'or use your phone number'**
+  String get orUsePhone;
+
+  /// No description provided for @otherOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Other ways to continue'**
+  String get otherOptions;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email you sign in with and we\'ll send you a link to choose a new password.'**
+  String get resetPasswordBody;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reset link'**
+  String get sendResetLink;
+
+  /// No description provided for @resetLinkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for {email}, a reset link is on its way.'**
+  String resetLinkSent(String email);
+
+  /// No description provided for @noAccountYet.
+  ///
+  /// In en, this message translates to:
+  /// **'New to LedGix Rent?'**
+  String get noAccountYet;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get haveAccount;
+
+  /// No description provided for @usePhoneInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Use phone number instead'**
+  String get usePhoneInstead;
+
+  /// No description provided for @useEmailInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Use email instead'**
+  String get useEmailInstead;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
+
+  /// No description provided for @brandHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent, cheques and maintenance. One calm place.'**
+  String get brandHeadline;
+
+  /// No description provided for @brandBullet1.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit reminders before every cheque is due'**
+  String get brandBullet1;
+
+  /// No description provided for @brandBullet2.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari, DEWA and documents kept with each unit'**
+  String get brandBullet2;
+
+  /// No description provided for @brandBullet3.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward maintenance and approve quotes in a tap'**
+  String get brandBullet3;
+
+  /// No description provided for @partOfLedgix.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of LedGix'**
+  String get partOfLedgix;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get emailInvalid;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 6 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number with country code'**
+  String get phoneRequired;
+
+  /// No description provided for @errInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'That email and password don\'t match. Try again or reset your password.'**
+  String get errInvalidCredentials;
+
+  /// No description provided for @errEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists. Sign in instead.'**
+  String get errEmailInUse;
+
+  /// No description provided for @errWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a stronger password (at least 6 characters).'**
+  String get errWeakPassword;
+
+  /// No description provided for @errInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'That email address doesn\'t look right.'**
+  String get errInvalidEmail;
+
+  /// No description provided for @errUserDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled. Contact support@getledgix.com.'**
+  String get errUserDisabled;
+
+  /// No description provided for @errTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a few minutes and try again.'**
+  String get errTooManyRequests;
+
+  /// No description provided for @errNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t connect. Check your internet connection and try again.'**
+  String get errNetwork;
+
+  /// No description provided for @errMethodDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in option isn\'t available yet. Try another one.'**
+  String get errMethodDisabled;
+
+  /// No description provided for @errPopupBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Your browser blocked the sign-in window. Allow pop-ups for this site and try again.'**
+  String get errPopupBlocked;
+
+  /// No description provided for @errAccountExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is registered with a different sign-in option. Use the one you signed up with.'**
+  String get errAccountExists;
+
+  /// No description provided for @errInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your number with the country code, for example +971 50 123 4567.'**
+  String get errInvalidPhone;
+
+  /// No description provided for @errInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'That code isn\'t right or has expired. Check the SMS and try again.'**
+  String get errInvalidCode;
+
+  /// No description provided for @errLedgix.
+  ///
+  /// In en, this message translates to:
+  /// **'LedGix ID sign-in didn\'t finish. Please try again.'**
+  String get errLedgix;
+
+  /// No description provided for @errGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errGeneric;
+
   /// No description provided for @emailTab.
   ///
   /// In en, this message translates to:

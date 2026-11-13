@@ -5,6 +5,10 @@ abstract class AuthRepository {
   Future<void> signInWithEmail(String email, String password);
   Future<void> signUpWithEmail(String email, String password);
 
+  /// Emails a password-reset link. Succeeds silently for unknown addresses,
+  /// so the screen never reveals which emails have accounts.
+  Future<void> sendPasswordReset(String email);
+
   /// LedGix ID (LedGix Hub single sign-on). On the web this leaves the page
   /// for the Hub and finishes when the browser comes back.
   Future<void> signInWithLedgix();

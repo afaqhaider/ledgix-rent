@@ -28,6 +28,9 @@ class DemoAuthRepository implements AuthRepository {
   Future<void> signUpWithEmail(String email, String password) async => _set('demo');
 
   @override
+  Future<void> sendPasswordReset(String email) async {}
+
+  @override
   Future<void> signInWithLedgix() async => _set('demo');
 
   @override

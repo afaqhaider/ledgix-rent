@@ -5,75 +5,103 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/widgets/common.dart';
 
-/// Continue with LedGix ID, then an "or" divider and Continue with Google /
-/// Apple. Apple shows on iOS, macOS and web only (on Android it would need a
+/// Apple sign-in shows on iOS, macOS and web only (on Android it would need a
 /// web redirect flow).
-class SocialSignInButtons extends StatelessWidget {
-  const SocialSignInButtons({super.key, required this.onLedgix, required this.onGoogle, required this.onApple});
+bool get showAppleSignIn =>
+    kIsWeb || defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.macOS;
 
-  /// Null while busy, which disables the buttons.
-  final VoidCallback? onLedgix, onGoogle, onApple;
+/// Small spinner that replaces a button's icon while that action runs.
+class ButtonSpinner extends StatelessWidget {
+  const ButtonSpinner({super.key, this.color});
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) => SizedBox.square(
+        dimension: 18,
+        child: CircularProgressIndicator(strokeWidth: 2, color: color ?? IconTheme.of(context).color),
+      );
+}
+
+/// Primary option: Continue with LedGix ID (one account for every LedGix app).
+class LedgixIdButton extends StatelessWidget {
+  const LedgixIdButton({super.key, required this.onPressed, this.busy = false});
+
+  /// Null while any sign-in runs, which disables the button.
+  final VoidCallback? onPressed;
+  final bool busy;
 
   /// LedGix ID brand blue. White text on it is 6.4:1.
   static const ledgixBlue = Color(0xFF0050E6);
 
-  static bool get showApple =>
-      kIsWeb || defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.macOS;
+  @override
+  Widget build(BuildContext context) => FilledButton.icon(
+        key: const Key('ledgix-sign-in'),
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: ledgixBlue,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: ledgixBlue.withValues(alpha: busy ? 1 : 0.45),
+          disabledForegroundColor: Colors.white,
+          minimumSize: const Size.fromHeight(50),
+          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        ),
+        icon: busy
+            ? const ButtonSpinner(color: Colors.white)
+            : Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
+                child: Image.asset('assets/ledgix-id-mark.png', width: 18, height: 18, excludeFromSemantics: true),
+              ),
+        label: Text(context.l.continueWithLedgix),
+      );
+}
+
+/// Neutral outlined button, per Google's branding guidelines.
+class GoogleSignInButton extends StatelessWidget {
+  const GoogleSignInButton({super.key, required this.onPressed, this.busy = false});
+  final VoidCallback? onPressed;
+  final bool busy;
 
   @override
   Widget build(BuildContext context) {
-    final l = context.l;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      const SizedBox(height: 8),
-      FilledButton.icon(
-        key: const Key('ledgix-sign-in'),
-        onPressed: onLedgix,
-        icon: Container(
-          padding: const EdgeInsets.all(2),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
-          child: Image.asset('assets/ledgix-id-mark.png', width: 20, height: 20, excludeFromSemantics: true),
-        ),
-        label: Text(l.continueWithLedgix),
-        style: FilledButton.styleFrom(backgroundColor: ledgixBlue, foregroundColor: Colors.white),
+    return OutlinedButton.icon(
+      key: const Key('google-sign-in'),
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: dark ? Colors.white : const Color(0xFF1F1F1F),
+        backgroundColor: dark ? const Color(0xFF131314) : Colors.white,
+        side: BorderSide(color: dark ? const Color(0xFF8E918F) : const Color(0xFF747775)),
+        minimumSize: const Size.fromHeight(46),
       ),
-      const SizedBox(height: 8),
-      Row(children: [
-        const Expanded(child: Divider()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(l.orDivider, style: Theme.of(context).textTheme.bodySmall),
-        ),
-        const Expanded(child: Divider()),
-      ]),
-      const SizedBox(height: 8),
-      OutlinedButton.icon(
-        key: const Key('google-sign-in'),
-        onPressed: onGoogle,
-        icon: const _GoogleMark(size: 18),
-        label: Text(l.continueWithGoogle),
-        style: OutlinedButton.styleFrom(
-          // Google's guidelines: neutral button, not brand-coloured.
-          foregroundColor: dark ? Colors.white : const Color(0xFF1F1F1F),
-          backgroundColor: dark ? const Color(0xFF131314) : Colors.white,
-          side: BorderSide(color: dark ? const Color(0xFF8E918F) : const Color(0xFF747775)),
-        ),
+      icon: busy ? const ButtonSpinner() : const _GoogleMark(size: 18),
+      label: Text(context.l.continueWithGoogle),
+    );
+  }
+}
+
+/// Apple's "white with outline" style on light backgrounds and the black
+/// style on dark ones (both allowed by Apple's Human Interface Guidelines).
+class AppleSignInButton extends StatelessWidget {
+  const AppleSignInButton({super.key, required this.onPressed, this.busy = false});
+  final VoidCallback? onPressed;
+  final bool busy;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return OutlinedButton.icon(
+      key: const Key('apple-sign-in'),
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: dark ? Colors.white : Colors.black,
+        backgroundColor: dark ? Colors.black : Colors.white,
+        side: BorderSide(color: dark ? const Color(0xFF8E918F) : Colors.black),
+        minimumSize: const Size.fromHeight(46),
       ),
-      if (showApple) ...[
-        const SizedBox(height: 12),
-        FilledButton.icon(
-          key: const Key('apple-sign-in'),
-          onPressed: onApple,
-          icon: const Icon(Icons.apple, size: 22),
-          label: Text(l.continueWithApple),
-          // Apple's guidelines: black button (white on dark backgrounds).
-          style: FilledButton.styleFrom(
-            backgroundColor: dark ? Colors.white : Colors.black,
-            foregroundColor: dark ? Colors.black : Colors.white,
-          ),
-        ),
-      ],
-    ]);
+      icon: busy ? const ButtonSpinner() : const Icon(Icons.apple, size: 22),
+      label: Text(context.l.continueWithApple),
+    );
   }
 }
 
