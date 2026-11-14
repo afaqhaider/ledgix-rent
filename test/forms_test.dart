@@ -29,8 +29,9 @@ class _FakeScanner implements DocumentScanner {
 XFile _file(String name) => XFile.fromData(Uint8List.fromList(List.filled(2048, 1)), name: name);
 
 /// Signed-in demo app with a landlord profile, on a phone-sized screen.
-Future<ProviderContainer> _app(WidgetTester tester, {ScannedDocument? scan, String own = '784-1985-3333333-3'}) async {
-  tester.view.physicalSize = const Size(1170, 2532);
+Future<ProviderContainer> _app(WidgetTester tester,
+    {ScannedDocument? scan, String own = '784-1985-3333333-3', Size size = const Size(390, 844)}) async {
+  tester.view.physicalSize = size * 3;
   tester.view.devicePixelRatio = 3;
   addTearDown(tester.view.reset);
   final scanner = _FakeScanner(scan ?? const ScannedDocument(ScannedKind.unknown, {}));
@@ -61,6 +62,18 @@ Future<void> _save(WidgetTester tester) async {
 }
 
 void main() {
+  // Regression: on wide screens the Save/Cancel bar once took the full page
+  // height and left every form body blank.
+  for (final path in ['/property/new', '/leases/new', '/profile']) {
+    testWidgets('desktop: form fields are visible on $path', (tester) async {
+      final c = await _app(tester, size: const Size(1440, 900));
+      await _go(tester, c, path);
+      // The first field must be on screen and tappable, not clipped away.
+      expect(find.byType(TextFormField).first.hitTestable(), findsOneWidget);
+      expect(tester.getRect(find.byKey(const Key('form-save'))).top, greaterThan(700));
+    });
+  }
+
   testWidgets('Add property: basic info and title deed are mandatory; the rest is optional', (tester) async {
     final c = await _app(tester);
     await _go(tester, c, '/property/new');

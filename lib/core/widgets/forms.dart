@@ -135,8 +135,12 @@ class _ActionBar extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(border: Border(top: BorderSide(color: scheme.outlineVariant))),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          // heightFactor: 1 keeps the bar as tall as its buttons. A plain Center
+          // in a bottomNavigationBar expands to the full page height and leaves
+          // the form body with zero height on wide screens.
           child: wide
               ? Center(
+                  heightFactor: 1,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: formMaxWidth),
                     child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
