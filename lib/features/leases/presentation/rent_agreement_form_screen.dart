@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/feature_flags.dart';
+import '../../inspections/presentation/inspections_screen.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
@@ -366,6 +367,12 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
           ],
         ),
         FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [DocumentsEditor(controller: _docs)]),
+        if (_existing != null)
+          FormSection(
+            title: l.inspections,
+            icon: Icons.fact_check_outlined,
+            children: [LeaseInspectionsSection(lease: _existing!)],
+          ),
       ],
     );
   }

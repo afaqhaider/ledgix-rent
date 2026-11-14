@@ -57,6 +57,7 @@ List<NavSection> get navSections => [
       ]),
       NavSection((l) => l.operations, [
         maintenanceItem,
+        NavItem('/inspections', Icons.fact_check_outlined, Icons.fact_check, (l) => l.inspections),
         NavItem('/vendors', Icons.handyman_outlined, Icons.handyman, (l) => l.vendors),
         NavItem('/holds', Icons.pause_circle_outline, Icons.pause_circle, (l) => l.holdRequests),
         if (FeatureFlags.utilityBills)

@@ -11,6 +11,7 @@ import '../features/auth/data/firebase_auth_repository.dart';
 import '../features/auth/domain/auth_repository.dart';
 import '../features/dashboard/domain/dashboard_stats.dart';
 import '../features/holds/domain/hold_request.dart';
+import '../features/inspections/domain/inspection.dart';
 import '../features/integrations/data/cloud_services.dart';
 import '../features/integrations/data/mock_services.dart';
 import '../features/integrations/domain/integration_services.dart';
@@ -102,6 +103,10 @@ final utilityBillRepositoryProvider =
     Provider<CrudRepository<UtilityBill>>((r) => _repo(r, 'utilityBills', UtilityBill.fromMap));
 final serviceChargeRepositoryProvider =
     Provider<CrudRepository<ServiceCharge>>((r) => _repo(r, 'serviceCharges', ServiceCharge.fromMap));
+
+final inspectionRepositoryProvider =
+    Provider<CrudRepository<Inspection>>((r) => _repo(r, 'inspections', Inspection.fromMap));
+final inspectionsProvider = StreamProvider((ref) => ref.watch(inspectionRepositoryProvider).watchAll());
 
 final landlordRepositoryProvider =
     Provider<LandlordRepository>((r) => _repo(r, 'profile', Landlord.fromMap));

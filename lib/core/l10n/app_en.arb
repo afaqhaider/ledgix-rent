@@ -658,5 +658,151 @@
         "type": "String"
       }
     }
+  },
+  "inspections": "Inspections",
+  "moveInInspection": "Move-in inspection",
+  "moveOutInspection": "Move-out inspection",
+  "newInspection": "New inspection",
+  "inspectionStatusDraft": "Draft",
+  "inspectionStatusAwaitingTenant": "Waiting for tenant",
+  "inspectionStatusCompleted": "Completed",
+  "conditionExcellent": "Excellent",
+  "conditionGood": "Good",
+  "conditionFair": "Fair",
+  "conditionPoor": "Poor",
+  "conditionDamaged": "Damaged",
+  "conditionMissing": "Missing",
+  "conditionNa": "N/A",
+  "inspectionRooms": "Rooms",
+  "addRoom": "Add room",
+  "renameRoom": "Rename room",
+  "deleteRoom": "Delete room",
+  "roomNameLabel": "Room name",
+  "addItem": "Add item",
+  "itemNameLabel": "Item name",
+  "renameItem": "Rename item",
+  "deleteItem": "Delete item",
+  "itemsRated": "{rated} of {total} rated",
+  "@itemsRated": {
+    "placeholders": {
+      "rated": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "metersAndKeys": "Meters & keys",
+  "meterReadings": "Meter readings",
+  "meterElectricity": "Electricity meter",
+  "meterWater": "Water meter",
+  "meterGas": "Gas meter",
+  "meterPhotos": "Meter photos",
+  "keysHandedOver": "Keys handed over",
+  "keysMainDoor": "Main door keys",
+  "keysMailbox": "Mailbox keys",
+  "keysParking": "Parking",
+  "keysAccessCards": "Access cards",
+  "keysRemotes": "Remotes",
+  "keysOther": "Other",
+  "generalNotes": "General notes",
+  "roomNotes": "Room notes",
+  "roomPhotos": "Room photos & videos",
+  "recordVideo": "Record video",
+  "fromGallery": "From gallery",
+  "uploadingMedia": "Uploading {count}…",
+  "@uploadingMedia": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "Upload failed: {error}",
+  "@uploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewAndSend": "Review & send",
+  "sendToTenant": "Send to tenant",
+  "sendToTenantHint": "The tenant can review it, add comments and photos, and confirm in their app.",
+  "inspectionSent": "Sent to the tenant.",
+  "markCompleted": "Mark as completed",
+  "markCompletedHint": "Use this when the tenant isn't on the app, e.g. \"Signed on paper on 12/11\".",
+  "completionNoteLabel": "Note",
+  "downloadReport": "PDF report",
+  "moveInVsMoveOut": "Move-in vs move-out",
+  "atMoveIn": "Move-in",
+  "atMoveOut": "Move-out",
+  "worsenedItems": "Items in worse condition",
+  "noWorsenedItems": "No item is in worse condition than at move-in.",
+  "worsenedHint": "Use this list when agreeing deposit deductions.",
+  "tenantComments": "Tenant's comments",
+  "tenantMedia": "Tenant's photos & videos",
+  "addComment": "Add comment",
+  "commentLabel": "Comment",
+  "addPhotoOrVideo": "Add photo or video",
+  "confirmInspection": "Confirm inspection",
+  "confirmInspectionBody": "Confirm that this inspection matches the unit's condition. Add comments first if anything is wrong.",
+  "inspectionConfirmed": "Inspection confirmed.",
+  "landlordSigned": "Landlord signed",
+  "tenantConfirmed": "Tenant confirmed",
+  "notYet": "Not yet",
+  "completedWithoutTenant": "Completed without tenant confirmation",
+  "bedroomsLabel": "Bedrooms",
+  "bathroomsLabel": "Bathrooms",
+  "roomsToInclude": "Rooms to include",
+  "rentAgreementLabel": "Rent agreement",
+  "inspectionTypeLabel": "Type",
+  "startInspection": "Start inspection",
+  "continueInspection": "Continue",
+  "viewInspection": "View",
+  "deleteInspection": "Delete inspection",
+  "deleteInspectionConfirm": "Delete this inspection and its notes? Uploaded photos stay in storage until the account is deleted.",
+  "unratedItems": "{count} items aren't rated yet. Send anyway?",
+  "@unratedItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prefilledFromMoveIn": "Rooms copied from the move-in inspection. The move-in condition shows on each item.",
+  "noInspectionsYet": "No inspections yet. Start one from a rent agreement.",
+  "noAgreementsForInspection": "Add a rent agreement first.",
+  "inspectionCreated": "Created {date}",
+  "@inspectionCreated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "photosOmitted": "{count} more photos in the app",
+  "@photosOmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "videosLabel": "Videos",
+  "itemLabel": "Item",
+  "conditionLabel": "Condition",
+  "inspectionStatusLabel": "Status",
+  "createdLabel": "Created",
+  "completedLabel": "Completed",
+  "confirmationsLabel": "Confirmations",
+  "worsenedCount": "{count} worse",
+  "@worsenedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

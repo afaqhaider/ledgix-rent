@@ -120,3 +120,6 @@ export {
 
 // LedGix ID (Hub) sign-in
 export { exchangeLedgixHubSession } from "./hub";
+
+// Move-in / move-out inspections: tenant actions
+export { addInspectionTenantComment, attachInspectionTenantMedia, confirmInspectionAsTenant } from "./inspections";

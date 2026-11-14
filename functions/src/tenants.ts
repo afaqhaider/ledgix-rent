@@ -281,11 +281,24 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
       imageUrl: x.shareImage === false ? null : x.image ?? null,
     });
   }
+  const profile = profileSnap.docs[0]?.data() ?? {};
+  const tenantName = (tid: string) => {
+    const t = tenantsSnap.docs.find((d) => d.id === tid)?.data() ?? {};
+    const parts = [t.firstName, t.middleName, t.lastName].filter((s) => typeof s === "string" && s.trim());
+    return parts.length ? parts.join(" ") : text(t.name);
+  };
   for (const i of inspSnap.docs) {
-    if (leaseIds.has(i.get("leaseId"))) docs.inspections.set(i.id, { ...i.data(), id: i.id, landlordUid: ll });
+    if (!leaseIds.has(i.get("leaseId"))) continue;
+    const x = i.data();
+    const p = props.get(x.propertyId) ?? {};
+    // InspectionView and its PDF read these names from the tenant's copy.
+    docs.inspections.set(i.id, {
+      ...x, id: i.id, landlordUid: ll,
+      propertyName: p.name ?? "", address: p.address ?? "",
+      tenantName: tenantName(x.tenantId), landlordName: profile.name ?? "",
+    });
   }
 
-  const profile = profileSnap.docs[0]?.data() ?? {};
   let email = text(profile.email);
   if (!email) email = (await getAuth().getUser(ll).catch(() => null))?.email ?? "";
   const link = await linkRef.get();

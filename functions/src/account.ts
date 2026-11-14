@@ -37,6 +37,8 @@ export const deleteAccount = onCall(async (req) => {
   await db.doc(`inviteQuota/${uid}`).delete();
   await getStorage().bucket().deleteFiles({ prefix: `landlords/${uid}/` });
   await getStorage().bucket().deleteFiles({ prefix: `tenants/${uid}/` });
+  // Photos and videos this person added to inspections as a tenant.
+  await getStorage().bucket().deleteFiles({ prefix: `tenantUploads/${uid}/` });
   const hubLinks = await db.collection(LINKS).where("localUid", "==", uid).get();
   await Promise.all(hubLinks.docs.map((d) => d.ref.delete()));
   await getAuth().deleteUser(uid);
