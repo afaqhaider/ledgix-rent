@@ -177,7 +177,11 @@ class _DocTile extends StatelessWidget {
   }
 }
 
-Widget _empty(BuildContext context, String message, {Widget? action}) => Center(
+/// Empty state, or a spinner while the tenant's data is still loading (so a
+/// slow first load doesn't look like "nothing here").
+Widget _empty(BuildContext context, String message, {Widget? action, bool loading = false}) => loading
+    ? const Center(child: CircularProgressIndicator())
+    : Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -349,7 +353,7 @@ class TenantLandlordsScreen extends ConsumerWidget {
         onPressed: () => showAddLandlordDialog(context, ref),
       ),
       body: all.isEmpty
-          ? _empty(context, l.tpNoLandlords)
+          ? _empty(context, l.tpNoLandlords, loading: ref.watch(tenantLandlordsProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 96), children: [
               if (current.isNotEmpty) _Heading(l.tpCurrent),
               for (final x in current) tile(x, isFormer: false),
@@ -385,7 +389,7 @@ class TenantLandlordDetailScreen extends ConsumerWidget {
     return Scaffold(
       appBar: ShellAppBar(title: Text(ll?.name ?? l.landlord)),
       body: ll == null
-          ? _empty(context, l.nothingYet)
+          ? _empty(context, l.nothingYet, loading: ref.watch(tenantLeasesProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 16, 16, 32), children: [
               _Panel(title: l.tpLandlordDetails, icon: Icons.person_outline, children: [
                 _InfoRow(l.landlord, ll.name, icon: Icons.badge_outlined),
@@ -429,7 +433,7 @@ class TenantPropertiesScreen extends ConsumerWidget {
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.properties)),
       body: props.isEmpty
-          ? _empty(context, l.tpNoProperties)
+          ? _empty(context, l.tpNoProperties, loading: ref.watch(tenantPropertiesProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 32), children: [
               for (final p in props)
                 Card(
@@ -493,7 +497,7 @@ class TenantPaymentsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.tpPayments)),
       body: payments.isEmpty
-          ? _empty(context, l.tpNoUpcoming)
+          ? _empty(context, l.tpNoUpcoming, loading: ref.watch(tenantPaymentsProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 32), children: [
               for (final p in payments)
                 Card(
@@ -562,7 +566,7 @@ class TenantInspectionsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.tpInspections)),
       body: list.isEmpty
-          ? _empty(context, l.tpNoInspections)
+          ? _empty(context, l.tpNoInspections, loading: ref.watch(tenantInspectionsProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 32), children: [
               for (final m in list)
                 Card(
@@ -606,7 +610,7 @@ class TenantInspectionDetailScreen extends ConsumerWidget {
         .firstOrNull;
     return Scaffold(
       appBar: ShellAppBar(title: Text(m == null ? l.tpInspection : inspectionTitle(l, m))),
-      body: m == null ? _empty(context, l.tpNoInspections) : InspectionView(data: m, tenantMode: true),
+      body: m == null ? _empty(context, l.tpNoInspections, loading: ref.watch(tenantInspectionsProvider).isLoading) : InspectionView(data: m, tenantMode: true),
     );
   }
 }
@@ -633,7 +637,8 @@ class TenantMaintenanceScreen extends ConsumerWidget {
               onPressed: () => context.push('/t/maintenance/new'),
             )
           : null,
-      body: _empty(context, hasProperties ? l.tpMyRequests : l.tpNoProperties),
+      body: _empty(context, hasProperties ? l.tpMyRequests : l.tpNoProperties,
+          loading: ref.watch(tenantPropertiesProvider).isLoading),
     );
   }
 }
