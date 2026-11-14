@@ -8,6 +8,9 @@ class FeatureFlags {
 
   static const maintenanceForwarding = bool.fromEnvironment('FF_FORWARDING', defaultValue: true);
   static const utilityBills = bool.fromEnvironment('FF_UTILITY_BILLS', defaultValue: true);
-  static const ejari = bool.fromEnvironment('FF_EJARI', defaultValue: true);
+  /// Off: there is no live connection to the Ejari system yet, so the
+  /// "Verify Ejari" lookup and Ejari status chips are hidden. The Ejari number
+  /// itself is still entered or scanned on the rent agreement.
+  static const ejari = bool.fromEnvironment('FF_EJARI', defaultValue: false);
   static const mollak = bool.fromEnvironment('FF_MOLLAK', defaultValue: true);
 }
