@@ -22,7 +22,9 @@ export const utilityBillCheck = onSchedule({ schedule: "0 9 * * *", timeZone: "A
       if (tokens.length) await getMessaging().sendEachForMulticast({ tokens, notification: { title, body } });
     };
 
-    if ((l.get("utilityCheckDay") ?? 1) === now.getUTCDate()) {
+    // Fetch new bills only from a real provider connection (UTILITY_MODE=live).
+    // In mock mode this would save made-up bills into real accounts.
+    if (process.env.UTILITY_MODE === "live" && (l.get("utilityCheckDay") ?? 1) === now.getUTCDate()) {
       const bills = await l.ref.collection("utilityBills").get();
       for (const p of (await l.ref.collection("properties").get()).docs) {
         const accounts: [UtilityProvider, string][] = [];

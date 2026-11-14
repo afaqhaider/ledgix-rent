@@ -12,5 +12,11 @@ class FeatureFlags {
   /// "Verify Ejari" lookup and Ejari status chips are hidden. The Ejari number
   /// itself is still entered or scanned on the rent agreement.
   static const ejari = bool.fromEnvironment('FF_EJARI', defaultValue: false);
-  static const mollak = bool.fromEnvironment('FF_MOLLAK', defaultValue: true);
+  /// Off: no live Mollak connection yet, so Service charges (which come
+  /// only from Mollak) are hidden. The Mollak registration no. field stays.
+  static const mollak = bool.fromEnvironment('FF_MOLLAK', defaultValue: false);
+
+  /// Off: no live DEWA/chiller connection yet, so the "Fetch bill" button is
+  /// hidden. Utility bills you add and upload yourself still work.
+  static const utilityFetch = bool.fromEnvironment('FF_UTILITY_FETCH', defaultValue: false);
 }
