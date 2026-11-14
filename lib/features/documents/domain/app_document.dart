@@ -44,6 +44,11 @@ abstract final class DocumentKinds {
   static const tenant = [emiratesId, passport, other];
   static const agreement = [ejari, tenancyContract, other];
 
+  /// Fixed upload slots on the forms (one file each), in display order.
+  /// Every other kind goes in the "Other documents" list.
+  static const propertySlots = [titleDeed, dewaBill, ownerEmiratesId, ownerPassport];
+  static const tenantSlots = [emiratesId, passport];
+
   /// Documents that must be attached before saving.
   static const propertyRequired = {titleDeed};
   static const tenantRequired = {emiratesId};

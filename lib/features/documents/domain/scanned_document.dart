@@ -50,6 +50,9 @@ enum ScanField {
   personName,
   personEmiratesId,
   personPassport,
+  // Expiry dates of a standalone ID card / passport (yyyy-MM-dd).
+  personEmiratesIdExpiry,
+  personPassportExpiry,
 }
 
 /// Result of reading one document. Values are plain strings as printed

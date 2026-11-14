@@ -9,7 +9,9 @@ import '../../../core/widgets/forms.dart';
 import '../../documents/domain/form_fill.dart';
 import '../../documents/domain/scanned_document.dart';
 import '../../documents/presentation/auto_fill.dart';
+import '../../documents/presentation/document_slots.dart';
 import '../../documents/presentation/documents_editor.dart';
+import '../../documents/presentation/expiry_widgets.dart';
 import '../../documents/presentation/scan_to_fill.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
 import '../../vendors/domain/vendor.dart';
@@ -36,6 +38,8 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
   String? _defaultVendor;
   Property? _existing;
   String? _banner;
+  DateTime? _ownerEidExpiry, _ownerPassportExpiry;
+  final _datesFromScan = <String>{};
 
   @override
   void initState() {
@@ -43,9 +47,16 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
     _f.onChanged = () => setState(() {});
     _existing = widget.id == null ? null : ref.read(propertiesProvider).value?.where((p) => p.id == widget.id).firstOrNull;
     final p = _existing;
-    _docs = DocumentsController(kinds: DocumentKinds.property, required: DocumentKinds.propertyRequired, existing: p?.documents ?? const []);
+    _docs = DocumentsController(
+      kinds: DocumentKinds.property,
+      required: DocumentKinds.propertyRequired,
+      slots: DocumentKinds.propertySlots,
+      existing: p?.documents ?? const [],
+    );
     if (p != null) {
       _type = p.type;
+      _ownerEidExpiry = p.ownerEmiratesIdExpiry;
+      _ownerPassportExpiry = p.ownerPassportExpiry;
       _defaultVendor = p.defaultVendorId;
       for (final (k, v) in [
         (FormKeys.name, p.name), (FormKeys.address, p.address), (FormKeys.community, p.community),
@@ -86,6 +97,19 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
       count++;
     }
     values.remove(_k);
+    final dates = newScannedDates(values, {
+      FormKeys.ownerEidExpiry: _ownerEidExpiry,
+      FormKeys.ownerPassportExpiry: _ownerPassportExpiry,
+    });
+    if (dates.isNotEmpty) {
+      setState(() {
+        _ownerEidExpiry = dates[FormKeys.ownerEidExpiry] ?? _ownerEidExpiry;
+        _ownerPassportExpiry = dates[FormKeys.ownerPassportExpiry] ?? _ownerPassportExpiry;
+        _datesFromScan.addAll(dates.keys);
+      });
+      count += dates.length;
+    }
+    if (!mounted) return;
     count += await _f.apply(context, values, _labels(l));
     // Keep the scanned file: a standalone ID or passport here is the owner's.
     final kind = switch (doc.kind) {
@@ -120,6 +144,8 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
           titleDeedNo: _f.text(FormKeys.titleDeed),
           ownerEmiratesIdNo: _f.text(FormKeys.ownerEid),
           ownerPassportNo: _f.text(FormKeys.ownerPassport),
+          ownerEmiratesIdExpiry: _ownerEidExpiry,
+          ownerPassportExpiry: _ownerPassportExpiry,
           hoaName: _f.text('hoaName'),
           hoaPhone: _f.text('hoaPhone'),
           documents: docs,
@@ -183,7 +209,27 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
           FieldGrid(children: [
             text(FormKeys.titleDeed, l.titleDeedNo),
             text(FormKeys.ownerEid, l.ownerEmiratesIdNo),
+            ExpiryDateField(
+              key: const ValueKey('field-ownerEidExpiry'),
+              label: l.ixOwnerEmiratesIdExpiry,
+              value: _ownerEidExpiry,
+              highlighted: _datesFromScan.contains(FormKeys.ownerEidExpiry),
+              onChanged: (d) => setState(() {
+                _ownerEidExpiry = d;
+                _datesFromScan.remove(FormKeys.ownerEidExpiry);
+              }),
+            ),
             text(FormKeys.ownerPassport, l.ownerPassportNo),
+            ExpiryDateField(
+              key: const ValueKey('field-ownerPassportExpiry'),
+              label: l.ixOwnerPassportExpiry,
+              value: _ownerPassportExpiry,
+              highlighted: _datesFromScan.contains(FormKeys.ownerPassportExpiry),
+              onChanged: (d) => setState(() {
+                _ownerPassportExpiry = d;
+                _datesFromScan.remove(FormKeys.ownerPassportExpiry);
+              }),
+            ),
           ]),
         ]),
         FormSection(title: l.sectionHoa, icon: Icons.groups_outlined, children: [
@@ -204,7 +250,12 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
             ),
           ]),
         ]),
-        FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [DocumentsEditor(controller: _docs)]),
+        FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [
+          DocumentSlotsEditor(controller: _docs, notes: {
+            DocumentKinds.ownerEmiratesId: ExpiryNote(date: _ownerEidExpiry),
+            DocumentKinds.ownerPassport: ExpiryNote(date: _ownerPassportExpiry),
+          }),
+        ]),
       ],
     );
   }

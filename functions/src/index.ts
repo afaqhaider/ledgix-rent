@@ -2,6 +2,7 @@ import { onSchedule } from "firebase-functions/v2/scheduler";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { landlordTokens, notify, userTokens } from "./tenants";
+import { sendIdExpiryReminders } from "./expiryReminders";
 
 initializeApp();
 
@@ -63,6 +64,8 @@ export const dailyReminders = onSchedule(
       }
       const tokens = await landlordTokens(l.id);
       for (const m of messages) await notify(tokens, m);
+      // Emirates ID / passport expiries (tenants, owners, the landlord's own).
+      await sendIdExpiryReminders(l.ref, today, tokens);
 
       // Tenants who joined the app: rent reminders and lease-end reminders.
       const tenants = await l.ref.collection("tenants").where("appUid", "!=", null).get();

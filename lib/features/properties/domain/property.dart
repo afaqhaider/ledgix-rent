@@ -25,6 +25,8 @@ class Property implements Entity {
     this.hoaPhone = '',
     this.ownerEmiratesIdNo = '',
     this.ownerPassportNo = '',
+    this.ownerEmiratesIdExpiry,
+    this.ownerPassportExpiry,
     this.annualRent,
     this.documents = const [],
     this.isJointlyOwned = false,
@@ -39,6 +41,9 @@ class Property implements Entity {
   final String id;
   final String landlordId, name, address, community, titleDeedNo, dewaAccountNo;
   final String dewaPremiseNo, hoaName, hoaPhone, ownerEmiratesIdNo, ownerPassportNo;
+
+  /// Expiry dates of the owner's Emirates ID and passport (optional).
+  final DateTime? ownerEmiratesIdExpiry, ownerPassportExpiry;
 
   /// Expected annual rent for the unit (the agreement holds the actual figure).
   final double? annualRent;
@@ -65,6 +70,8 @@ class Property implements Entity {
         hoaPhone: hoaPhone,
         ownerEmiratesIdNo: ownerEmiratesIdNo,
         ownerPassportNo: ownerPassportNo,
+        ownerEmiratesIdExpiry: ownerEmiratesIdExpiry,
+        ownerPassportExpiry: ownerPassportExpiry,
         annualRent: annualRent,
         documents: documents ?? this.documents,
         isJointlyOwned: isJointlyOwned,
@@ -90,6 +97,8 @@ class Property implements Entity {
         'hoaPhone': hoaPhone,
         'ownerEmiratesIdNo': ownerEmiratesIdNo,
         'ownerPassportNo': ownerPassportNo,
+        'ownerEmiratesIdExpiry': dateKey(ownerEmiratesIdExpiry),
+        'ownerPassportExpiry': dateKey(ownerPassportExpiry),
         'annualRent': annualRent,
         'documents': documents.map((d) => d.toMap()).toList(),
         'isJointlyOwned': isJointlyOwned,
@@ -114,6 +123,8 @@ class Property implements Entity {
         hoaPhone: '${m['hoaPhone'] ?? ''}',
         ownerEmiratesIdNo: '${m['ownerEmiratesIdNo'] ?? ''}',
         ownerPassportNo: '${m['ownerPassportNo'] ?? ''}',
+        ownerEmiratesIdExpiry: parseDate(m['ownerEmiratesIdExpiry']),
+        ownerPassportExpiry: parseDate(m['ownerPassportExpiry']),
         annualRent: (m['annualRent'] as num?)?.toDouble(),
         documents: AppDocument.listFrom(m['documents']),
         isJointlyOwned: m['isJointlyOwned'] == true,

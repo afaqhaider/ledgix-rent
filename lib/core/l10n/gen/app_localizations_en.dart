@@ -2034,4 +2034,104 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hrDeclined => 'Hold request declined.';
+
+  @override
+  String get ixAddOtherDocument => 'Add other document';
+
+  @override
+  String ixAndMore(int count) {
+    return 'and $count more';
+  }
+
+  @override
+  String get ixClearDate => 'Clear date';
+
+  @override
+  String get ixDocumentName => 'Document name';
+
+  @override
+  String get ixEmiratesId => 'Emirates ID';
+
+  @override
+  String get ixEmiratesIdExpiry => 'Emirates ID expiry';
+
+  @override
+  String ixExpiredOn(String date) {
+    return 'Expired $date';
+  }
+
+  @override
+  String ixExpiresInDays(String date, int days) {
+    return 'Expires $date (in $days days)';
+  }
+
+  @override
+  String ixExpiresOn(String date) {
+    return 'Expires $date';
+  }
+
+  @override
+  String get ixExpiresToday => 'Expires today';
+
+  @override
+  String get ixExpiryAlreadyPassed =>
+      'This date has passed: the ID has expired';
+
+  @override
+  String get ixExpiryNotSet => 'Expiry date not set';
+
+  @override
+  String get ixIdExpired => 'ID expired';
+
+  @override
+  String ixIdExpiriesSubtitle(int expired, int soon) {
+    return '$expired expired · $soon expiring within 60 days';
+  }
+
+  @override
+  String get ixIdExpiriesTitle => 'ID expiries';
+
+  @override
+  String get ixIdExpiringSoon => 'ID expiring';
+
+  @override
+  String get ixMyEmiratesIdExpiry => 'My Emirates ID expiry';
+
+  @override
+  String get ixMyPassportExpiry => 'My passport expiry';
+
+  @override
+  String get ixNoOtherDocuments => 'No other documents yet.';
+
+  @override
+  String get ixNotAttached => 'Not attached';
+
+  @override
+  String get ixOtherDocuments => 'Other documents';
+
+  @override
+  String get ixOwnerEmiratesIdExpiry => 'Owner\'s Emirates ID expiry';
+
+  @override
+  String ixOwnerOfProperty(String property) {
+    return 'Owner · $property';
+  }
+
+  @override
+  String get ixOwnerPassportExpiry => 'Owner\'s passport expiry';
+
+  @override
+  String get ixPassport => 'Passport';
+
+  @override
+  String get ixPassportExpiry => 'Passport expiry';
+
+  @override
+  String get ixReplace => 'Replace';
+
+  @override
+  String get ixUpload => 'Upload';
+
+  @override
+  String get ixYou => 'You';
 }

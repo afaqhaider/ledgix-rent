@@ -3811,6 +3811,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold request declined.'**
   String get hrDeclined;
+
+  /// No description provided for @ixAddOtherDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Add other document'**
+  String get ixAddOtherDocument;
+
+  /// No description provided for @ixAndMore.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count} more'**
+  String ixAndMore(int count);
+
+  /// No description provided for @ixClearDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear date'**
+  String get ixClearDate;
+
+  /// No description provided for @ixDocumentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Document name'**
+  String get ixDocumentName;
+
+  /// No description provided for @ixEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID'**
+  String get ixEmiratesId;
+
+  /// No description provided for @ixEmiratesIdExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Emirates ID expiry'**
+  String get ixEmiratesIdExpiry;
+
+  /// No description provided for @ixExpiredOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired {date}'**
+  String ixExpiredOn(String date);
+
+  /// No description provided for @ixExpiresInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires {date} (in {days} days)'**
+  String ixExpiresInDays(String date, int days);
+
+  /// No description provided for @ixExpiresOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires {date}'**
+  String ixExpiresOn(String date);
+
+  /// No description provided for @ixExpiresToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires today'**
+  String get ixExpiresToday;
+
+  /// No description provided for @ixExpiryAlreadyPassed.
+  ///
+  /// In en, this message translates to:
+  /// **'This date has passed: the ID has expired'**
+  String get ixExpiryAlreadyPassed;
+
+  /// No description provided for @ixExpiryNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date not set'**
+  String get ixExpiryNotSet;
+
+  /// No description provided for @ixIdExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'ID expired'**
+  String get ixIdExpired;
+
+  /// No description provided for @ixIdExpiriesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{expired} expired · {soon} expiring within 60 days'**
+  String ixIdExpiriesSubtitle(int expired, int soon);
+
+  /// No description provided for @ixIdExpiriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ID expiries'**
+  String get ixIdExpiriesTitle;
+
+  /// No description provided for @ixIdExpiringSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'ID expiring'**
+  String get ixIdExpiringSoon;
+
+  /// No description provided for @ixMyEmiratesIdExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'My Emirates ID expiry'**
+  String get ixMyEmiratesIdExpiry;
+
+  /// No description provided for @ixMyPassportExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'My passport expiry'**
+  String get ixMyPassportExpiry;
+
+  /// No description provided for @ixNoOtherDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'No other documents yet.'**
+  String get ixNoOtherDocuments;
+
+  /// No description provided for @ixNotAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Not attached'**
+  String get ixNotAttached;
+
+  /// No description provided for @ixOtherDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Other documents'**
+  String get ixOtherDocuments;
+
+  /// No description provided for @ixOwnerEmiratesIdExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner\'s Emirates ID expiry'**
+  String get ixOwnerEmiratesIdExpiry;
+
+  /// No description provided for @ixOwnerOfProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner · {property}'**
+  String ixOwnerOfProperty(String property);
+
+  /// No description provided for @ixOwnerPassportExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner\'s passport expiry'**
+  String get ixOwnerPassportExpiry;
+
+  /// No description provided for @ixPassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get ixPassport;
+
+  /// No description provided for @ixPassportExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport expiry'**
+  String get ixPassportExpiry;
+
+  /// No description provided for @ixReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get ixReplace;
+
+  /// No description provided for @ixUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get ixUpload;
+
+  /// No description provided for @ixYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get ixYou;
 }
 
 class _AppLocalizationsDelegate

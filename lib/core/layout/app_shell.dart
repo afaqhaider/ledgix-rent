@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../features/documents/presentation/expiry_widgets.dart' show expiryText;
+import '../../features/documents/presentation/id_expiries_card.dart';
 import '../../features/dashboard/domain/dashboard_insights.dart';
 import '../../features/leases/domain/lease.dart' show PaymentMethod;
 import '../../features/account/account_providers.dart';
@@ -382,7 +384,8 @@ class NotificationsButton extends ConsumerWidget {
       for (final r in ref.watch(holdsProvider).value ?? const <HoldRequest>[])
         if (r.status == HoldStatus.pending) r,
     ];
-    final count = due.length + ending.length + holds.length;
+    final idAlerts = ref.watch(idExpiryAlertsProvider).where((e) => e.daysLeft(today) <= 30).toList();
+    final count = due.length + ending.length + holds.length + idAlerts.length;
 
     return MenuAnchor(
       alignmentOffset: const Offset(-220, 4),
@@ -410,6 +413,16 @@ class NotificationsButton extends ConsumerWidget {
             child: SizedBox(
               width: 260,
               child: Text('${formatDate(p.dueDate)} · ${formatAed(p.amount)}\n${propertyOfLease[p.leaseId] ?? ''}',
+                  maxLines: 2, overflow: TextOverflow.ellipsis),
+            ),
+          ),
+        for (final e in idAlerts.take(4))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.badge_outlined),
+            onPressed: () => context.push(e.route),
+            child: SizedBox(
+              width: 260,
+              child: Text('${expiryWho(l, e)} · ${idDocLabel(l, e.doc)}\n${expiryText(l, e.date, today)}',
                   maxLines: 2, overflow: TextOverflow.ellipsis),
             ),
           ),

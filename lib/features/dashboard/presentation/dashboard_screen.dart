@@ -12,6 +12,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
+import '../../documents/presentation/id_expiries_card.dart';
 import '../../landlord/presentation/onboarding_screen.dart' show landlordProvider;
 import '../../leases/domain/lease.dart';
 import '../../maintenance/domain/maintenance_ticket.dart';
@@ -82,6 +83,7 @@ class DashboardScreen extends ConsumerWidget {
             SizedBox(height: gap),
             _KpiGrid(kpis: kpis, columns: c.maxWidth >= 560 ? 3 : 2, gap: wide ? 16 : 12),
             SizedBox(height: gap),
+            IdExpiriesCard(gap: gap),
             if (wide)
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Expanded(flex: 3, child: Column(children: [upcoming, SizedBox(height: gap), chart])),

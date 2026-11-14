@@ -59,10 +59,12 @@ abstract final class FormKeys {
   static const type = 'type', name = 'name', address = 'address', community = 'community';
   static const dewaPremise = 'dewaPremise', dewaAccount = 'dewaAccount', mollak = 'mollak';
   static const titleDeed = 'titleDeed', ownerEid = 'ownerEid', ownerPassport = 'ownerPassport';
+  static const ownerEidExpiry = 'ownerEidExpiry', ownerPassportExpiry = 'ownerPassportExpiry';
   static const annualRent = 'annualRent';
   // tenant
   static const firstName = 'firstName', middleName = 'middleName', lastName = 'lastName';
   static const email = 'email', phone = 'phone', emiratesId = 'emiratesId', passport = 'passport';
+  static const eidExpiry = 'eidExpiry', passportExpiry = 'passportExpiry';
   // agreement
   static const ejariNo = 'ejariNo', start = 'start', end = 'end', deposit = 'deposit', cheques = 'cheques';
 }
@@ -91,6 +93,9 @@ Map<String, String> propertyValues(ScannedDocument d) {
     if ((d[ScanField.ownerPassport] ?? d[ScanField.personPassport]) != null)
       FormKeys.ownerPassport: (d[ScanField.ownerPassport] ?? d[ScanField.personPassport])!,
     if (d[ScanField.annualRent] != null) FormKeys.annualRent: d[ScanField.annualRent]!,
+    // A standalone ID card or passport scanned on the property form is the owner's.
+    if (d[ScanField.personEmiratesIdExpiry] != null) FormKeys.ownerEidExpiry: d[ScanField.personEmiratesIdExpiry]!,
+    if (d[ScanField.personPassportExpiry] != null) FormKeys.ownerPassportExpiry: d[ScanField.personPassportExpiry]!,
   };
 }
 
@@ -110,6 +115,8 @@ Map<String, String> tenantValues(ScannedDocument d) {
     if (d[ScanField.tenantPhone] != null) FormKeys.phone: d[ScanField.tenantPhone]!,
     FormKeys.emiratesId: ?eid,
     FormKeys.passport: ?passport,
+    FormKeys.eidExpiry: ?d[ScanField.personEmiratesIdExpiry],
+    FormKeys.passportExpiry: ?d[ScanField.personPassportExpiry],
   };
 }
 
@@ -121,4 +128,12 @@ Map<String, String> agreementValues(ScannedDocument d) => {
       if (d[ScanField.annualRent] != null) FormKeys.annualRent: d[ScanField.annualRent]!,
       if (d[ScanField.securityDeposit] != null) FormKeys.deposit: d[ScanField.securityDeposit]!,
       if (d[ScanField.numberOfCheques] != null) FormKeys.cheques: d[ScanField.numberOfCheques]!,
+    };
+
+/// Scanned dates (yyyy-MM-dd) for date fields that are still empty. A date
+/// already set is never replaced. Keys are [FormKeys].
+Map<String, DateTime> newScannedDates(Map<String, String> values, Map<String, DateTime?> current) => {
+      for (final e in current.entries)
+        if (e.value == null && values[e.key] != null && DateTime.tryParse(values[e.key]!) != null)
+          e.key: DateTime.parse(values[e.key]!),
     };

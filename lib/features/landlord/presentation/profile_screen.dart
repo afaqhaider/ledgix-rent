@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/providers.dart';
 import '../../../core/widgets/common.dart';
 import '../../../core/widgets/forms.dart';
+import '../../documents/presentation/expiry_widgets.dart';
 import '../domain/landlord.dart';
 import 'onboarding_screen.dart';
 
@@ -21,6 +22,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _name = TextEditingController(), _phone = TextEditingController(), _email = TextEditingController();
   final _eid = TextEditingController(), _passport = TextEditingController();
   Landlord? _me;
+  DateTime? _eidExpiry, _passportExpiry;
 
   @override
   void initState() {
@@ -36,6 +38,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     _email.text = me.email;
     _eid.text = me.emiratesIdNo;
     _passport.text = me.passportNo;
+    _eidExpiry = me.emiratesIdExpiry;
+    _passportExpiry = me.passportExpiry;
   }
 
   @override
@@ -49,12 +53,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<void> _save() async {
     final l = context.l;
     final me = _me ?? Landlord(id: ref.read(authRepositoryProvider).currentUserId ?? 'anon', name: '', language: ref.read(localeProvider));
-    await ref.read(landlordRepositoryProvider).save(me.copyWith(
-          name: _name.text.trim(),
-          phone: _phone.text.trim(),
-          email: _email.text.trim(),
+    await ref.read(landlordRepositoryProvider).save(me
+        .copyWith(name: _name.text.trim(), phone: _phone.text.trim(), email: _email.text.trim())
+        .withIdentity(
           emiratesIdNo: _eid.text.trim(),
           passportNo: _passport.text.trim(),
+          emiratesIdExpiry: _eidExpiry,
+          passportExpiry: _passportExpiry,
         ));
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.profileSaved)));
@@ -88,7 +93,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 return s.isEmpty || RegExp(r'^784-?\d{4}-?\d{7}-?\d$').hasMatch(s) ? null : l.invalidEmiratesId;
               },
             ),
+            ExpiryDateField(
+              key: const ValueKey('profile-eidExpiry'),
+              label: l.ixMyEmiratesIdExpiry,
+              value: _eidExpiry,
+              onChanged: (d) => setState(() => _eidExpiry = d),
+            ),
             TextFormField(key: const ValueKey('profile-passport'), controller: _passport, decoration: InputDecoration(labelText: l.myPassportNo)),
+            ExpiryDateField(
+              key: const ValueKey('profile-passportExpiry'),
+              label: l.ixMyPassportExpiry,
+              value: _passportExpiry,
+              onChanged: (d) => setState(() => _passportExpiry = d),
+            ),
           ]),
         ]),
       ],

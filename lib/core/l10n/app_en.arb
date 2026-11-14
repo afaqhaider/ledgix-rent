@@ -874,5 +874,82 @@
     }
   },
   "hrApproved": "Hold approved. The due date has moved.",
-  "hrDeclined": "Hold request declined."
+  "hrDeclined": "Hold request declined.",
+  "ixAddOtherDocument": "Add other document",
+  "ixAndMore": "and {count} more",
+  "@ixAndMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ixClearDate": "Clear date",
+  "ixDocumentName": "Document name",
+  "ixEmiratesId": "Emirates ID",
+  "ixEmiratesIdExpiry": "Emirates ID expiry",
+  "ixExpiredOn": "Expired {date}",
+  "@ixExpiredOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "ixExpiresInDays": "Expires {date} (in {days} days)",
+  "@ixExpiresInDays": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "ixExpiresOn": "Expires {date}",
+  "@ixExpiresOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "ixExpiresToday": "Expires today",
+  "ixExpiryAlreadyPassed": "This date has passed: the ID has expired",
+  "ixExpiryNotSet": "Expiry date not set",
+  "ixIdExpired": "ID expired",
+  "ixIdExpiriesSubtitle": "{expired} expired · {soon} expiring within 60 days",
+  "@ixIdExpiriesSubtitle": {
+    "placeholders": {
+      "expired": {
+        "type": "int"
+      },
+      "soon": {
+        "type": "int"
+      }
+    }
+  },
+  "ixIdExpiriesTitle": "ID expiries",
+  "ixIdExpiringSoon": "ID expiring",
+  "ixMyEmiratesIdExpiry": "My Emirates ID expiry",
+  "ixMyPassportExpiry": "My passport expiry",
+  "ixNoOtherDocuments": "No other documents yet.",
+  "ixNotAttached": "Not attached",
+  "ixOtherDocuments": "Other documents",
+  "ixOwnerEmiratesIdExpiry": "Owner's Emirates ID expiry",
+  "ixOwnerOfProperty": "Owner · {property}",
+  "@ixOwnerOfProperty": {
+    "placeholders": {
+      "property": {
+        "type": "String"
+      }
+    }
+  },
+  "ixOwnerPassportExpiry": "Owner's passport expiry",
+  "ixPassport": "Passport",
+  "ixPassportExpiry": "Passport expiry",
+  "ixReplace": "Replace",
+  "ixUpload": "Upload",
+  "ixYou": "You"
 }

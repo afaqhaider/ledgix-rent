@@ -90,8 +90,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const ValueKey('field-name')), 'Test Tower 101');
     await tester.enterText(find.byKey(const ValueKey('field-address')), 'Unit 101, Test Tower, Test Gardens');
-    await tester.ensureVisible(find.byKey(const Key('add-document')));
-    await tester.tap(find.byKey(const Key('add-document')));
+    await tester.ensureVisible(find.byKey(const Key('slot-titleDeed')));
+    await tester.tap(find.byKey(const Key('slot-titleDeed')));
     await tester.pumpAndSettle();
     await _save(tester);
 
@@ -198,8 +198,8 @@ void main() {
     await tester.enterText(find.byKey(const ValueKey('field-lastName')), 'Renter');
     await tester.enterText(find.byKey(const ValueKey('field-phone')), '0509999999');
     await tester.enterText(find.byKey(const ValueKey('field-emiratesId')), '784-1991-4444444-4');
-    await tester.ensureVisible(find.byKey(const Key('add-document')));
-    await tester.tap(find.byKey(const Key('add-document')));
+    await tester.ensureVisible(find.byKey(const Key('slot-emiratesId')));
+    await tester.tap(find.byKey(const Key('slot-emiratesId')));
     await tester.pumpAndSettle();
     await _save(tester);
     // Back on the agreement with the new tenant selected.

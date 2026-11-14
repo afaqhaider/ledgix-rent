@@ -20,3 +20,9 @@ T enumByName<T extends Enum>(List<T> values, Object? name, T fallback) {
 }
 
 DateTime? parseDate(Object? v) => v == null ? null : DateTime.tryParse('$v');
+
+/// A calendar date stored as `yyyy-MM-dd` (no time or time zone), e.g. an ID
+/// expiry. Null stays null.
+String? dateKey(DateTime? d) => d == null
+    ? null
+    : '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';

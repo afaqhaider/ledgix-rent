@@ -17,6 +17,8 @@ class Tenant implements Entity {
     this.email = '',
     this.emiratesIdNo = '',
     this.passportNo = '',
+    this.emiratesIdExpiry,
+    this.passportExpiry,
     this.documents = const [],
     this.appUid,
     this.inviteCode,
@@ -28,6 +30,9 @@ class Tenant implements Entity {
   @override
   final String id;
   final String firstName, middleName, lastName, phone, email, emiratesIdNo, passportNo;
+
+  /// Expiry dates of the Emirates ID and passport (optional).
+  final DateTime? emiratesIdExpiry, passportExpiry;
   final List<AppDocument> documents;
 
   /// Set by the backend when the tenant joins the app with an invite code.
@@ -53,6 +58,8 @@ class Tenant implements Entity {
     required String emiratesIdNo,
     required String passportNo,
     required List<AppDocument> documents,
+    DateTime? emiratesIdExpiry,
+    DateTime? passportExpiry,
   }) =>
       Tenant(
         id: id,
@@ -63,6 +70,8 @@ class Tenant implements Entity {
         phone: phone,
         emiratesIdNo: emiratesIdNo,
         passportNo: passportNo,
+        emiratesIdExpiry: emiratesIdExpiry,
+        passportExpiry: passportExpiry,
         documents: documents,
         appUid: appUid,
         inviteCode: inviteCode,
@@ -78,6 +87,8 @@ class Tenant implements Entity {
         phone: phone,
         emiratesIdNo: emiratesIdNo,
         passportNo: passportNo,
+        emiratesIdExpiry: emiratesIdExpiry,
+        passportExpiry: passportExpiry,
         documents: documents,
         appUid: appUid,
         inviteCode: code,
@@ -93,6 +104,8 @@ class Tenant implements Entity {
         phone: phone,
         emiratesIdNo: emiratesIdNo,
         passportNo: passportNo,
+        emiratesIdExpiry: emiratesIdExpiry,
+        passportExpiry: passportExpiry,
         documents: documents,
         appUid: uid,
       );
@@ -112,6 +125,8 @@ class Tenant implements Entity {
         'email': email,
         'emiratesIdNo': emiratesIdNo,
         'passportNo': passportNo,
+        'emiratesIdExpiry': dateKey(emiratesIdExpiry),
+        'passportExpiry': dateKey(passportExpiry),
         'documents': documents.map((d) => d.toMap()).toList(),
         'appUid': appUid,
         'inviteCode': inviteCode,
@@ -138,6 +153,8 @@ class Tenant implements Entity {
       email: '${m['email'] ?? ''}',
       emiratesIdNo: '${m['emiratesIdNo'] ?? ''}',
       passportNo: '${m['passportNo'] ?? ''}',
+      emiratesIdExpiry: parseDate(m['emiratesIdExpiry']),
+      passportExpiry: parseDate(m['passportExpiry']),
       documents: [...docs, ...legacy],
       appUid: m['appUid'] as String?,
       inviteCode: m['inviteCode'] as String?,

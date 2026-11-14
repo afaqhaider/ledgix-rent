@@ -186,6 +186,10 @@ class DocumentReader {
     final text = r.rows.join('\n');
     f.putIfNotNull(ScanField.personEmiratesId, _eid(text));
     f.putIfNotNull(ScanField.personName, r.value(RegExp(r'^name\b|\bname\s*:', caseSensitive: false), _namePattern) ?? _mrz(r.rows).idName);
+    f.putIfNotNull(
+      ScanField.personEmiratesIdExpiry,
+      _date(r.value(RegExp(r'expiry|expiration', caseSensitive: false), _datePattern)) ?? _mrz(r.rows).idExpiry,
+    );
     return f;
   }
 
@@ -194,6 +198,7 @@ class DocumentReader {
     return {
       if (m.passport != null) ScanField.personPassport: m.passport!,
       if (m.passportName != null) ScanField.personName: m.passportName!,
+      if (m.passportExpiry != null) ScanField.personPassportExpiry: m.passportExpiry!,
     };
   }
 
@@ -245,8 +250,19 @@ String? _eid(String s) {
 }
 
 class _Mrz {
-  const _Mrz({this.passport, this.passportName, this.idName});
+  const _Mrz({this.passport, this.passportName, this.passportExpiry, this.idName, this.idExpiry});
   final String? passport, passportName, idName;
+
+  /// Expiry dates as yyyy-MM-dd.
+  final String? passportExpiry, idExpiry;
+}
+
+/// MRZ date YYMMDD as yyyy-MM-dd. Expiry dates are always 20xx.
+String? _mrzDate(String s) {
+  if (!RegExp(r'^\d{6}$').hasMatch(s)) return null;
+  final mo = int.parse(s.substring(2, 4)), d = int.parse(s.substring(4, 6));
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  return '20${s.substring(0, 2)}-${s.substring(2, 4)}-${s.substring(4, 6)}';
 }
 
 /// Reads machine-readable zones: passports (2 × 44) and Emirates ID backs (3 × 30).
@@ -269,11 +285,17 @@ _Mrz _mrz(List<String> rows) {
     if (RegExp(r'^P[A-Z<][A-Z<]{3}').hasMatch(l) && i + 1 < lines.length) {
       final no = lines[i + 1].substring(0, 9).replaceAll('<', '');
       if (RegExp(r'^[A-Z0-9]{6,9}$').hasMatch(no)) {
-        return _Mrz(passport: no, passportName: name(l.substring(5)));
+        // Line 2: number(9) check(1) nationality(3) birth(6) check(1) sex(1) expiry(6) ...
+        final l2 = lines[i + 1];
+        final expiry = l2.length >= 27 ? _mrzDate(l2.substring(21, 27)) : null;
+        return _Mrz(passport: no, passportName: name(l.substring(5)), passportExpiry: expiry);
       }
     }
     if (l.startsWith('I') && l.contains('ARE') && i + 2 < lines.length && !RegExp(r'\d').hasMatch(lines[i + 2])) {
-      return _Mrz(idName: name(lines[i + 2]));
+      // ID card line 2: birth(6) check(1) sex(1) expiry(6) ...
+      final l2 = lines[i + 1];
+      final expiry = l2.length >= 14 ? _mrzDate(l2.substring(8, 14)) : null;
+      return _Mrz(idName: name(lines[i + 2]), idExpiry: expiry);
     }
   }
   return const _Mrz();

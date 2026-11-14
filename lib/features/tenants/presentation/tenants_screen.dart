@@ -7,13 +7,17 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
+import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../../core/widgets/forms.dart';
 import '../../documents/domain/app_document.dart';
+import '../../documents/domain/expiry.dart';
 import '../../documents/domain/form_fill.dart';
 import '../../documents/domain/scanned_document.dart';
 import '../../documents/presentation/auto_fill.dart';
+import '../../documents/presentation/document_slots.dart';
 import '../../documents/presentation/documents_editor.dart';
+import '../../documents/presentation/expiry_widgets.dart';
 import '../../documents/presentation/scan_to_fill.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
 import '../../tenant_portal/presentation/invite_dialog.dart';
@@ -39,7 +43,10 @@ class TenantsScreen extends ConsumerWidget {
               subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text([t.phone, t.email].where((s) => s.isNotEmpty).join(' · ')),
                 const SizedBox(height: 2),
-                TenantInviteStatusChip(tenant: t),
+                Wrap(spacing: 6, runSpacing: 4, children: [
+                  TenantInviteStatusChip(tenant: t),
+                  if (tenantIdStatus(t, todayGst()) case final s?) IdExpiryBadge(status: s),
+                ]),
               ]),
               onTap: () => c.push('/tenants/${t.id}/edit'),
               trailing: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -89,6 +96,8 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
   Tenant? _existing;
   String? _banner;
   bool _bannerWarning = false;
+  DateTime? _eidExpiry, _passportExpiry;
+  final _datesFromScan = <String>{};
 
   @override
   void initState() {
@@ -96,8 +105,15 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
     _f.onChanged = () => setState(() {});
     _existing = widget.id == null ? null : ref.read(tenantsProvider).value?.where((t) => t.id == widget.id).firstOrNull;
     final t = _existing;
-    _docs = DocumentsController(kinds: DocumentKinds.tenant, required: DocumentKinds.tenantRequired, existing: t?.documents ?? const []);
+    _docs = DocumentsController(
+      kinds: DocumentKinds.tenant,
+      required: DocumentKinds.tenantRequired,
+      slots: DocumentKinds.tenantSlots,
+      existing: t?.documents ?? const [],
+    );
     if (t != null) {
+      _eidExpiry = t.emiratesIdExpiry;
+      _passportExpiry = t.passportExpiry;
       for (final (k, v) in [
         (FormKeys.firstName, t.firstName), (FormKeys.middleName, t.middleName), (FormKeys.lastName, t.lastName),
         (FormKeys.email, t.email), (FormKeys.phone, t.phone), (FormKeys.emiratesId, t.emiratesIdNo), (FormKeys.passport, t.passportNo),
@@ -107,7 +123,12 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
     }
     final pre = widget.prefill;
     if (pre != null && pre.isNotEmpty) {
+      final dates = newScannedDates(pre, {FormKeys.eidExpiry: _eidExpiry, FormKeys.passportExpiry: _passportExpiry});
+      _eidExpiry = dates[FormKeys.eidExpiry] ?? _eidExpiry;
+      _passportExpiry = dates[FormKeys.passportExpiry] ?? _passportExpiry;
+      _datesFromScan.addAll(dates.keys);
       pre.forEach((k, v) {
+        if (dates.containsKey(k) || k == FormKeys.eidExpiry || k == FormKeys.passportExpiry) return;
         _f[k].text = v;
         _f.markFilled(k, v);
       });
@@ -140,7 +161,17 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
       }
       return;
     }
-    final count = await _f.apply(context, tenantValues(doc), _labels(l));
+    final values = tenantValues(doc);
+    final dates = newScannedDates(values, {FormKeys.eidExpiry: _eidExpiry, FormKeys.passportExpiry: _passportExpiry});
+    if (dates.isNotEmpty) {
+      setState(() {
+        _eidExpiry = dates[FormKeys.eidExpiry] ?? _eidExpiry;
+        _passportExpiry = dates[FormKeys.passportExpiry] ?? _passportExpiry;
+        _datesFromScan.addAll(dates.keys);
+      });
+    }
+    if (!mounted) return;
+    final count = dates.length + await _f.apply(context, values, _labels(l));
     final kind = doc.kind.documentKind;
     if (DocumentKinds.tenant.contains(kind)) await _docs.add(file, kind: kind);
     if (mounted) {
@@ -183,6 +214,8 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
           emiratesIdNo: details.emiratesIdNo,
           passportNo: details.passportNo,
           documents: docs,
+          emiratesIdExpiry: _eidExpiry,
+          passportExpiry: _passportExpiry,
         ) ??
         Tenant(
           id: id,
@@ -193,6 +226,8 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
           phone: details.phone,
           emiratesIdNo: details.emiratesIdNo,
           passportNo: details.passportNo,
+          emiratesIdExpiry: _eidExpiry,
+          passportExpiry: _passportExpiry,
           documents: docs,
         );
     await ref.read(tenantRepositoryProvider).save(tenant);
@@ -246,10 +281,35 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
         FormSection(title: l.sectionIdentity, icon: Icons.badge_outlined, children: [
           FieldGrid(children: [
             text(FormKeys.emiratesId, l.emiratesIdNo, required: true, helper: '784-XXXX-XXXXXXX-X', validator: (v) => _idValidator(v, eid: true)),
+            ExpiryDateField(
+              key: const ValueKey('field-eidExpiry'),
+              label: l.ixEmiratesIdExpiry,
+              value: _eidExpiry,
+              highlighted: _datesFromScan.contains(FormKeys.eidExpiry),
+              onChanged: (d) => setState(() {
+                _eidExpiry = d;
+                _datesFromScan.remove(FormKeys.eidExpiry);
+              }),
+            ),
             text(FormKeys.passport, l.passportNo, validator: (v) => _idValidator(v, eid: false)),
+            ExpiryDateField(
+              key: const ValueKey('field-passportExpiry'),
+              label: l.ixPassportExpiry,
+              value: _passportExpiry,
+              highlighted: _datesFromScan.contains(FormKeys.passportExpiry),
+              onChanged: (d) => setState(() {
+                _passportExpiry = d;
+                _datesFromScan.remove(FormKeys.passportExpiry);
+              }),
+            ),
           ]),
         ]),
-        FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [DocumentsEditor(controller: _docs)]),
+        FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [
+          DocumentSlotsEditor(controller: _docs, notes: {
+            DocumentKinds.emiratesId: ExpiryNote(date: _eidExpiry),
+            DocumentKinds.passport: ExpiryNote(date: _passportExpiry),
+          }),
+        ]),
       ],
     );
   }

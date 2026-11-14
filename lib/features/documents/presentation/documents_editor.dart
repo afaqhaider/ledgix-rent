@@ -63,9 +63,12 @@ Future<XFile?> pickDocumentFile(BuildContext context, {bool allowCamera = true})
 /// One row in a documents list: either already saved ([saved]) or picked and
 /// waiting to upload ([file]).
 class DocumentDraft {
-  DocumentDraft({required this.kind, this.saved, this.file, this.size, bool? shared})
+  DocumentDraft({required this.kind, this.saved, this.file, this.size, bool? shared, this.label})
       : shared = shared ?? saved?.sharedWithTenant ?? false;
   String kind;
+
+  /// Name typed for an "Other" document; saved as the document's name.
+  String? label;
 
   /// Visible to the linked tenant in their app.
   bool shared;
@@ -79,12 +82,43 @@ class DocumentDraft {
 
 /// Holds a form's documents until Save, then uploads the new ones.
 class DocumentsController extends ChangeNotifier {
-  DocumentsController({required this.kinds, this.required = const {}, List<AppDocument> existing = const []})
+  DocumentsController({required this.kinds, this.required = const {}, this.slots = const [], List<AppDocument> existing = const []})
       : drafts = [for (final d in existing) DocumentDraft(kind: kinds.contains(d.kind) ? d.kind : _legacy(d.kind, kinds), saved: d)];
 
   final List<String> kinds;
   final Set<String> required;
+
+  /// Kinds shown as fixed rows with one file each ([DocumentSlotsEditor]).
+  final List<String> slots;
   final List<DocumentDraft> drafts;
+
+  /// The file in a fixed slot, if attached.
+  DocumentDraft? slot(String kind) => drafts.where((d) => d.kind == kind).firstOrNull;
+
+  /// Everything not shown in a slot: other kinds, plus any extra file of a
+  /// slot kind from older records.
+  List<DocumentDraft> get others => [
+        for (final d in drafts)
+          if (!slots.contains(d.kind) || slot(d.kind) != d) d,
+      ];
+
+  /// Kinds offered in the "Other documents" list.
+  List<String> get otherKinds => [for (final k in kinds) if (!slots.contains(k)) k];
+
+  /// Puts [file] in the [kind] slot, replacing the file there (and keeping
+  /// its share setting).
+  Future<void> setSlotFile(String kind, XFile file) async {
+    final old = slot(kind);
+    final draft = DocumentDraft(kind: kind, file: file, size: await file.length(), shared: old?.shared);
+    if (old == null) {
+      drafts.add(draft);
+    } else {
+      drafts[drafts.indexOf(old)] = draft;
+    }
+    notifyListeners();
+  }
+
+  void setLabel(DocumentDraft d, String label) => d.label = label;
 
   static String _legacy(String kind, List<String> kinds) =>
       kind == DocumentKinds.emiratesId && kinds.contains(DocumentKinds.ownerEmiratesId) ? DocumentKinds.ownerEmiratesId : DocumentKinds.other;
@@ -95,7 +129,10 @@ class DocumentsController extends ChangeNotifier {
   String get suggestedKind => missing.isNotEmpty ? missing.first : (kinds.contains(DocumentKinds.other) ? DocumentKinds.other : kinds.first);
 
   Future<void> add(XFile file, {String? kind}) async {
-    drafts.add(DocumentDraft(kind: kind != null && kinds.contains(kind) ? kind : suggestedKind, file: file, size: await file.length()));
+    final k = kind != null && kinds.contains(kind) ? kind : suggestedKind;
+    // A scanned ID or title deed goes into its slot.
+    if (slots.contains(k)) return setSlotFile(k, file);
+    drafts.add(DocumentDraft(kind: k, file: file, size: await file.length()));
     notifyListeners();
   }
 
@@ -118,15 +155,21 @@ class DocumentsController extends ChangeNotifier {
   Future<List<AppDocument>> uploadAll(FileStorage storage, String folder, AppLocalizations l) async => [
         for (final d in drafts)
           if (d.saved != null && d.file == null)
-            AppDocument(name: d.saved!.name, url: d.saved!.url, kind: d.kind, sharedWithTenant: d.shared)
+            AppDocument(name: _name(d, l, d.saved!.name), url: d.saved!.url, kind: d.kind, sharedWithTenant: d.shared)
           else if (d.file != null)
             AppDocument(
-              name: documentKindLabel(l, d.kind),
+              name: _name(d, l, documentKindLabel(l, d.kind)),
               url: await storage.uploadFile('$folder/${newId()}_${_safe(d.file!.name)}', d.file!),
               kind: d.kind,
               sharedWithTenant: d.shared,
             ),
       ];
+
+  /// A typed label wins for "Other" documents; slots use their type's name.
+  String _name(DocumentDraft d, AppLocalizations l, String fallback) {
+    final typed = d.label?.trim() ?? '';
+    return typed.isNotEmpty && !slots.contains(d.kind) ? typed : fallback;
+  }
 
   static String _safe(String name) => name.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
 }

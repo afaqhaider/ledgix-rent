@@ -2035,4 +2035,103 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get hrDeclined => 'تم رفض طلب التأجيل.';
+
+  @override
+  String get ixAddOtherDocument => 'إضافة مستند آخر';
+
+  @override
+  String ixAndMore(int count) {
+    return 'و$count أخرى';
+  }
+
+  @override
+  String get ixClearDate => 'مسح التاريخ';
+
+  @override
+  String get ixDocumentName => 'اسم المستند';
+
+  @override
+  String get ixEmiratesId => 'الهوية الإماراتية';
+
+  @override
+  String get ixEmiratesIdExpiry => 'تاريخ انتهاء الهوية الإماراتية';
+
+  @override
+  String ixExpiredOn(String date) {
+    return 'انتهت في $date';
+  }
+
+  @override
+  String ixExpiresInDays(String date, int days) {
+    return 'تنتهي في $date (بعد $days يومًا)';
+  }
+
+  @override
+  String ixExpiresOn(String date) {
+    return 'تنتهي في $date';
+  }
+
+  @override
+  String get ixExpiresToday => 'تنتهي اليوم';
+
+  @override
+  String get ixExpiryAlreadyPassed => 'هذا التاريخ قد مضى: الهوية منتهية';
+
+  @override
+  String get ixExpiryNotSet => 'لم يُحدد تاريخ الانتهاء';
+
+  @override
+  String get ixIdExpired => 'هوية منتهية';
+
+  @override
+  String ixIdExpiriesSubtitle(int expired, int soon) {
+    return '$expired منتهية · $soon تنتهي خلال 60 يومًا';
+  }
+
+  @override
+  String get ixIdExpiriesTitle => 'انتهاء صلاحية الهويات';
+
+  @override
+  String get ixIdExpiringSoon => 'هوية قاربت على الانتهاء';
+
+  @override
+  String get ixMyEmiratesIdExpiry => 'تاريخ انتهاء هويتي الإماراتية';
+
+  @override
+  String get ixMyPassportExpiry => 'تاريخ انتهاء جواز سفري';
+
+  @override
+  String get ixNoOtherDocuments => 'لا توجد مستندات أخرى بعد.';
+
+  @override
+  String get ixNotAttached => 'غير مرفق';
+
+  @override
+  String get ixOtherDocuments => 'مستندات أخرى';
+
+  @override
+  String get ixOwnerEmiratesIdExpiry => 'تاريخ انتهاء هوية المالك';
+
+  @override
+  String ixOwnerOfProperty(String property) {
+    return 'المالك · $property';
+  }
+
+  @override
+  String get ixOwnerPassportExpiry => 'تاريخ انتهاء جواز سفر المالك';
+
+  @override
+  String get ixPassport => 'جواز السفر';
+
+  @override
+  String get ixPassportExpiry => 'تاريخ انتهاء جواز السفر';
+
+  @override
+  String get ixReplace => 'استبدال';
+
+  @override
+  String get ixUpload => 'رفع';
+
+  @override
+  String get ixYou => 'أنت';
 }
