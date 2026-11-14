@@ -1920,4 +1920,119 @@ class AppLocalizationsAr extends AppLocalizations {
   String worsenedCount(int count) {
     return '$count أسوأ';
   }
+
+  @override
+  String get hrPaymentDetails => 'تفاصيل الدفعة';
+
+  @override
+  String get hrRequestHold => 'طلب تأجيل';
+
+  @override
+  String get hrRequestHoldSub =>
+      'اطلب من المالك تأجيل هذه الدفعة إلى تاريخ لاحق.';
+
+  @override
+  String get hrNewDate => 'التاريخ الجديد *';
+
+  @override
+  String get hrPickDate => 'اختر تاريخًا';
+
+  @override
+  String get hrReason => 'السبب *';
+
+  @override
+  String get hrReasonHint => 'مثال: يُصرف الراتب في وقت لاحق من هذا الشهر';
+
+  @override
+  String get hrNote => 'ملاحظة (اختياري)';
+
+  @override
+  String get hrSend => 'إرسال الطلب';
+
+  @override
+  String get hrSent => 'تم إرسال الطلب إلى المالك.';
+
+  @override
+  String get hrStatusPending => 'تم طلب التأجيل · بانتظار رد المالك';
+
+  @override
+  String hrStatusApproved(String date) {
+    return 'تمت الموافقة على التأجيل · التاريخ الجديد $date';
+  }
+
+  @override
+  String get hrStatusDeclined => 'تم رفض طلب التأجيل';
+
+  @override
+  String get hrLandlordResponse => 'رد المالك';
+
+  @override
+  String get hrYourReason => 'السبب الذي ذكرته';
+
+  @override
+  String get hrErrReason => 'يرجى ذكر السبب.';
+
+  @override
+  String get hrErrDate => 'اختر تاريخًا بعد تاريخ الاستحقاق.';
+
+  @override
+  String hrErrTooFar(int days) {
+    return 'اختر تاريخًا خلال $days يومًا من تاريخ الاستحقاق.';
+  }
+
+  @override
+  String get hrErrOpen => 'يوجد طلب قائم لهذه الدفعة بالفعل.';
+
+  @override
+  String get hrErrNotAllowed => 'لا يمكن تأجيل هذه الدفعة.';
+
+  @override
+  String get hrTapForDetails =>
+      'اضغط على أي دفعة لعرض التفاصيل أو طلب التأجيل.';
+
+  @override
+  String get hrFromTenant => 'من تطبيق المستأجر';
+
+  @override
+  String get hrDecline => 'رفض';
+
+  @override
+  String get hrDeclineTitle => 'رفض طلب التأجيل';
+
+  @override
+  String get hrResponse => 'الرد على المستأجر';
+
+  @override
+  String get hrResponseHint => 'سبب مختصر، مثال: يجب إيداع الشيك في موعده';
+
+  @override
+  String hrPendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count قيد الانتظار',
+      one: 'طلب واحد قيد الانتظار',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hrNonePending => 'لا توجد طلبات تأجيل قيد الانتظار.';
+
+  @override
+  String hrMoveTo(String from, String to) {
+    return '$from ← $to';
+  }
+
+  @override
+  String hrNotif(String amount) {
+    return 'طلب تأجيل · $amount';
+  }
+
+  @override
+  String get hrApproved =>
+      'تمت الموافقة على التأجيل وتم تغيير تاريخ الاستحقاق.';
+
+  @override
+  String get hrDeclined => 'تم رفض طلب التأجيل.';
 }

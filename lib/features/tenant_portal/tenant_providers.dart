@@ -22,6 +22,7 @@ final tenantLeasesProvider = StreamProvider<List<TvLease>>((ref) => _view(ref, '
 final tenantPaymentsProvider = StreamProvider<List<TvPayment>>(
     (ref) => _view(ref, 'payments', TvPayment.fromMap).map((l) => l..sort((a, b) => a.dueDate.compareTo(b.dueDate))));
 final tenantDocumentsProvider = StreamProvider<List<TvDocument>>((ref) => _view(ref, 'documents', TvDocument.fromMap));
+final tenantHoldRequestsProvider = StreamProvider<List<TvHoldRequest>>((ref) => _view(ref, 'holdRequests', TvHoldRequest.fromMap));
 final tenantInspectionsProvider = StreamProvider<List<Map<String, dynamic>>>(
     (ref) => ref.watch(tenantPortalProvider).watchView(_uid(ref), 'inspections'));
 

@@ -16,7 +16,9 @@ import '../../landlord/presentation/onboarding_screen.dart' show redeemErrorText
 import '../../payments/domain/payment.dart';
 import '../../payments/presentation/payments_screen.dart' show statusLabel;
 import '../data/tenant_portal.dart';
+import '../../holds/domain/hold_request.dart';
 import '../domain/tenant_view.dart';
+import 'tenant_payment_detail.dart';
 import '../tenant_providers.dart';
 
 // ---------------------------------------------------------------------------
@@ -493,51 +495,58 @@ class TenantPaymentsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l;
     final payments = ref.watch(tenantPaymentsProvider).value ?? const <TvPayment>[];
+    final holds = ref.watch(tenantHoldRequestsProvider).value ?? const <TvHoldRequest>[];
     final landlords = _landlordsById(ref);
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.tpPayments)),
       body: payments.isEmpty
           ? _empty(context, l.tpNoUpcoming, loading: ref.watch(tenantPaymentsProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 32), children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(l.hrTapForDetails, style: Theme.of(context).textTheme.bodySmall),
+              ),
               for (final p in payments)
                 Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Row(children: [
-                        Expanded(child: Text(formatAed(p.amount), style: Theme.of(context).textTheme.titleLarge)),
-                        StatusChip(statusLabel(l, p.status), AppTheme.statusColor(context, p.status),
-                            icon: AppTheme.statusIcon(p.status)),
-                      ]),
-                      const SizedBox(height: 4),
-                      Text('${l.dueDate}: ${formatDate(p.dueDate)}'),
-                      Text([p.propertyName, landlords[p.landlordUid]?.name ?? ''].where((s) => s.isNotEmpty).join(' · ')),
-                      if (p.chequeNo.isNotEmpty || p.bankName.isNotEmpty) Text('${p.chequeNo} ${p.bankName}'.trim()),
-                      if (p.imageUrl != null) ...[
-                        const SizedBox(height: 8),
-                        OutlinedButton.icon(
-                          key: Key('cheque-copy-${p.id}'),
-                          icon: const Icon(Icons.receipt_long_outlined),
-                          label: Text(l.tpViewChequeCopy),
-                          onPressed: () => showDialog<void>(
-                            context: context,
-                            builder: (c) => Dialog(
-                              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                Padding(padding: const EdgeInsets.all(12), child: Text(l.tpChequeCopy)),
-                                Flexible(
-                                  child: InteractiveViewer(
-                                    child: Image.network(p.imageUrl!,
-                                        errorBuilder: (_, _, _) => const Padding(
-                                            padding: EdgeInsets.all(32), child: Icon(Icons.broken_image_outlined, size: 48))),
-                                  ),
-                                ),
-                                TextButton(onPressed: () => Navigator.pop(c), child: Text(l.close)),
-                              ]),
-                            ),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    key: Key('payment-tile-${p.id}'),
+                    onTap: () => showTenantPaymentDetail(context, p),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Row(children: [
+                          Expanded(child: Text(formatAed(p.amount), style: Theme.of(context).textTheme.titleLarge)),
+                          StatusChip(statusLabel(l, p.status), AppTheme.statusColor(context, p.status),
+                              icon: AppTheme.statusIcon(p.status)),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.chevron_right),
+                        ]),
+                        const SizedBox(height: 4),
+                        Text('${l.dueDate}: ${formatDate(p.dueDate)}'),
+                        Text([p.propertyName, landlords[p.landlordUid]?.name ?? ''].where((s) => s.isNotEmpty).join(' · ')),
+                        if (p.chequeNo.isNotEmpty || p.bankName.isNotEmpty) Text('${p.chequeNo} ${p.bankName}'.trim()),
+                        if (latestHoldRequest(holds, p.landlordUid, p.id) case final h?) ...[
+                          const SizedBox(height: 8),
+                          switch (h.status) {
+                            HoldStatus.pending => StatusChip(l.hrStatusPending, context.status.warning, icon: Icons.hourglass_top),
+                            HoldStatus.approved => StatusChip(
+                                l.hrStatusApproved(formatDate(h.requestedDate)), context.status.success,
+                                icon: Icons.check_circle_outline),
+                            HoldStatus.rejected => StatusChip(l.hrStatusDeclined, context.status.danger, icon: Icons.cancel_outlined),
+                          },
+                        ],
+                        if (p.imageUrl != null) ...[
+                          const SizedBox(height: 8),
+                          OutlinedButton.icon(
+                            key: Key('cheque-copy-${p.id}'),
+                            icon: const Icon(Icons.receipt_long_outlined),
+                            label: Text(l.tpViewChequeCopy),
+                            onPressed: () => showChequeCopy(context, p.imageUrl!),
                           ),
-                        ),
-                      ],
-                    ]),
+                        ],
+                      ]),
+                    ),
                   ),
                 ),
             ]),

@@ -16,6 +16,8 @@ import '../../landlord/presentation/onboarding_screen.dart' show landlordProvide
 import '../../leases/domain/lease.dart';
 import '../../maintenance/domain/maintenance_ticket.dart';
 import '../../maintenance/presentation/maintenance_screen.dart' show ticketStatusLabel;
+import '../../holds/domain/hold_request.dart';
+import '../../holds/presentation/holds_screen.dart';
 import '../../payments/domain/payment.dart';
 import '../../payments/presentation/payments_screen.dart' show statusLabel;
 import '../domain/dashboard_insights.dart';
@@ -68,6 +70,7 @@ class DashboardScreen extends ConsumerWidget {
         final actions = const _QuickActionsCard();
         final renewals = _RenewalsCard(leases: upcomingRenewals(leases, today), propertyName: propertyName, today: today);
         final maintenance = _MaintenanceCard(tickets: tickets, propertyName: propertyName);
+        final holds = const _HoldRequestsCard();
 
         return ListView(
           padding: EdgeInsets.fromLTRB(pad, 8, pad, 32),
@@ -85,11 +88,13 @@ class DashboardScreen extends ConsumerWidget {
                 SizedBox(width: gap),
                 Expanded(
                   flex: 2,
-                  child: Column(children: [actions, SizedBox(height: gap), renewals, SizedBox(height: gap), maintenance]),
+                  child: Column(children: [
+                    holds, SizedBox(height: gap), actions, SizedBox(height: gap), renewals, SizedBox(height: gap), maintenance,
+                  ]),
                 ),
               ])
             else
-              for (final w in <Widget>[actions, upcoming, chart, renewals, maintenance]) ...[w, SizedBox(height: gap)],
+              for (final w in <Widget>[holds, actions, upcoming, chart, renewals, maintenance]) ...[w, SizedBox(height: gap)],
           ],
         );
       }),
@@ -231,9 +236,10 @@ class _KpiCard extends StatelessWidget {
 
 /// Card with a title row (and optional "View all") used for every panel.
 class _Panel extends StatelessWidget {
-  const _Panel({required this.title, this.subtitle, this.viewAll, required this.child});
+  const _Panel({required this.title, this.subtitle, this.viewAll, this.badge = 0, required this.child, super.key});
   final String title;
   final String? subtitle, viewAll;
+  final int badge;
   final Widget child;
 
   @override
@@ -247,7 +253,13 @@ class _Panel extends StatelessWidget {
           Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(title, style: text.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+                Row(children: [
+                  Flexible(child: Text(title, style: text.titleMedium?.copyWith(fontWeight: FontWeight.w700))),
+                  if (badge > 0) ...[
+                    const SizedBox(width: 8),
+                    Badge(label: Text('$badge'), backgroundColor: context.status.warning),
+                  ],
+                ]),
                 if (subtitle != null)
                   Text(subtitle!, style: text.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
               ]),
@@ -584,3 +596,62 @@ class _GetStarted extends StatelessWidget {
     );
   }
 }
+
+/// Pending hold requests (tenants asking to move a payment), with Approve /
+/// Decline right on the dashboard.
+class _HoldRequestsCard extends ConsumerWidget {
+  const _HoldRequestsCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l;
+    final text = Theme.of(context).textTheme;
+    final pending = [
+      for (final r in ref.watch(holdsProvider).value ?? const <HoldRequest>[])
+        if (r.status == HoldStatus.pending) r,
+    ]..sort((a, b) => a.originalDate.compareTo(b.originalDate));
+    final details = holdDetails(ref, pending);
+    return _Panel(
+      key: const Key('dashboard-holds'),
+      title: l.holdRequests,
+      subtitle: pending.isEmpty ? null : l.hrPendingCount(pending.length),
+      badge: pending.length,
+      viewAll: '/holds',
+      child: pending.isEmpty
+          ? _EmptyLine(l.hrNonePending)
+          : Column(children: [
+              for (final r in pending.take(4))
+                Padding(
+                  key: Key('dashboard-hold-${r.id}'),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                    Row(children: [
+                      Expanded(
+                        child: Text(
+                          [details[r.id]?.tenantName ?? '', details[r.id]?.propertyName ?? '']
+                              .where((s) => s.isNotEmpty)
+                              .join(' · '),
+                          style: text.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      if (details[r.id]?.payment case final p?)
+                        Text(formatAed(p.amount), style: text.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
+                    ]),
+                    Text(
+                      [
+                        if (details[r.id]?.payment?.chequeNo case final c? when c.isNotEmpty) '#$c',
+                        l.hrMoveTo(formatDate(r.originalDate), formatDate(r.requestedDate)),
+                      ].join(' · '),
+                      style: text.bodySmall,
+                    ),
+                    if (r.reason.isNotEmpty)
+                      Text('${l.reason}: ${r.reason}', style: text.bodySmall, maxLines: 2, overflow: TextOverflow.ellipsis),
+                    const SizedBox(height: 8),
+                    HoldDecisionButtons(request: r, dense: true),
+                  ]),
+                ),
+            ]),
+    );
+  }
+}
+

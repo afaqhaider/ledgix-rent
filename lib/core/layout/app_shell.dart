@@ -9,6 +9,7 @@ import '../../features/landlord/presentation/onboarding_screen.dart' show landlo
 import '../../features/payments/domain/payment.dart' show PaymentStatus;
 import '../../features/tenant_portal/domain/tenant_view.dart' show TvPayment;
 import '../../features/tenant_portal/tenant_providers.dart';
+import '../../features/holds/domain/hold_request.dart';
 import '../providers.dart';
 import '../utils/dates.dart';
 import '../widgets/brand.dart';
@@ -376,13 +377,32 @@ class NotificationsButton extends ConsumerWidget {
     final propertyOfLease = {for (final x in leases) x.id: properties[x.propertyId] ?? ''};
     final due = dueWithin(payments, today, 7);
     final ending = upcomingRenewals(leases, today, days: 30);
-    final count = due.length + ending.length;
+    final paymentById = {for (final p in payments) p.id: p};
+    final holds = [
+      for (final r in ref.watch(holdsProvider).value ?? const <HoldRequest>[])
+        if (r.status == HoldStatus.pending) r,
+    ];
+    final count = due.length + ending.length + holds.length;
 
     return MenuAnchor(
       alignmentOffset: const Offset(-220, 4),
       menuChildren: [
         if (count == 0)
           MenuItemButton(onPressed: null, child: Text(l.noNotifications)),
+        for (final r in holds.take(4))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.pause_circle_outline),
+            onPressed: () => context.go('/holds'),
+            child: SizedBox(
+              width: 260,
+              child: Text(
+                '${l.hrNotif(formatAed(paymentById[r.paymentId]?.amount ?? 0))}\n'
+                '${formatDate(r.originalDate)} → ${formatDate(r.requestedDate)}',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
         for (final p in due.take(6))
           MenuItemButton(
             leadingIcon: const Icon(Icons.payments_outlined),

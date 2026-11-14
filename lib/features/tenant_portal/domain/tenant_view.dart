@@ -1,4 +1,5 @@
 import '../../../core/domain/entity.dart';
+import '../../holds/domain/hold_request.dart';
 import '../../landlord/domain/landlord.dart';
 import '../../leases/domain/lease.dart';
 import '../../payments/domain/payment.dart';
@@ -252,6 +253,63 @@ class TvPayment {
       );
 }
 
+/// A tenant's request to hold one of their payments, and the landlord's answer.
+class TvHoldRequest {
+  const TvHoldRequest({
+    required this.landlordUid,
+    required this.id,
+    required this.paymentId,
+    required this.originalDate,
+    required this.requestedDate,
+    this.reason = '',
+    this.note = '',
+    this.status = HoldStatus.pending,
+    this.response = '',
+    this.createdAt,
+  });
+  final String landlordUid, id, paymentId, reason, note, response;
+  final DateTime originalDate, requestedDate;
+  final HoldStatus status;
+  final DateTime? createdAt;
+
+  Map<String, dynamic> toMap() => {
+        'landlordUid': landlordUid,
+        'id': id,
+        'paymentId': paymentId,
+        'originalDate': originalDate.toIso8601String(),
+        'requestedDate': requestedDate.toIso8601String(),
+        'reason': reason,
+        'note': note,
+        'status': status.name,
+        'response': response,
+        'createdAt': createdAt?.toIso8601String(),
+      };
+
+  factory TvHoldRequest.fromMap(Map<String, dynamic> m) => TvHoldRequest(
+        landlordUid: '${m['landlordUid']}',
+        id: '${m['id']}',
+        paymentId: '${m['paymentId'] ?? ''}',
+        originalDate: _date(m['originalDate']) ?? DateTime(2000),
+        requestedDate: _date(m['requestedDate']) ?? DateTime(2000),
+        reason: '${m['reason'] ?? ''}',
+        note: '${m['note'] ?? ''}',
+        status: enumByName(HoldStatus.values, m['status'], HoldStatus.pending),
+        response: '${m['response'] ?? ''}',
+        createdAt: _date(m['createdAt']),
+      );
+
+  /// As a [HoldRequest], for the shared rules in [checkTenantHoldRequest].
+  HoldRequest asHoldRequest() => HoldRequest(
+        id: id,
+        paymentId: paymentId,
+        originalDate: originalDate,
+        requestedDate: requestedDate,
+        reason: reason,
+        status: status,
+        response: response,
+      );
+}
+
 /// A document the landlord shared. [ownerType] is property, lease or tenant.
 class TvDocument {
   const TvDocument({
@@ -300,6 +358,7 @@ class TenantViewData {
     this.payments = const [],
     this.documents = const [],
     this.inspections = const [],
+    this.holdRequests = const [],
   });
   final TvLandlord landlord;
   final LinkStatus status;
@@ -309,6 +368,7 @@ class TenantViewData {
   final List<TvPayment> payments;
   final List<TvDocument> documents;
   final List<Map<String, dynamic>> inspections;
+  final List<TvHoldRequest> holdRequests;
 }
 
 /// Builds what [tenantUid] may see of [landlordUid]'s data: only their own
@@ -325,6 +385,7 @@ TenantViewData buildTenantView({
   required List<Property> properties,
   required List<Payment> payments,
   List<Map<String, dynamic>> inspections = const [],
+  List<HoldRequest> holdRequests = const [],
   required DateTime today,
   DateTime? since,
 }) {
@@ -444,6 +505,25 @@ TenantViewData buildTenantView({
       for (final i in inspections)
         if (leaseIds.contains(i['leaseId'])) {...i, 'landlordUid': landlordUid},
     ],
+    holdRequests: () {
+      final myPayments = {for (final p in payments) if (leaseIds.contains(p.leaseId)) p.id};
+      return [
+        for (final r in holdRequests)
+          if (myPayments.contains(r.paymentId))
+            TvHoldRequest(
+              landlordUid: landlordUid,
+              id: r.id,
+              paymentId: r.paymentId,
+              originalDate: r.originalDate,
+              requestedDate: r.requestedDate,
+              reason: r.reason,
+              note: r.note,
+              status: r.status,
+              response: r.response,
+              createdAt: r.createdAt,
+            ),
+      ];
+    }(),
   );
 }
 

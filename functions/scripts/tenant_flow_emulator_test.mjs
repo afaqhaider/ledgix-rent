@@ -2,7 +2,7 @@
 //   cd functions && npm run build && cd .. &&
 //   firebase emulators:exec --only firestore,functions,auth,storage --project demo-ledgix-rent \
 //     "node functions/scripts/tenant_flow_emulator_test.mjs"
-// Invite -> redeem -> read model -> security rules -> removal of a former landlord.
+// Invite -> redeem -> read model -> security rules -> removal of a former landlord -> hold requests.
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 const require = createRequire(new URL("../package.json", import.meta.url));
@@ -116,6 +116,32 @@ assert.equal((await db.doc(`landlords/${L2}/tenants/${L2}-t`).get()).get("appUid
 const req = await call("createTenantMaintenanceRequest", T, { landlordUid: L1, propertyId: `${L1}-p`, title: "AC not cooling" });
 const ticket = (await db.doc(`landlords/${L1}/maintenanceTickets/${req.id}`).get()).data();
 assert.equal(ticket.raisedBy, "tenant");
+
+// Hold request: rules, duplicates, landlord sees it, tenant sees the decision.
+const due1 = String((await db.doc(`landlords/${L1}/payments/${L1}-pay1`).get()).get("dueDate")).slice(0, 10);
+const plus = (d, n) => new Date(Date.parse(d) + n * 86400000).toISOString().slice(0, 10);
+const hold = (uid, requestedDate, reason) =>
+  call("createTenantHoldRequest", uid, { landlordUid: L1, paymentId: `${L1}-pay1`, requestedDate, reason });
+await assert.rejects(hold(T, plus(due1, 5), ""), (e) => e.reason === "reasonRequired");
+await assert.rejects(hold(T, due1, "late salary"), (e) => e.reason === "dateNotAfterDue");
+await assert.rejects(hold(T, plus(due1, 95), "late salary"), (e) => e.reason === "dateTooFar");
+await assert.rejects(hold(L1, plus(due1, 5), "not my payment"), (e) => e.reason === "notAllowed");
+const h = await hold(T, plus(due1, 10), "Salary is late");
+await assert.rejects(hold(T, plus(due1, 12), "again"), (e) => e.reason === "alreadyOpen");
+const hd = (await db.doc(`landlords/${L1}/holdRequests/${h.id}`).get()).data();
+assert.equal(hd.source, "tenant");
+assert.equal(hd.requestedByUid, T);
+assert.equal(hd.tenantId, `${L1}-t`);
+assert.equal(hd.status, "pending");
+await sleep(4000);
+assert.equal((await view.collection("holdRequests").doc(h.id).get()).get("status"), "pending");
+assert.equal(await readAs(T, `landlords/${L1}/holdRequests`), 403);
+await db.doc(`landlords/${L1}/holdRequests/${h.id}`).update({ status: "rejected", response: "Please deposit on time" });
+await sleep(4000);
+const tv = (await view.collection("holdRequests").doc(h.id).get()).data();
+assert.equal(tv.status, "rejected");
+assert.equal(tv.response, "Please deposit on time");
+assert.equal(String((await db.doc(`landlords/${L1}/payments/${L1}-pay1`).get()).get("dueDate")).slice(0, 10), due1);
 
 // Tenant deletes their account: links and views go, landlord record is unlinked.
 await call("deleteAccount", T, {});

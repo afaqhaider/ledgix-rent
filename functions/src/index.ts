@@ -115,7 +115,7 @@ export { deleteAccount } from "./account";
 // Tenants: invites, links, read model, maintenance requests
 export {
   createTenantInvite, redeemTenantInvite, removeLandlordLink,
-  createTenantMaintenanceRequest, onLandlordDataWritten,
+  createTenantMaintenanceRequest, createTenantHoldRequest, onLandlordDataWritten,
 } from "./tenants";
 
 // LedGix ID (Hub) sign-in

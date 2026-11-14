@@ -804,5 +804,75 @@
         "type": "int"
       }
     }
-  }
+  },
+  "hrPaymentDetails": "Payment details",
+  "hrRequestHold": "Request to hold",
+  "hrRequestHoldSub": "Ask your landlord to hold this payment until a later date.",
+  "hrNewDate": "New date *",
+  "hrPickDate": "Pick a date",
+  "hrReason": "Reason *",
+  "hrReasonHint": "e.g. salary is paid later this month",
+  "hrNote": "Note (optional)",
+  "hrSend": "Send request",
+  "hrSent": "Request sent to your landlord.",
+  "hrStatusPending": "Hold requested · waiting for your landlord",
+  "hrStatusApproved": "Hold approved · new date {date}",
+  "@hrStatusApproved": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hrStatusDeclined": "Hold request declined",
+  "hrLandlordResponse": "Landlord's response",
+  "hrYourReason": "Your reason",
+  "hrErrReason": "Please give a reason.",
+  "hrErrDate": "Pick a date after the due date.",
+  "hrErrTooFar": "Pick a date within {days} days of the due date.",
+  "@hrErrTooFar": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hrErrOpen": "There's already a request for this payment.",
+  "hrErrNotAllowed": "This payment can't be put on hold.",
+  "hrTapForDetails": "Tap a payment for details or to request a hold.",
+  "hrFromTenant": "From tenant app",
+  "hrDecline": "Decline",
+  "hrDeclineTitle": "Decline hold request",
+  "hrResponse": "Response to the tenant",
+  "hrResponseHint": "Short reason, e.g. the cheque must be deposited on time",
+  "hrPendingCount": "{count, plural, =1{1 pending} other{{count} pending}}",
+  "@hrPendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hrNonePending": "No pending hold requests.",
+  "hrMoveTo": "{from} → {to}",
+  "@hrMoveTo": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "hrNotif": "Hold request · {amount}",
+  "@hrNotif": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hrApproved": "Hold approved. The due date has moved.",
+  "hrDeclined": "Hold request declined."
 }

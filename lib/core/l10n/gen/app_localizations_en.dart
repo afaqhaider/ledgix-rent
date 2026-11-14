@@ -1919,4 +1919,119 @@ class AppLocalizationsEn extends AppLocalizations {
   String worsenedCount(int count) {
     return '$count worse';
   }
+
+  @override
+  String get hrPaymentDetails => 'Payment details';
+
+  @override
+  String get hrRequestHold => 'Request to hold';
+
+  @override
+  String get hrRequestHoldSub =>
+      'Ask your landlord to hold this payment until a later date.';
+
+  @override
+  String get hrNewDate => 'New date *';
+
+  @override
+  String get hrPickDate => 'Pick a date';
+
+  @override
+  String get hrReason => 'Reason *';
+
+  @override
+  String get hrReasonHint => 'e.g. salary is paid later this month';
+
+  @override
+  String get hrNote => 'Note (optional)';
+
+  @override
+  String get hrSend => 'Send request';
+
+  @override
+  String get hrSent => 'Request sent to your landlord.';
+
+  @override
+  String get hrStatusPending => 'Hold requested · waiting for your landlord';
+
+  @override
+  String hrStatusApproved(String date) {
+    return 'Hold approved · new date $date';
+  }
+
+  @override
+  String get hrStatusDeclined => 'Hold request declined';
+
+  @override
+  String get hrLandlordResponse => 'Landlord\'s response';
+
+  @override
+  String get hrYourReason => 'Your reason';
+
+  @override
+  String get hrErrReason => 'Please give a reason.';
+
+  @override
+  String get hrErrDate => 'Pick a date after the due date.';
+
+  @override
+  String hrErrTooFar(int days) {
+    return 'Pick a date within $days days of the due date.';
+  }
+
+  @override
+  String get hrErrOpen => 'There\'s already a request for this payment.';
+
+  @override
+  String get hrErrNotAllowed => 'This payment can\'t be put on hold.';
+
+  @override
+  String get hrTapForDetails =>
+      'Tap a payment for details or to request a hold.';
+
+  @override
+  String get hrFromTenant => 'From tenant app';
+
+  @override
+  String get hrDecline => 'Decline';
+
+  @override
+  String get hrDeclineTitle => 'Decline hold request';
+
+  @override
+  String get hrResponse => 'Response to the tenant';
+
+  @override
+  String get hrResponseHint =>
+      'Short reason, e.g. the cheque must be deposited on time';
+
+  @override
+  String hrPendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pending',
+      one: '1 pending',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hrNonePending => 'No pending hold requests.';
+
+  @override
+  String hrMoveTo(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String hrNotif(String amount) {
+    return 'Hold request · $amount';
+  }
+
+  @override
+  String get hrApproved => 'Hold approved. The due date has moved.';
+
+  @override
+  String get hrDeclined => 'Hold request declined.';
 }

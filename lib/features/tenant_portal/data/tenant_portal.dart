@@ -7,6 +7,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import '../../../core/data/in_memory_repository.dart';
 import '../../../core/providers.dart' show demoRepo, newId;
 import '../../../core/utils/dates.dart';
+import '../../holds/domain/hold_request.dart';
 import '../../landlord/domain/landlord.dart';
 import '../../leases/domain/lease.dart';
 import '../../maintenance/domain/maintenance_ticket.dart';
@@ -24,6 +25,14 @@ class TenantInvite {
 
 /// Why redeeming a code failed (shown to the tenant).
 enum RedeemError { invalid, expired, used, ownCode, alreadyLinked }
+
+/// Why a hold request was refused (shown to the tenant).
+class HoldRequestException implements Exception {
+  const HoldRequestException(this.reason);
+  final HoldRequestError reason;
+  @override
+  String toString() => 'HoldRequestException(${reason.name})';
+}
 
 class RedeemException implements Exception {
   const RedeemException(this.reason);
@@ -49,6 +58,16 @@ abstract class TenantPortal {
     String description = '',
     List<String> photos = const [],
   });
+  /// Tenant asks the landlord to hold one of their payments until [requestedDate].
+  Future<void> createHoldRequest({
+    required String tenantUid,
+    required String landlordUid,
+    required String paymentId,
+    required DateTime requestedDate,
+    required String reason,
+    String note = '',
+  });
+
   Stream<List<TenantLink>> watchLinks(String tenantUid);
 
   /// One collection of the read model: landlords, properties, leases,
@@ -109,6 +128,30 @@ class FirebaseTenantPortal implements TenantPortal {
         'description': description,
         'photos': photos,
       });
+
+  @override
+  Future<void> createHoldRequest({
+    required String tenantUid,
+    required String landlordUid,
+    required String paymentId,
+    required DateTime requestedDate,
+    required String reason,
+    String note = '',
+  }) async {
+    try {
+      await _fns.httpsCallable('createTenantHoldRequest').call<Object?>({
+        'landlordUid': landlordUid,
+        'paymentId': paymentId,
+        'requestedDate': requestedDate.toIso8601String().substring(0, 10),
+        'reason': reason,
+        'note': note,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      final reason = HoldRequestError.values.where((x) => x.name == '${(e.details as Map?)?['reason'] ?? ''}').firstOrNull;
+      if (reason != null) throw HoldRequestException(reason);
+      rethrow;
+    }
+  }
 
   @override
   Stream<List<TenantLink>> watchLinks(String tenantUid) => _db
@@ -210,6 +253,48 @@ class DemoTenantPortal implements TenantPortal {
     ));
   }
 
+  @override
+  Future<void> createHoldRequest({
+    required String tenantUid,
+    required String landlordUid,
+    required String paymentId,
+    required DateTime requestedDate,
+    required String reason,
+    String note = '',
+  }) async {
+    final link = _links[tenantUid]?[landlordUid];
+    if (link == null || _view(tenantUid, link).status != LinkStatus.active) {
+      throw const HoldRequestException(HoldRequestError.notAllowed);
+    }
+    final payment = _view(tenantUid, link).payments.where((p) => p.id == paymentId).firstOrNull;
+    if (payment == null) throw const HoldRequestException(HoldRequestError.notAllowed);
+    final repo = demoRepo<HoldRequest>(landlordUid, 'holdRequests');
+    final error = checkTenantHoldRequest(
+      status: payment.status,
+      dueDate: payment.dueDate,
+      requestedDate: requestedDate,
+      reason: reason,
+      existing: repo.items,
+      paymentId: paymentId,
+    );
+    if (error != null) throw HoldRequestException(error);
+    final lease = demoRepo<Lease>(landlordUid, 'leases').items.where((x) => x.id == payment.leaseId).firstOrNull;
+    await repo.save(HoldRequest(
+      id: newId(),
+      paymentId: paymentId,
+      originalDate: payment.dueDate,
+      requestedDate: requestedDate,
+      reason: reason.trim(),
+      note: note.trim(),
+      requestedBy: 'tenant',
+      source: 'tenant',
+      tenantId: lease?.tenantId ?? '',
+      leaseId: payment.leaseId,
+      requestedByUid: tenantUid,
+      createdAt: DateTime.now(),
+    ));
+  }
+
   TenantViewData _view(String tenantUid, TenantLink link) {
     final ll = link.landlordUid;
     final profile = demoRepo<Landlord>(ll, 'profile').items.firstOrNull;
@@ -222,6 +307,7 @@ class DemoTenantPortal implements TenantPortal {
       properties: demoRepo<Property>(ll, 'properties').items,
       payments: demoRepo<Payment>(ll, 'payments').items,
       inspections: _inspections(ll),
+      holdRequests: demoRepo<HoldRequest>(ll, 'holdRequests').items,
       today: todayGst(),
       since: link.since,
     );
@@ -261,6 +347,8 @@ class DemoTenantPortal implements TenantPortal {
               out.addAll(v.documents.map((p) => p.toMap()));
             case 'inspections':
               out.addAll(v.inspections);
+            case 'holdRequests':
+              out.addAll(v.holdRequests.map((r) => r.toMap()));
           }
         }
         return out;

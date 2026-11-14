@@ -3619,6 +3619,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} worse'**
   String worsenedCount(int count);
+
+  /// No description provided for @hrPaymentDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment details'**
+  String get hrPaymentDetails;
+
+  /// No description provided for @hrRequestHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Request to hold'**
+  String get hrRequestHold;
+
+  /// No description provided for @hrRequestHoldSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your landlord to hold this payment until a later date.'**
+  String get hrRequestHoldSub;
+
+  /// No description provided for @hrNewDate.
+  ///
+  /// In en, this message translates to:
+  /// **'New date *'**
+  String get hrNewDate;
+
+  /// No description provided for @hrPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date'**
+  String get hrPickDate;
+
+  /// No description provided for @hrReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason *'**
+  String get hrReason;
+
+  /// No description provided for @hrReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. salary is paid later this month'**
+  String get hrReasonHint;
+
+  /// No description provided for @hrNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get hrNote;
+
+  /// No description provided for @hrSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get hrSend;
+
+  /// No description provided for @hrSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to your landlord.'**
+  String get hrSent;
+
+  /// No description provided for @hrStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold requested · waiting for your landlord'**
+  String get hrStatusPending;
+
+  /// No description provided for @hrStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold approved · new date {date}'**
+  String hrStatusApproved(String date);
+
+  /// No description provided for @hrStatusDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold request declined'**
+  String get hrStatusDeclined;
+
+  /// No description provided for @hrLandlordResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord\'s response'**
+  String get hrLandlordResponse;
+
+  /// No description provided for @hrYourReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reason'**
+  String get hrYourReason;
+
+  /// No description provided for @hrErrReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Please give a reason.'**
+  String get hrErrReason;
+
+  /// No description provided for @hrErrDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date after the due date.'**
+  String get hrErrDate;
+
+  /// No description provided for @hrErrTooFar.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date within {days} days of the due date.'**
+  String hrErrTooFar(int days);
+
+  /// No description provided for @hrErrOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s already a request for this payment.'**
+  String get hrErrOpen;
+
+  /// No description provided for @hrErrNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'This payment can\'t be put on hold.'**
+  String get hrErrNotAllowed;
+
+  /// No description provided for @hrTapForDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a payment for details or to request a hold.'**
+  String get hrTapForDetails;
+
+  /// No description provided for @hrFromTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'From tenant app'**
+  String get hrFromTenant;
+
+  /// No description provided for @hrDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get hrDecline;
+
+  /// No description provided for @hrDeclineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline hold request'**
+  String get hrDeclineTitle;
+
+  /// No description provided for @hrResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Response to the tenant'**
+  String get hrResponse;
+
+  /// No description provided for @hrResponseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Short reason, e.g. the cheque must be deposited on time'**
+  String get hrResponseHint;
+
+  /// No description provided for @hrPendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pending} other{{count} pending}}'**
+  String hrPendingCount(int count);
+
+  /// No description provided for @hrNonePending.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending hold requests.'**
+  String get hrNonePending;
+
+  /// No description provided for @hrMoveTo.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to}'**
+  String hrMoveTo(String from, String to);
+
+  /// No description provided for @hrNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold request · {amount}'**
+  String hrNotif(String amount);
+
+  /// No description provided for @hrApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold approved. The due date has moved.'**
+  String get hrApproved;
+
+  /// No description provided for @hrDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold request declined.'**
+  String get hrDeclined;
 }
 
 class _AppLocalizationsDelegate

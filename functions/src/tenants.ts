@@ -11,7 +11,7 @@ import { getMessaging } from "firebase-admin/messaging";
  *  - invites/{code}                                  server-only invite codes
  *  - landlords/{ll}/tenants/{tid}.appUid             the tenant's auth uid once joined
  *  - tenantLinks/{uid}/landlords/{ll}                {status active|former, tenantIds, since, endedAt}
- *  - tenantViews/{uid}/{landlords|properties|leases|payments|documents|inspections}/{id}
+ *  - tenantViews/{uid}/{landlords|properties|leases|payments|documents|inspections|holdRequests}/{id}
  *        what the tenant may read; rebuilt from landlords/{ll}/** by onLandlordDataWritten.
  *        Mirrors buildTenantView in lib/features/tenant_portal/domain/tenant_view.dart.
  *
@@ -21,8 +21,9 @@ import { getMessaging } from "firebase-admin/messaging";
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O, 1/I/L
 const INVITE_DAYS = 30;
 const MAX_INVITES_PER_HOUR = 50;
-const VIEW_COLLECTIONS = ["properties", "leases", "payments", "documents", "inspections"] as const;
-const SOURCE_COLLECTIONS = new Set(["properties", "tenants", "leases", "payments", "profile", "inspections"]);
+const VIEW_COLLECTIONS = ["properties", "leases", "payments", "documents", "inspections", "holdRequests"] as const;
+const SOURCE_COLLECTIONS = new Set(["properties", "tenants", "leases", "payments", "profile", "inspections", "holdRequests"]);
+const MAX_HOLD_DAYS = 90; // mirrors maxHoldDays in lib/features/holds/domain/hold_request.dart
 
 const db = (): Firestore => getFirestore();
 const text = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
@@ -194,6 +195,65 @@ export const createTenantMaintenanceRequest = onCall(async (req) => {
   return { id };
 });
 
+/**
+ * Tenant: ask the landlord to hold one of their payments until a later date.
+ * Mirrors checkTenantHoldRequest in lib/features/holds/domain/hold_request.dart.
+ * The payment itself is untouched until the landlord approves or declines.
+ */
+export const createTenantHoldRequest = onCall(async (req) => {
+  const uid = req.auth?.uid;
+  if (!uid) throw new HttpsError("unauthenticated", "Sign in first.");
+  const ll = text(req.data?.landlordUid);
+  const paymentId = text(req.data?.paymentId);
+  const requested = day(req.data?.requestedDate);
+  const reason = text(req.data?.reason).slice(0, 1000);
+  const note = text(req.data?.note).slice(0, 2000);
+  if (!ll || !paymentId || !/^\d{4}-\d{2}-\d{2}$/.test(requested)) {
+    throw new HttpsError("invalid-argument", "landlordUid, paymentId and requestedDate (yyyy-MM-dd) are required.");
+  }
+
+  const link = await db().doc(`tenantLinks/${uid}/landlords/${ll}`).get();
+  if (!link.exists || link.get("status") !== "active") refuse("notAllowed", "You can only ask your current landlords.");
+  const tenantIds = (link.get("tenantIds") as string[] | undefined) ?? [];
+  const pay = await db().doc(`landlords/${ll}/payments/${paymentId}`).get();
+  if (!pay.exists) refuse("notAllowed", "Payment not found.");
+  const lease = await db().doc(`landlords/${ll}/leases/${pay.get("leaseId")}`).get();
+  if (!lease.exists || !tenantIds.includes(lease.get("tenantId"))) refuse("notAllowed", "That isn't one of your payments.");
+  // Make sure the link is current (not a stale tenantIds entry).
+  const tenant = await db().doc(`landlords/${ll}/tenants/${lease.get("tenantId")}`).get();
+  if (tenant.get("appUid") !== uid) refuse("notAllowed", "That isn't one of your payments.");
+
+  const status = text(pay.get("status")) || "pending";
+  if (status !== "pending" && status !== "onHold") refuse("notAllowed", "This payment can't be put on hold.");
+  const holds = db().collection(`landlords/${ll}/holdRequests`);
+  const open = await holds.where("paymentId", "==", paymentId).where("status", "==", "pending").limit(1).get();
+  if (!open.empty) refuse("alreadyOpen", "There's already a request for this payment.");
+  if (!reason) refuse("reasonRequired", "Please give a reason.");
+  const due = day(pay.get("dueDate"));
+  if (requested <= due) refuse("dateNotAfterDue", "Pick a date after the due date.");
+  const days = (Date.parse(requested) - Date.parse(due)) / 86400_000;
+  if (days > MAX_HOLD_DAYS) refuse("dateTooFar", `Pick a date within ${MAX_HOLD_DAYS} days of the due date.`);
+
+  const id = randomUUID();
+  await holds.doc(id).set({
+    id, paymentId,
+    requestedBy: "tenant", source: "tenant", requestedByUid: uid,
+    tenantId: lease.get("tenantId"), leaseId: pay.get("leaseId"),
+    reason, note, response: "",
+    originalDate: pay.get("dueDate"),
+    requestedDate: `${requested}T00:00:00.000`,
+    status: "pending",
+    createdAt: new Date().toISOString(),
+  });
+
+  const props = lease.get("propertyId") ? await db().doc(`landlords/${ll}/properties/${lease.get("propertyId")}`).get() : null;
+  await notify(await landlordTokens(ll), {
+    title: "Hold request",
+    body: `${props?.get("name") ?? "A tenant"}: AED ${pay.get("amount")} due ${due}, asks to move it to ${requested}.`,
+  }).catch(() => undefined);
+  return { id };
+});
+
 // ---------------------------------------------------------------------------
 // Read model
 // ---------------------------------------------------------------------------
@@ -210,18 +270,20 @@ export const onLandlordDataWritten = onDocumentWritten("landlords/{ll}/{col}/{do
   for (const uid of uids) await rebuildTenantView(ll, uid);
 
   if (col === "payments") await alertPaymentChange(ll, before, event.data?.after?.data());
+  if (col === "holdRequests") await alertHoldDecision(ll, before, event.data?.after?.data());
 });
 
 /** Rebuilds everything [uid] sees of landlord [ll] (idempotent). */
 export async function rebuildTenantView(ll: string, uid: string): Promise<void> {
   const base = db().collection("landlords").doc(ll);
-  const [profileSnap, tenantsSnap, leasesSnap, propsSnap, paysSnap, inspSnap] = await Promise.all([
+  const [profileSnap, tenantsSnap, leasesSnap, propsSnap, paysSnap, inspSnap, holdSnap] = await Promise.all([
     base.collection("profile").limit(1).get(),
     base.collection("tenants").get(),
     base.collection("leases").get(),
     base.collection("properties").get(),
     base.collection("payments").get(),
     base.collection("inspections").get(),
+    base.collection("holdRequests").get(),
   ]);
   const tenantIds = tenantsSnap.docs.filter((d) => d.get("appUid") === uid).map((d) => d.id);
   const linkRef = db().doc(`tenantLinks/${uid}/landlords/${ll}`);
@@ -279,6 +341,17 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
       type: x.type ?? "cheque", amount: x.amount ?? 0, dueDate: x.dueDate, chequeNo: x.chequeNo ?? "",
       bankName: x.bankName ?? "", status: x.status ?? "pending",
       imageUrl: x.shareImage === false ? null : x.image ?? null,
+    });
+  }
+  // The tenant's own hold requests and the landlord's answers.
+  for (const h of holdSnap.docs) {
+    const x = h.data();
+    if (!docs.payments.has(x.paymentId)) continue;
+    docs.holdRequests.set(h.id, {
+      landlordUid: ll, id: h.id, paymentId: x.paymentId,
+      originalDate: x.originalDate ?? null, requestedDate: x.requestedDate ?? null,
+      reason: x.reason ?? "", note: x.note ?? "", status: x.status ?? "pending",
+      response: x.response ?? "", createdAt: x.createdAt ?? null,
     });
   }
   const profile = profileSnap.docs[0]?.data() ?? {};
@@ -395,5 +468,19 @@ async function alertPaymentChange(ll: string, before: DocumentData | undefined, 
     : `Your payment of AED ${after.amount} due ${day(after.dueDate)} is on hold.`;
   for (const uid of await tenantUidsForLease(ll, after.leaseId)) {
     await notify(await userTokens(uid), { title: after.status === "bounced" ? "Payment bounced" : "Payment on hold", body });
+  }
+}
+
+/** Tells the tenant when the landlord approves or declines their hold request. */
+async function alertHoldDecision(ll: string, before: DocumentData | undefined, after: DocumentData | undefined) {
+  if (!after || before?.status !== "pending" || after.status === "pending") return;
+  if (after.status !== "approved" && after.status !== "rejected") return;
+  const uids = after.requestedByUid ? [after.requestedByUid as string] : await tenantUidsForLease(ll, after.leaseId);
+  const approved = after.status === "approved";
+  const body = approved
+    ? `Your landlord approved moving your payment to ${day(after.requestedDate)}.`
+    : `Your landlord declined your hold request${text(after.response) ? `: ${text(after.response)}` : "."}`;
+  for (const uid of uids) {
+    await notify(await userTokens(uid), { title: approved ? "Hold approved" : "Hold declined", body }).catch(() => undefined);
   }
 }
