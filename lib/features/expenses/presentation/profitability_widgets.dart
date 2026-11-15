@@ -110,6 +110,7 @@ class ProfitabilityTable extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columnSpacing: 20,
+          showCheckboxColumn: false,
           headingTextStyle: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
           columns: [
             DataColumn(label: Text(l.exProperty)),
