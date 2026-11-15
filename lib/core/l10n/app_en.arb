@@ -1032,5 +1032,169 @@
   "cxErrRateLimited": "Too many checks. Try again in a while.",
   "cxErrWrongRole": "That account belongs to a tenant, not a landlord.",
   "cxErrNotAllowed": "You can't do that.",
-  "cxErrInvalid": "Enter a valid email address or LedGix code."
+  "cxErrInvalid": "Enter a valid email address or LedGix code.",
+  "exSectionServiceCharges": "Service charges",
+  "exServiceChargesSub": "What you pay the HOA or developer. Instalments are created from these details.",
+  "exAnnualServiceCharge": "Annual service charge",
+  "exFrequency": "Billing frequency",
+  "exFreqAnnual": "Annual",
+  "exFreqSemiAnnual": "Semi-annual",
+  "exFreqQuarterly": "Quarterly",
+  "exFreqMonthly": "Monthly",
+  "exFreqCustom": "Custom (add instalments yourself)",
+  "exNextDue": "Next due date",
+  "exNotes": "Notes",
+  "exInstalmentPreview": "{count} instalments of {amount}, from {date}",
+  "@exInstalmentPreview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "exPayeeIsHoa": "Paid to: {name}",
+  "@exPayeeIsHoa": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "exPurchasePrice": "Purchase price",
+  "exPurchasePriceHelper": "Optional. Used to work out net yield.",
+  "exNextDueRequired": "Choose the next due date",
+  "exTypeServiceCharge": "Service charge",
+  "exTypeAgencyFee": "Agency fee",
+  "exTypeMaintenance": "Maintenance",
+  "exTypeOther": "Other",
+  "exStatusDue": "Due",
+  "exStatusPaid": "Paid",
+  "exStatusOverdue": "Overdue",
+  "exExpenses": "Expenses",
+  "exAddExpense": "Add expense",
+  "exEditExpense": "Edit expense",
+  "exType": "Type",
+  "exAmount": "Amount",
+  "exDueDate": "Due date",
+  "exPaidDate": "Paid on",
+  "exPayee": "Paid to",
+  "exReceipt": "Receipt",
+  "exAttachReceipt": "Attach receipt",
+  "exReplaceReceipt": "Replace receipt",
+  "exViewReceipt": "View receipt",
+  "exMarkPaid": "Mark paid",
+  "exMarkUnpaid": "Mark unpaid",
+  "exMarkedPaid": "Marked as paid",
+  "exDeleteExpense": "Delete expense",
+  "exDeleteConfirm": "Delete this expense? This can't be undone.",
+  "exNoExpenses": "No expenses yet. Add service charges on a property, an agency fee on a rent agreement, or add an expense here.",
+  "exNoMatches": "No expenses match these filters.",
+  "exAllProperties": "All properties",
+  "exAllTypes": "All types",
+  "exAllStatuses": "All statuses",
+  "exPeriod": "Period",
+  "exPeriodThisYear": "This year",
+  "exPeriodLast12": "Last 12 months",
+  "exPeriodCustom": "Custom range",
+  "exPeriodAll": "All time",
+  "exFromTicket": "From a maintenance ticket",
+  "exFromAgreement": "From a rent agreement",
+  "exFromPlan": "From the service-charge plan",
+  "exServiceChargesDue": "Service charges due",
+  "exServiceChargesDueSub": "{count, plural, =1{1 due in the next 60 days or overdue} other{{count} due in the next 60 days or overdue}}",
+  "@exServiceChargesDueSub": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exNoServiceChargesDue": "Nothing due in the next 60 days.",
+  "exServiceChargesHint": "Service charges you pay to the HOA or developer. Set the annual amount, frequency and next due date on each property, and the instalments appear here.",
+  "exSetUpServiceCharges": "Set up service charges",
+  "exNoPlan": "Not set up",
+  "exAddInstalment": "Add instalment",
+  "exProfitability": "Profitability",
+  "exProfitThisYear": "Profit this year",
+  "exRentCollected": "Rent collected",
+  "exRentOutstanding": "Rent outstanding",
+  "exAgencyFees": "Agency fees",
+  "exMaintenance": "Maintenance",
+  "exUtilities": "Utilities",
+  "exOther": "Other",
+  "exTotalExpenses": "Total expenses",
+  "exNetIncome": "Net income",
+  "exMargin": "Margin",
+  "exNetYield": "Net yield",
+  "exUnpaidPart": "{amount} not paid yet",
+  "@exUnpaidPart": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "exTotal": "Total",
+  "exExportCsv": "Export CSV",
+  "exProfitabilityReport": "Profitability report",
+  "exPnlNote": "Rent counts once cleared. Expenses count in the period they're due, paid or not.",
+  "exPnlTitle": "Profit & loss",
+  "exUnits": "{count, plural, =1{1 unit} other{{count} units}}",
+  "@exUnits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exSectionAgency": "Agency",
+  "exAgencyFee": "Agency fee",
+  "exAgencyName": "Agency",
+  "exAgencyPaidOn": "Agency fee paid on",
+  "exFivePercent": "5% of rent",
+  "exDueOn": "Due {date}",
+  "@exDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "exPaidOn": "Paid {date}",
+  "@exPaidOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "exOverdueDays": "{days, plural, =1{1 day overdue} other{{days} days overdue}}",
+  "@exOverdueDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "exRange": "{from} – {to}",
+  "@exRange": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "exViewReport": "View report",
+  "exCsvCopied": "CSV copied to the clipboard",
+  "exProperty": "Property",
+  "exStatus": "Status"
 }

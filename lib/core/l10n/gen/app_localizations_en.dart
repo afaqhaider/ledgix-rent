@@ -2326,4 +2326,320 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cxErrInvalid => 'Enter a valid email address or LedGix code.';
+
+  @override
+  String get exSectionServiceCharges => 'Service charges';
+
+  @override
+  String get exServiceChargesSub =>
+      'What you pay the HOA or developer. Instalments are created from these details.';
+
+  @override
+  String get exAnnualServiceCharge => 'Annual service charge';
+
+  @override
+  String get exFrequency => 'Billing frequency';
+
+  @override
+  String get exFreqAnnual => 'Annual';
+
+  @override
+  String get exFreqSemiAnnual => 'Semi-annual';
+
+  @override
+  String get exFreqQuarterly => 'Quarterly';
+
+  @override
+  String get exFreqMonthly => 'Monthly';
+
+  @override
+  String get exFreqCustom => 'Custom (add instalments yourself)';
+
+  @override
+  String get exNextDue => 'Next due date';
+
+  @override
+  String get exNotes => 'Notes';
+
+  @override
+  String exInstalmentPreview(int count, String amount, String date) {
+    return '$count instalments of $amount, from $date';
+  }
+
+  @override
+  String exPayeeIsHoa(String name) {
+    return 'Paid to: $name';
+  }
+
+  @override
+  String get exPurchasePrice => 'Purchase price';
+
+  @override
+  String get exPurchasePriceHelper => 'Optional. Used to work out net yield.';
+
+  @override
+  String get exNextDueRequired => 'Choose the next due date';
+
+  @override
+  String get exTypeServiceCharge => 'Service charge';
+
+  @override
+  String get exTypeAgencyFee => 'Agency fee';
+
+  @override
+  String get exTypeMaintenance => 'Maintenance';
+
+  @override
+  String get exTypeOther => 'Other';
+
+  @override
+  String get exStatusDue => 'Due';
+
+  @override
+  String get exStatusPaid => 'Paid';
+
+  @override
+  String get exStatusOverdue => 'Overdue';
+
+  @override
+  String get exExpenses => 'Expenses';
+
+  @override
+  String get exAddExpense => 'Add expense';
+
+  @override
+  String get exEditExpense => 'Edit expense';
+
+  @override
+  String get exType => 'Type';
+
+  @override
+  String get exAmount => 'Amount';
+
+  @override
+  String get exDueDate => 'Due date';
+
+  @override
+  String get exPaidDate => 'Paid on';
+
+  @override
+  String get exPayee => 'Paid to';
+
+  @override
+  String get exReceipt => 'Receipt';
+
+  @override
+  String get exAttachReceipt => 'Attach receipt';
+
+  @override
+  String get exReplaceReceipt => 'Replace receipt';
+
+  @override
+  String get exViewReceipt => 'View receipt';
+
+  @override
+  String get exMarkPaid => 'Mark paid';
+
+  @override
+  String get exMarkUnpaid => 'Mark unpaid';
+
+  @override
+  String get exMarkedPaid => 'Marked as paid';
+
+  @override
+  String get exDeleteExpense => 'Delete expense';
+
+  @override
+  String get exDeleteConfirm => 'Delete this expense? This can\'t be undone.';
+
+  @override
+  String get exNoExpenses =>
+      'No expenses yet. Add service charges on a property, an agency fee on a rent agreement, or add an expense here.';
+
+  @override
+  String get exNoMatches => 'No expenses match these filters.';
+
+  @override
+  String get exAllProperties => 'All properties';
+
+  @override
+  String get exAllTypes => 'All types';
+
+  @override
+  String get exAllStatuses => 'All statuses';
+
+  @override
+  String get exPeriod => 'Period';
+
+  @override
+  String get exPeriodThisYear => 'This year';
+
+  @override
+  String get exPeriodLast12 => 'Last 12 months';
+
+  @override
+  String get exPeriodCustom => 'Custom range';
+
+  @override
+  String get exPeriodAll => 'All time';
+
+  @override
+  String get exFromTicket => 'From a maintenance ticket';
+
+  @override
+  String get exFromAgreement => 'From a rent agreement';
+
+  @override
+  String get exFromPlan => 'From the service-charge plan';
+
+  @override
+  String get exServiceChargesDue => 'Service charges due';
+
+  @override
+  String exServiceChargesDueSub(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count due in the next 60 days or overdue',
+      one: '1 due in the next 60 days or overdue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exNoServiceChargesDue => 'Nothing due in the next 60 days.';
+
+  @override
+  String get exServiceChargesHint =>
+      'Service charges you pay to the HOA or developer. Set the annual amount, frequency and next due date on each property, and the instalments appear here.';
+
+  @override
+  String get exSetUpServiceCharges => 'Set up service charges';
+
+  @override
+  String get exNoPlan => 'Not set up';
+
+  @override
+  String get exAddInstalment => 'Add instalment';
+
+  @override
+  String get exProfitability => 'Profitability';
+
+  @override
+  String get exProfitThisYear => 'Profit this year';
+
+  @override
+  String get exRentCollected => 'Rent collected';
+
+  @override
+  String get exRentOutstanding => 'Rent outstanding';
+
+  @override
+  String get exAgencyFees => 'Agency fees';
+
+  @override
+  String get exMaintenance => 'Maintenance';
+
+  @override
+  String get exUtilities => 'Utilities';
+
+  @override
+  String get exOther => 'Other';
+
+  @override
+  String get exTotalExpenses => 'Total expenses';
+
+  @override
+  String get exNetIncome => 'Net income';
+
+  @override
+  String get exMargin => 'Margin';
+
+  @override
+  String get exNetYield => 'Net yield';
+
+  @override
+  String exUnpaidPart(String amount) {
+    return '$amount not paid yet';
+  }
+
+  @override
+  String get exTotal => 'Total';
+
+  @override
+  String get exExportCsv => 'Export CSV';
+
+  @override
+  String get exProfitabilityReport => 'Profitability report';
+
+  @override
+  String get exPnlNote =>
+      'Rent counts once cleared. Expenses count in the period they\'re due, paid or not.';
+
+  @override
+  String get exPnlTitle => 'Profit & loss';
+
+  @override
+  String exUnits(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count units',
+      one: '1 unit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exSectionAgency => 'Agency';
+
+  @override
+  String get exAgencyFee => 'Agency fee';
+
+  @override
+  String get exAgencyName => 'Agency';
+
+  @override
+  String get exAgencyPaidOn => 'Agency fee paid on';
+
+  @override
+  String get exFivePercent => '5% of rent';
+
+  @override
+  String exDueOn(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String exPaidOn(String date) {
+    return 'Paid $date';
+  }
+
+  @override
+  String exOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days overdue',
+      one: '1 day overdue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String exRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get exViewReport => 'View report';
+
+  @override
+  String get exCsvCopied => 'CSV copied to the clipboard';
+
+  @override
+  String get exProperty => 'Property';
+
+  @override
+  String get exStatus => 'Status';
 }

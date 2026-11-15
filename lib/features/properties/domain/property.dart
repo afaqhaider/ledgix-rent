@@ -1,5 +1,6 @@
 import '../../../core/domain/entity.dart';
 import '../../documents/domain/app_document.dart';
+import '../../expenses/domain/service_charge_plan.dart';
 
 export '../../documents/domain/app_document.dart';
 
@@ -35,6 +36,11 @@ class Property implements Entity {
     this.chillerAccountNo = '',
     this.defaultVendorId,
     this.utilityPaidBy = PaidBy.tenant,
+    this.serviceChargeAnnual,
+    this.serviceChargeFrequency = ServiceChargeFrequency.quarterly,
+    this.serviceChargeNextDue,
+    this.serviceChargeNotes = '',
+    this.purchasePrice,
   });
 
   @override
@@ -55,6 +61,27 @@ class Property implements Entity {
 
   /// Who pays utility bills for this unit.
   final PaidBy utilityPaidBy;
+
+  /// Service charges (HOA / developer): annual amount, billing frequency and
+  /// the next due date. Instalments are generated as expenses on save.
+  final double? serviceChargeAnnual;
+  final ServiceChargeFrequency serviceChargeFrequency;
+  final DateTime? serviceChargeNextDue;
+  final String serviceChargeNotes;
+
+  /// Optional, for net yield in the profitability report.
+  final double? purchasePrice;
+
+  /// The service-charge plan, when an amount and next due date are set.
+  ServiceChargePlan? get serviceChargePlan => serviceChargeAnnual == null || serviceChargeAnnual! <= 0 || serviceChargeNextDue == null
+      ? null
+      : ServiceChargePlan(
+          annualAmount: serviceChargeAnnual!,
+          frequency: serviceChargeFrequency,
+          nextDue: serviceChargeNextDue!,
+          payee: hoaName,
+          notes: serviceChargeNotes,
+        );
 
   Property copyWith({List<PropertyDocument>? documents, PaidBy? utilityPaidBy, String? defaultVendorId}) => Property(
         id: id,
@@ -80,6 +107,11 @@ class Property implements Entity {
         chillerAccountNo: chillerAccountNo,
         defaultVendorId: defaultVendorId ?? this.defaultVendorId,
         utilityPaidBy: utilityPaidBy ?? this.utilityPaidBy,
+        serviceChargeAnnual: serviceChargeAnnual,
+        serviceChargeFrequency: serviceChargeFrequency,
+        serviceChargeNextDue: serviceChargeNextDue,
+        serviceChargeNotes: serviceChargeNotes,
+        purchasePrice: purchasePrice,
       );
 
   @override
@@ -107,6 +139,11 @@ class Property implements Entity {
         'chillerAccountNo': chillerAccountNo,
         'defaultVendorId': defaultVendorId,
         'utilityPaidBy': utilityPaidBy.name,
+        'serviceChargeAnnual': serviceChargeAnnual,
+        'serviceChargeFrequency': serviceChargeFrequency.name,
+        'serviceChargeNextDue': dateKey(serviceChargeNextDue),
+        'serviceChargeNotes': serviceChargeNotes,
+        'purchasePrice': purchasePrice,
       };
 
   factory Property.fromMap(Map<String, dynamic> m) => Property(
@@ -133,5 +170,11 @@ class Property implements Entity {
         chillerAccountNo: '${m['chillerAccountNo'] ?? ''}',
         defaultVendorId: m['defaultVendorId'] as String?,
         utilityPaidBy: enumByName(PaidBy.values, m['utilityPaidBy'], PaidBy.tenant),
+        serviceChargeAnnual: (m['serviceChargeAnnual'] as num?)?.toDouble(),
+        serviceChargeFrequency:
+            enumByName(ServiceChargeFrequency.values, m['serviceChargeFrequency'], ServiceChargeFrequency.quarterly),
+        serviceChargeNextDue: parseDate(m['serviceChargeNextDue']),
+        serviceChargeNotes: '${m['serviceChargeNotes'] ?? ''}',
+        purchasePrice: (m['purchasePrice'] as num?)?.toDouble(),
       );
 }

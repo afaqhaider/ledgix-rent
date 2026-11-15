@@ -24,7 +24,9 @@ import '../../features/properties/presentation/portfolio_screen.dart';
 import '../../features/properties/presentation/property_form_screen.dart';
 import '../../features/tenants/presentation/tenants_screen.dart';
 import '../../features/vendors/presentation/vendors_screen.dart';
-import '../../features/servicecharges/presentation/service_charges_screen.dart';
+import '../../features/expenses/domain/expense.dart' show ExpenseType;
+import '../../features/expenses/presentation/expense_form_screen.dart';
+import '../../features/expenses/presentation/expenses_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/utilities/presentation/utilities_overview_screen.dart';
 import '../../features/account/account_providers.dart';
@@ -111,7 +113,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/vendors', pageBuilder: (_, s) => _section(s, const VendorsScreen())),
           GoRoute(path: '/vendors/new', builder: (_, _) => const VendorFormScreen()),
           GoRoute(path: '/utilities', pageBuilder: (_, s) => _section(s, const UtilitiesOverviewScreen())),
-          GoRoute(path: '/service-charges', pageBuilder: (_, s) => _section(s, const ServiceChargesScreen())),
+          GoRoute(
+            path: '/service-charges',
+            pageBuilder: (_, s) => _section(s, const ExpensesScreen(initialType: ExpenseType.serviceCharge)),
+          ),
+          GoRoute(path: '/expenses', pageBuilder: (_, s) => _section(s, const ExpensesScreen())),
+          GoRoute(
+            path: '/expenses/new',
+            builder: (_, s) => ExpenseFormScreen(prefill: (s.extra as Map?)?.cast<String, String>()),
+          ),
+          GoRoute(path: '/expenses/:id/edit', builder: (_, s) => ExpenseFormScreen(id: s.pathParameters['id']!)),
           GoRoute(path: '/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
           GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
           GoRoute(path: '/my-code', builder: (_, _) => const MyCodeScreen()),

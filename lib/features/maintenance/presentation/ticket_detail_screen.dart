@@ -8,6 +8,7 @@ import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
+import '../../expenses/presentation/expense_ui.dart' show expenseSyncProvider;
 import '../../leases/domain/lease.dart';
 import '../../tenants/domain/tenant.dart';
 import '../../vendors/domain/vendor.dart';
@@ -65,7 +66,12 @@ class _TicketDetailScreenState extends ConsumerState<TicketDetailScreen> {
         SnackBar(content: Text(order.channel == ForwardChannel.app ? l.forwardedApp : l.forwardedEmail)));
   }
 
-  Future<void> _save(MaintenanceTicket t) => ref.read(maintenanceRepositoryProvider).save(t);
+  Future<void> _save(MaintenanceTicket t) async {
+    await ref.read(maintenanceRepositoryProvider).save(t);
+    // An approved quote's cost becomes a maintenance expense of the property.
+    final vendor = (ref.read(vendorsProvider).value ?? const <Vendor>[]).where((v) => v.id == t.vendorId).firstOrNull;
+    await ref.read(expenseSyncProvider).maintenance(t, payee: vendor?.name ?? '');
+  }
 
   Future<void> _quoteDialog(MaintenanceTicket t) async {
     final l = context.l;

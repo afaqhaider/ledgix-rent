@@ -16,6 +16,8 @@ import '../../documents/domain/scanned_document.dart';
 import '../../documents/presentation/auto_fill.dart';
 import '../../documents/presentation/documents_editor.dart';
 import '../../documents/presentation/scan_to_fill.dart';
+import '../../expenses/domain/service_charge_plan.dart' show agencyFeeFivePercent;
+import '../../expenses/presentation/expense_ui.dart' show expenseSyncProvider;
 import '../../payments/domain/payment_scheduler.dart';
 import '../../properties/domain/property.dart';
 import '../../tenants/domain/tenant.dart';
@@ -37,6 +39,9 @@ class RentAgreementFormScreen extends ConsumerStatefulWidget {
 class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScreen> {
   final _key = GlobalKey<FormState>();
   final _f = AutoFillFields(const [FormKeys.ejariNo, FormKeys.annualRent, FormKeys.deposit]);
+  final _agencyFee = TextEditingController();
+  final _agencyName = TextEditingController();
+  DateTime? _agencyPaid;
   late final DocumentsController _docs;
   Lease? _existing;
   String? _property, _tenant;
@@ -72,6 +77,9 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
       _f[FormKeys.ejariNo].text = e.ejariNo;
       _f[FormKeys.annualRent].text = _num(e.annualRent);
       _f[FormKeys.deposit].text = e.securityDeposit == 0 ? '' : _num(e.securityDeposit);
+      _agencyFee.text = (e.agencyFee ?? 0) <= 0 ? '' : _num(e.agencyFee!);
+      _agencyName.text = e.agencyName;
+      _agencyPaid = e.agencyFeePaidDate;
     } else {
       _start = todayGst();
       _end = addMonths(_start!, 12).subtract(const Duration(days: 1));
@@ -84,6 +92,8 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
   void dispose() {
     _f.dispose();
     _docs.dispose();
+    _agencyFee.dispose();
+    _agencyName.dispose();
     super.dispose();
   }
 
@@ -195,8 +205,13 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
       ejariExpiry: _ejariExpiry,
       ejariLastSynced: _ejariSynced,
       documents: docs,
+      agencyFee: parseMoney(_agencyFee.text),
+      agencyFeePaidDate: _agencyPaid,
+      agencyName: _agencyName.text.trim(),
     );
     await ref.read(leaseRepositoryProvider).save(lease);
+    // The agency fee is an expense of the property.
+    await ref.read(expenseSyncProvider).agencyFee(lease);
     if (e == null) {
       final payments = ref.read(paymentRepositoryProvider);
       for (final p in PaymentScheduler.generate(lease, newId)) {
@@ -366,6 +381,30 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
             ]),
           ],
         ),
+        FormSection(key: const Key('section-agency'), title: l.exSectionAgency, icon: Icons.handshake_outlined, children: [
+          FieldGrid(children: [
+            TextFormField(
+              key: const ValueKey('field-agencyFee'),
+              controller: _agencyFee,
+              decoration: InputDecoration(
+                labelText: l.exAgencyFee,
+                suffixText: l.aed,
+                suffixIcon: TextButton(
+                  key: const Key('agency-five-percent'),
+                  onPressed: () {
+                    final rent = parseMoney(_f.text(FormKeys.annualRent));
+                    if (rent != null && rent > 0) setState(() => _agencyFee.text = _num(agencyFeeFivePercent(rent)));
+                  },
+                  child: Text(l.exFivePercent),
+                ),
+              ),
+              keyboardType: moneyKeyboard,
+              inputFormatters: moneyInput,
+            ),
+            TextFormField(key: const ValueKey('field-agencyName'), controller: _agencyName, decoration: InputDecoration(labelText: l.exAgencyName)),
+            DateField(label: l.exAgencyPaidOn, value: _agencyPaid, onChanged: (d) => setState(() => _agencyPaid = d)),
+          ]),
+        ]),
         FormSection(title: l.sectionDocuments, icon: Icons.folder_open_outlined, children: [DocumentsEditor(controller: _docs)]),
         if (_existing != null)
           FormSection(

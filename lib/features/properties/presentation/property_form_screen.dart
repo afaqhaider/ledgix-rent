@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/providers.dart';
+import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
 import '../../../core/widgets/forms.dart';
 import '../../documents/domain/form_fill.dart';
@@ -13,6 +14,8 @@ import '../../documents/presentation/document_slots.dart';
 import '../../documents/presentation/documents_editor.dart';
 import '../../documents/presentation/expiry_widgets.dart';
 import '../../documents/presentation/scan_to_fill.dart';
+import '../../expenses/domain/service_charge_plan.dart';
+import '../../expenses/presentation/expense_ui.dart';
 import '../../landlord/presentation/onboarding_screen.dart';
 import '../../vendors/domain/vendor.dart';
 import '../domain/property.dart';
@@ -32,6 +35,7 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
     FormKeys.name, FormKeys.address, FormKeys.community, FormKeys.annualRent,
     FormKeys.dewaPremise, FormKeys.dewaAccount, FormKeys.mollak, 'chillerProvider', 'chillerNo',
     FormKeys.titleDeed, FormKeys.ownerEid, FormKeys.ownerPassport, 'hoaName', 'hoaPhone',
+    'scAnnual', 'scNotes', 'purchasePrice',
   ]);
   late final DocumentsController _docs;
   PropertyType? _type;
@@ -40,11 +44,19 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
   String? _banner;
   DateTime? _ownerEidExpiry, _ownerPassportExpiry;
   final _datesFromScan = <String>{};
+  ServiceChargeFrequency _scFrequency = ServiceChargeFrequency.quarterly;
+  DateTime? _scNextDue;
 
   @override
   void initState() {
     super.initState();
     _f.onChanged = () => setState(() {});
+    // The service-charge preview follows the amount and the HOA name.
+    for (final k in const ['scAnnual', 'hoaName']) {
+      _f[k].addListener(() {
+        if (mounted) setState(() {});
+      });
+    }
     _existing = widget.id == null ? null : ref.read(propertiesProvider).value?.where((p) => p.id == widget.id).firstOrNull;
     final p = _existing;
     _docs = DocumentsController(
@@ -58,6 +70,11 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
       _ownerEidExpiry = p.ownerEmiratesIdExpiry;
       _ownerPassportExpiry = p.ownerPassportExpiry;
       _defaultVendor = p.defaultVendorId;
+      _scFrequency = p.serviceChargeFrequency;
+      _scNextDue = p.serviceChargeNextDue;
+      _f['scAnnual'].text = p.serviceChargeAnnual == null ? '' : _num(p.serviceChargeAnnual!);
+      _f['scNotes'].text = p.serviceChargeNotes;
+      _f['purchasePrice'].text = p.purchasePrice == null ? '' : _num(p.purchasePrice!);
       for (final (k, v) in [
         (FormKeys.name, p.name), (FormKeys.address, p.address), (FormKeys.community, p.community),
         (FormKeys.annualRent, p.annualRent == null ? '' : _num(p.annualRent!)),
@@ -127,7 +144,7 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
     final docs = await _docs.uploadAll(ref.read(fileStorageProvider), 'documents/$id', l);
     final mollak = _f.text(FormKeys.mollak);
     final e = _existing;
-    await ref.read(propertyRepositoryProvider).save(Property(
+    final property = Property(
           id: id,
           landlordId: e?.landlordId ?? ref.read(authRepositoryProvider).currentUserId ?? '',
           name: _f.text(FormKeys.name),
@@ -151,8 +168,69 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
           documents: docs,
           defaultVendorId: _defaultVendor,
           utilityPaidBy: e?.utilityPaidBy ?? PaidBy.tenant,
-        ));
+          serviceChargeAnnual: parseMoney(_f.text('scAnnual')),
+          serviceChargeFrequency: _scFrequency,
+          serviceChargeNextDue: _scNextDue,
+          serviceChargeNotes: _f.text('scNotes'),
+          purchasePrice: parseMoney(_f.text('purchasePrice')),
+        );
+    await ref.read(propertyRepositoryProvider).save(property);
+    // Create or update the upcoming service-charge instalments.
+    await ref.read(expenseSyncProvider).serviceCharges(property);
     if (mounted) context.pop();
+  }
+
+  /// Service charges: annual amount, frequency and next due date. Saving
+  /// creates the instalments (see ExpenseSync.serviceCharges).
+  Widget _serviceCharges(AppLocalizations l, Widget Function(String, String, {bool required, String? helper, String? suffix, TextInputType? keyboard, IconData? icon}) text) {
+    final annual = parseMoney(_f.text('scAnnual'));
+    final hasAmount = annual != null && annual > 0;
+    final plan = hasAmount && _scNextDue != null
+        ? ServiceChargePlan(annualAmount: annual, frequency: _scFrequency, nextDue: _scNextDue!)
+        : null;
+    final preview = plan == null || _scFrequency == ServiceChargeFrequency.custom
+        ? null
+        : l.exInstalmentPreview(_scFrequency.perYear, formatAed(plan.instalment), formatFormDate(_scNextDue!));
+    final payee = _f.text('hoaName');
+    return FormSection(
+      key: const Key('section-service-charges'),
+      title: l.exSectionServiceCharges,
+      subtitle: l.exServiceChargesSub,
+      icon: Icons.receipt_long_outlined,
+      children: [
+        FieldGrid(children: [
+          text('scAnnual', l.exAnnualServiceCharge, suffix: l.aed, keyboard: moneyKeyboard),
+          DropdownButtonFormField<ServiceChargeFrequency>(
+            key: const ValueKey('field-scFrequency'),
+            initialValue: _scFrequency,
+            isExpanded: true,
+            decoration: InputDecoration(labelText: l.exFrequency),
+            items: [
+              for (final f in ServiceChargeFrequency.values)
+                DropdownMenuItem(value: f, child: Text(frequencyLabel(l, f), overflow: TextOverflow.ellipsis)),
+            ],
+            onChanged: (f) => setState(() => _scFrequency = f ?? _scFrequency),
+          ),
+          KeyedSubtree(
+            key: const ValueKey('field-scNextDue'),
+            child: DateField(
+              label: hasAmount && _scFrequency != ServiceChargeFrequency.custom ? req(l.exNextDue) : l.exNextDue,
+              value: _scNextDue,
+              onChanged: (d) => setState(() => _scNextDue = d),
+            ),
+          ),
+          text('scNotes', l.exNotes),
+        ]),
+        if (preview != null || (hasAmount && payee.isNotEmpty)) ...[
+          const SizedBox(height: 12),
+          Text(
+            [?preview, if (hasAmount && payee.isNotEmpty) l.exPayeeIsHoa(payee)].join(' · '),
+            key: const Key('sc-preview'),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          ),
+        ],
+      ],
+    );
   }
 
   @override
@@ -230,8 +308,10 @@ class _PropertyFormScreenState extends ConsumerState<PropertyFormScreen> {
                 _datesFromScan.remove(FormKeys.ownerPassportExpiry);
               }),
             ),
+            text('purchasePrice', l.exPurchasePrice, suffix: l.aed, keyboard: moneyKeyboard, helper: l.exPurchasePriceHelper),
           ]),
         ]),
+        _serviceCharges(l, text),
         FormSection(title: l.sectionHoa, icon: Icons.groups_outlined, children: [
           FieldGrid(children: [
             text('hoaName', l.hoaName),

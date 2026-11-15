@@ -54,6 +54,7 @@ List<NavSection> get navSections => [
         NavItem('/leases', Icons.description_outlined, Icons.description, (l) => l.rentAgreements),
         chequesItem,
         NavItem('/debits', Icons.account_balance_outlined, Icons.account_balance, (l) => l.directDebits),
+        NavItem('/service-charges', Icons.receipt_long_outlined, Icons.receipt_long, (l) => l.serviceCharges),
       ]),
       NavSection((l) => l.operations, [
         maintenanceItem,
@@ -62,11 +63,11 @@ List<NavSection> get navSections => [
         NavItem('/holds', Icons.pause_circle_outline, Icons.pause_circle, (l) => l.holdRequests),
         if (FeatureFlags.utilityBills)
           NavItem('/utilities', Icons.bolt_outlined, Icons.bolt, (l) => l.utilityBills, matches: [r'^/property/[^/]+/bills$']),
-        if (FeatureFlags.mollak)
-          NavItem('/service-charges', Icons.receipt_long_outlined, Icons.receipt_long, (l) => l.serviceCharges),
       ]),
       NavSection((l) => l.insights, [
-        NavItem('/reports', Icons.bar_chart_outlined, Icons.bar_chart, (l) => l.reports),
+        NavItem('/reports', Icons.bar_chart_outlined, Icons.bar_chart, (l) => l.exProfitability),
+        NavItem('/expenses', Icons.account_balance_wallet_outlined, Icons.account_balance_wallet, (l) => l.exExpenses,
+            matches: [r'^/expenses/.+$']),
       ]),
     ];
 
@@ -115,6 +116,8 @@ NavItem? navItemFor(String location) {
 bool isNarrowPage(String location) =>
     location == '/settings' ||
     location == '/profile' ||
+    location == '/expenses/new' ||
+    RegExp(r'^/expenses/[^/]+/edit$').hasMatch(location) ||
     location == '/t/settings' ||
     RegExp(r'^/(property|tickets)/[^/]+$').hasMatch(location) ||
     RegExp(r'^/t/(landlords|inspections)/.+$').hasMatch(location);

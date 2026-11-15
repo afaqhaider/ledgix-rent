@@ -18,6 +18,8 @@ import '../../payments/domain/payment.dart';
 import '../../integrations/domain/integration_services.dart';
 import '../../servicecharges/domain/service_charge.dart';
 import '../../documents/presentation/documents_editor.dart';
+import '../../expenses/presentation/expense_ui.dart' show frequencyLabel;
+import '../../expenses/presentation/profitability_widgets.dart';
 import '../domain/property.dart';
 
 class PortfolioScreen extends ConsumerWidget {
@@ -128,6 +130,11 @@ class PropertyDetailScreen extends ConsumerWidget {
           l.ownerPassportNo: p.ownerPassportNo,
           l.hoaName: p.hoaName,
           l.hoaPhone: p.hoaPhone,
+          l.serviceCharges: p.serviceChargeAnnual == null
+              ? ''
+              : '${formatAed(p.serviceChargeAnnual!)} · ${frequencyLabel(l, p.serviceChargeFrequency)}'
+                  '${p.serviceChargeNextDue == null ? '' : ' · ${l.exDueOn(formatDate(p.serviceChargeNextDue!))}'}',
+          l.exPurchasePrice: p.purchasePrice == null ? '' : formatAed(p.purchasePrice!),
         }.entries.where((e) => e.value.isNotEmpty))
           ListTile(dense: true, title: Text(e.key), trailing: Text(e.value)),
         if (FeatureFlags.utilityBills)
@@ -138,6 +145,9 @@ class PropertyDetailScreen extends ConsumerWidget {
             onTap: () => context.push('/property/${p.id}/bills'),
           ),
         if (FeatureFlags.mollak && p.isJointlyOwned) ServiceChargeCard(property: p),
+        const SizedBox(height: 8),
+        PropertyPnlCard(property: p),
+        const SizedBox(height: 8),
         const Divider(),
         Text(l.documents, style: Theme.of(context).textTheme.titleMedium),
         if (p.documents.isEmpty) const EmptyState(),

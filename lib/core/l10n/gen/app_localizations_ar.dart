@@ -2318,4 +2318,320 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cxErrInvalid => 'أدخل بريدًا إلكترونيًا صحيحًا أو رمز LedGix.';
+
+  @override
+  String get exSectionServiceCharges => 'رسوم الخدمات';
+
+  @override
+  String get exServiceChargesSub =>
+      'ما تدفعه لجمعية الملاك أو المطوّر. تُنشأ الدفعات من هذه التفاصيل.';
+
+  @override
+  String get exAnnualServiceCharge => 'رسوم الخدمات السنوية';
+
+  @override
+  String get exFrequency => 'دورية الفوترة';
+
+  @override
+  String get exFreqAnnual => 'سنوي';
+
+  @override
+  String get exFreqSemiAnnual => 'نصف سنوي';
+
+  @override
+  String get exFreqQuarterly => 'ربع سنوي';
+
+  @override
+  String get exFreqMonthly => 'شهري';
+
+  @override
+  String get exFreqCustom => 'مخصص (أضف الدفعات بنفسك)';
+
+  @override
+  String get exNextDue => 'تاريخ الاستحقاق التالي';
+
+  @override
+  String get exNotes => 'ملاحظات';
+
+  @override
+  String exInstalmentPreview(int count, String amount, String date) {
+    return '$count دفعات بقيمة $amount، ابتداءً من $date';
+  }
+
+  @override
+  String exPayeeIsHoa(String name) {
+    return 'الدفع إلى: $name';
+  }
+
+  @override
+  String get exPurchasePrice => 'سعر الشراء';
+
+  @override
+  String get exPurchasePriceHelper => 'اختياري. يُستخدم لحساب صافي العائد.';
+
+  @override
+  String get exNextDueRequired => 'اختر تاريخ الاستحقاق التالي';
+
+  @override
+  String get exTypeServiceCharge => 'رسوم خدمات';
+
+  @override
+  String get exTypeAgencyFee => 'عمولة وساطة';
+
+  @override
+  String get exTypeMaintenance => 'صيانة';
+
+  @override
+  String get exTypeOther => 'أخرى';
+
+  @override
+  String get exStatusDue => 'مستحق';
+
+  @override
+  String get exStatusPaid => 'مدفوع';
+
+  @override
+  String get exStatusOverdue => 'متأخر';
+
+  @override
+  String get exExpenses => 'المصروفات';
+
+  @override
+  String get exAddExpense => 'إضافة مصروف';
+
+  @override
+  String get exEditExpense => 'تعديل المصروف';
+
+  @override
+  String get exType => 'النوع';
+
+  @override
+  String get exAmount => 'المبلغ';
+
+  @override
+  String get exDueDate => 'تاريخ الاستحقاق';
+
+  @override
+  String get exPaidDate => 'تاريخ الدفع';
+
+  @override
+  String get exPayee => 'المدفوع له';
+
+  @override
+  String get exReceipt => 'الإيصال';
+
+  @override
+  String get exAttachReceipt => 'إرفاق إيصال';
+
+  @override
+  String get exReplaceReceipt => 'استبدال الإيصال';
+
+  @override
+  String get exViewReceipt => 'عرض الإيصال';
+
+  @override
+  String get exMarkPaid => 'تحديد كمدفوع';
+
+  @override
+  String get exMarkUnpaid => 'تحديد كغير مدفوع';
+
+  @override
+  String get exMarkedPaid => 'تم التحديد كمدفوع';
+
+  @override
+  String get exDeleteExpense => 'حذف المصروف';
+
+  @override
+  String get exDeleteConfirm => 'حذف هذا المصروف؟ لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get exNoExpenses =>
+      'لا توجد مصروفات بعد. أضف رسوم الخدمات في العقار، أو عمولة الوساطة في عقد الإيجار، أو أضف مصروفًا هنا.';
+
+  @override
+  String get exNoMatches => 'لا توجد مصروفات تطابق هذه الفلاتر.';
+
+  @override
+  String get exAllProperties => 'كل العقارات';
+
+  @override
+  String get exAllTypes => 'كل الأنواع';
+
+  @override
+  String get exAllStatuses => 'كل الحالات';
+
+  @override
+  String get exPeriod => 'الفترة';
+
+  @override
+  String get exPeriodThisYear => 'هذا العام';
+
+  @override
+  String get exPeriodLast12 => 'آخر 12 شهرًا';
+
+  @override
+  String get exPeriodCustom => 'فترة مخصصة';
+
+  @override
+  String get exPeriodAll => 'كل الفترات';
+
+  @override
+  String get exFromTicket => 'من طلب صيانة';
+
+  @override
+  String get exFromAgreement => 'من عقد إيجار';
+
+  @override
+  String get exFromPlan => 'من خطة رسوم الخدمات';
+
+  @override
+  String get exServiceChargesDue => 'رسوم الخدمات المستحقة';
+
+  @override
+  String exServiceChargesDueSub(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count دفعات مستحقة خلال 60 يومًا أو متأخرة',
+      one: 'دفعة واحدة مستحقة خلال 60 يومًا أو متأخرة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exNoServiceChargesDue => 'لا شيء مستحق خلال الـ60 يومًا القادمة.';
+
+  @override
+  String get exServiceChargesHint =>
+      'رسوم الخدمات التي تدفعها لجمعية الملاك أو المطوّر. حدّد المبلغ السنوي والدورية وتاريخ الاستحقاق التالي لكل عقار، وستظهر الدفعات هنا.';
+
+  @override
+  String get exSetUpServiceCharges => 'إعداد رسوم الخدمات';
+
+  @override
+  String get exNoPlan => 'غير مُعد';
+
+  @override
+  String get exAddInstalment => 'إضافة دفعة';
+
+  @override
+  String get exProfitability => 'الربحية';
+
+  @override
+  String get exProfitThisYear => 'الربح هذا العام';
+
+  @override
+  String get exRentCollected => 'الإيجار المحصّل';
+
+  @override
+  String get exRentOutstanding => 'الإيجار المستحق';
+
+  @override
+  String get exAgencyFees => 'عمولات الوساطة';
+
+  @override
+  String get exMaintenance => 'الصيانة';
+
+  @override
+  String get exUtilities => 'المرافق';
+
+  @override
+  String get exOther => 'أخرى';
+
+  @override
+  String get exTotalExpenses => 'إجمالي المصروفات';
+
+  @override
+  String get exNetIncome => 'صافي الدخل';
+
+  @override
+  String get exMargin => 'الهامش';
+
+  @override
+  String get exNetYield => 'صافي العائد';
+
+  @override
+  String exUnpaidPart(String amount) {
+    return '$amount لم تُدفع بعد';
+  }
+
+  @override
+  String get exTotal => 'الإجمالي';
+
+  @override
+  String get exExportCsv => 'تصدير CSV';
+
+  @override
+  String get exProfitabilityReport => 'تقرير الربحية';
+
+  @override
+  String get exPnlNote =>
+      'يُحتسب الإيجار عند صرف الشيك. تُحتسب المصروفات في فترة استحقاقها، مدفوعة أم لا.';
+
+  @override
+  String get exPnlTitle => 'الأرباح والخسائر';
+
+  @override
+  String exUnits(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count وحدات',
+      one: 'وحدة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exSectionAgency => 'الوساطة';
+
+  @override
+  String get exAgencyFee => 'عمولة الوساطة';
+
+  @override
+  String get exAgencyName => 'الوسيط';
+
+  @override
+  String get exAgencyPaidOn => 'تاريخ دفع العمولة';
+
+  @override
+  String get exFivePercent => '5% من الإيجار';
+
+  @override
+  String exDueOn(String date) {
+    return 'مستحق $date';
+  }
+
+  @override
+  String exPaidOn(String date) {
+    return 'دُفع $date';
+  }
+
+  @override
+  String exOverdueDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'متأخر $days أيام',
+      one: 'متأخر يومًا واحدًا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String exRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get exViewReport => 'عرض التقرير';
+
+  @override
+  String get exCsvCopied => 'تم نسخ CSV إلى الحافظة';
+
+  @override
+  String get exProperty => 'العقار';
+
+  @override
+  String get exStatus => 'الحالة';
 }

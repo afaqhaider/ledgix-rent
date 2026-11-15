@@ -4327,6 +4327,558 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter a valid email address or LedGix code.'**
   String get cxErrInvalid;
+
+  /// No description provided for @exSectionServiceCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charges'**
+  String get exSectionServiceCharges;
+
+  /// No description provided for @exServiceChargesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'What you pay the HOA or developer. Instalments are created from these details.'**
+  String get exServiceChargesSub;
+
+  /// No description provided for @exAnnualServiceCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual service charge'**
+  String get exAnnualServiceCharge;
+
+  /// No description provided for @exFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing frequency'**
+  String get exFrequency;
+
+  /// No description provided for @exFreqAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get exFreqAnnual;
+
+  /// No description provided for @exFreqSemiAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Semi-annual'**
+  String get exFreqSemiAnnual;
+
+  /// No description provided for @exFreqQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get exFreqQuarterly;
+
+  /// No description provided for @exFreqMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get exFreqMonthly;
+
+  /// No description provided for @exFreqCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom (add instalments yourself)'**
+  String get exFreqCustom;
+
+  /// No description provided for @exNextDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due date'**
+  String get exNextDue;
+
+  /// No description provided for @exNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get exNotes;
+
+  /// No description provided for @exInstalmentPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} instalments of {amount}, from {date}'**
+  String exInstalmentPreview(int count, String amount, String date);
+
+  /// No description provided for @exPayeeIsHoa.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid to: {name}'**
+  String exPayeeIsHoa(String name);
+
+  /// No description provided for @exPurchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase price'**
+  String get exPurchasePrice;
+
+  /// No description provided for @exPurchasePriceHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Used to work out net yield.'**
+  String get exPurchasePriceHelper;
+
+  /// No description provided for @exNextDueRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the next due date'**
+  String get exNextDueRequired;
+
+  /// No description provided for @exTypeServiceCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charge'**
+  String get exTypeServiceCharge;
+
+  /// No description provided for @exTypeAgencyFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency fee'**
+  String get exTypeAgencyFee;
+
+  /// No description provided for @exTypeMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get exTypeMaintenance;
+
+  /// No description provided for @exTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get exTypeOther;
+
+  /// No description provided for @exStatusDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get exStatusDue;
+
+  /// No description provided for @exStatusPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get exStatusPaid;
+
+  /// No description provided for @exStatusOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get exStatusOverdue;
+
+  /// No description provided for @exExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get exExpenses;
+
+  /// No description provided for @exAddExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Add expense'**
+  String get exAddExpense;
+
+  /// No description provided for @exEditExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit expense'**
+  String get exEditExpense;
+
+  /// No description provided for @exType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get exType;
+
+  /// No description provided for @exAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get exAmount;
+
+  /// No description provided for @exDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get exDueDate;
+
+  /// No description provided for @exPaidDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on'**
+  String get exPaidDate;
+
+  /// No description provided for @exPayee.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid to'**
+  String get exPayee;
+
+  /// No description provided for @exReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get exReceipt;
+
+  /// No description provided for @exAttachReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach receipt'**
+  String get exAttachReceipt;
+
+  /// No description provided for @exReplaceReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace receipt'**
+  String get exReplaceReceipt;
+
+  /// No description provided for @exViewReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'View receipt'**
+  String get exViewReceipt;
+
+  /// No description provided for @exMarkPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark paid'**
+  String get exMarkPaid;
+
+  /// No description provided for @exMarkUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark unpaid'**
+  String get exMarkUnpaid;
+
+  /// No description provided for @exMarkedPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as paid'**
+  String get exMarkedPaid;
+
+  /// No description provided for @exDeleteExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete expense'**
+  String get exDeleteExpense;
+
+  /// No description provided for @exDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this expense? This can\'t be undone.'**
+  String get exDeleteConfirm;
+
+  /// No description provided for @exNoExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses yet. Add service charges on a property, an agency fee on a rent agreement, or add an expense here.'**
+  String get exNoExpenses;
+
+  /// No description provided for @exNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses match these filters.'**
+  String get exNoMatches;
+
+  /// No description provided for @exAllProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'All properties'**
+  String get exAllProperties;
+
+  /// No description provided for @exAllTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'All types'**
+  String get exAllTypes;
+
+  /// No description provided for @exAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get exAllStatuses;
+
+  /// No description provided for @exPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get exPeriod;
+
+  /// No description provided for @exPeriodThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get exPeriodThisYear;
+
+  /// No description provided for @exPeriodLast12.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 12 months'**
+  String get exPeriodLast12;
+
+  /// No description provided for @exPeriodCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom range'**
+  String get exPeriodCustom;
+
+  /// No description provided for @exPeriodAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get exPeriodAll;
+
+  /// No description provided for @exFromTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'From a maintenance ticket'**
+  String get exFromTicket;
+
+  /// No description provided for @exFromAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'From a rent agreement'**
+  String get exFromAgreement;
+
+  /// No description provided for @exFromPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'From the service-charge plan'**
+  String get exFromPlan;
+
+  /// No description provided for @exServiceChargesDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charges due'**
+  String get exServiceChargesDue;
+
+  /// No description provided for @exServiceChargesDueSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 due in the next 60 days or overdue} other{{count} due in the next 60 days or overdue}}'**
+  String exServiceChargesDueSub(int count);
+
+  /// No description provided for @exNoServiceChargesDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing due in the next 60 days.'**
+  String get exNoServiceChargesDue;
+
+  /// No description provided for @exServiceChargesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Service charges you pay to the HOA or developer. Set the annual amount, frequency and next due date on each property, and the instalments appear here.'**
+  String get exServiceChargesHint;
+
+  /// No description provided for @exSetUpServiceCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up service charges'**
+  String get exSetUpServiceCharges;
+
+  /// No description provided for @exNoPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up'**
+  String get exNoPlan;
+
+  /// No description provided for @exAddInstalment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add instalment'**
+  String get exAddInstalment;
+
+  /// No description provided for @exProfitability.
+  ///
+  /// In en, this message translates to:
+  /// **'Profitability'**
+  String get exProfitability;
+
+  /// No description provided for @exProfitThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit this year'**
+  String get exProfitThisYear;
+
+  /// No description provided for @exRentCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent collected'**
+  String get exRentCollected;
+
+  /// No description provided for @exRentOutstanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent outstanding'**
+  String get exRentOutstanding;
+
+  /// No description provided for @exAgencyFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency fees'**
+  String get exAgencyFees;
+
+  /// No description provided for @exMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get exMaintenance;
+
+  /// No description provided for @exUtilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get exUtilities;
+
+  /// No description provided for @exOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get exOther;
+
+  /// No description provided for @exTotalExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Total expenses'**
+  String get exTotalExpenses;
+
+  /// No description provided for @exNetIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Net income'**
+  String get exNetIncome;
+
+  /// No description provided for @exMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get exMargin;
+
+  /// No description provided for @exNetYield.
+  ///
+  /// In en, this message translates to:
+  /// **'Net yield'**
+  String get exNetYield;
+
+  /// No description provided for @exUnpaidPart.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} not paid yet'**
+  String exUnpaidPart(String amount);
+
+  /// No description provided for @exTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get exTotal;
+
+  /// No description provided for @exExportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Export CSV'**
+  String get exExportCsv;
+
+  /// No description provided for @exProfitabilityReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Profitability report'**
+  String get exProfitabilityReport;
+
+  /// No description provided for @exPnlNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent counts once cleared. Expenses count in the period they\'re due, paid or not.'**
+  String get exPnlNote;
+
+  /// No description provided for @exPnlTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit & loss'**
+  String get exPnlTitle;
+
+  /// No description provided for @exUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 unit} other{{count} units}}'**
+  String exUnits(int count);
+
+  /// No description provided for @exSectionAgency.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency'**
+  String get exSectionAgency;
+
+  /// No description provided for @exAgencyFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency fee'**
+  String get exAgencyFee;
+
+  /// No description provided for @exAgencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency'**
+  String get exAgencyName;
+
+  /// No description provided for @exAgencyPaidOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency fee paid on'**
+  String get exAgencyPaidOn;
+
+  /// No description provided for @exFivePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'5% of rent'**
+  String get exFivePercent;
+
+  /// No description provided for @exDueOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String exDueOn(String date);
+
+  /// No description provided for @exPaidOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid {date}'**
+  String exPaidOn(String date);
+
+  /// No description provided for @exOverdueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day overdue} other{{days} days overdue}}'**
+  String exOverdueDays(int days);
+
+  /// No description provided for @exRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String exRange(String from, String to);
+
+  /// No description provided for @exViewReport.
+  ///
+  /// In en, this message translates to:
+  /// **'View report'**
+  String get exViewReport;
+
+  /// No description provided for @exCsvCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV copied to the clipboard'**
+  String get exCsvCopied;
+
+  /// No description provided for @exProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Property'**
+  String get exProperty;
+
+  /// No description provided for @exStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get exStatus;
 }
 
 class _AppLocalizationsDelegate

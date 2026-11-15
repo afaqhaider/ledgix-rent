@@ -14,6 +14,7 @@ import '../../../core/utils/dates.dart';
 import '../../../core/widgets/brand.dart';
 import '../../../core/widgets/common.dart';
 import '../../documents/presentation/id_expiries_card.dart';
+import '../../expenses/presentation/expenses_dashboard.dart';
 import '../../landlord/presentation/onboarding_screen.dart' show landlordProvider;
 import '../../leases/domain/lease.dart';
 import '../../maintenance/domain/maintenance_ticket.dart';
@@ -73,6 +74,8 @@ class DashboardScreen extends ConsumerWidget {
         final renewals = _RenewalsCard(leases: upcomingRenewals(leases, today), propertyName: propertyName, today: today);
         final maintenance = _MaintenanceCard(tickets: tickets, propertyName: propertyName);
         final holds = const _HoldRequestsCard();
+        const charges = ServiceChargesDueCard();
+        const profit = ProfitabilityCard();
 
         return ListView(
           padding: EdgeInsets.fromLTRB(pad, 8, pad, 32),
@@ -88,17 +91,17 @@ class DashboardScreen extends ConsumerWidget {
             ConnectionRequestsCard(gap: gap),
             if (wide)
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Expanded(flex: 3, child: Column(children: [upcoming, SizedBox(height: gap), chart])),
+                Expanded(flex: 3, child: Column(children: [upcoming, SizedBox(height: gap), charges, SizedBox(height: gap), chart])),
                 SizedBox(width: gap),
                 Expanded(
                   flex: 2,
                   child: Column(children: [
-                    holds, SizedBox(height: gap), actions, SizedBox(height: gap), renewals, SizedBox(height: gap), maintenance,
+                    holds, SizedBox(height: gap), profit, SizedBox(height: gap), actions, SizedBox(height: gap), renewals, SizedBox(height: gap), maintenance,
                   ]),
                 ),
               ])
             else
-              for (final w in <Widget>[holds, actions, upcoming, chart, renewals, maintenance]) ...[w, SizedBox(height: gap)],
+              for (final w in <Widget>[holds, actions, upcoming, charges, profit, chart, renewals, maintenance]) ...[w, SizedBox(height: gap)],
           ],
         );
       }),

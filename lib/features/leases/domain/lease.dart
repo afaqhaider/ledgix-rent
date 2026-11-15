@@ -37,6 +37,9 @@ class Lease implements Entity {
     this.ejariExpiry,
     this.ejariLastSynced,
     this.documents = const [],
+    this.agencyFee,
+    this.agencyFeePaidDate,
+    this.agencyName = '',
   });
 
   @override
@@ -54,6 +57,12 @@ class Lease implements Entity {
 
   /// Ejari certificate, tenancy contract and other files.
   final List<AppDocument> documents;
+
+  /// Agency commission for this agreement (often 5% of the annual rent),
+  /// recorded as an agency-fee expense of the property.
+  final double? agencyFee;
+  final DateTime? agencyFeePaidDate;
+  final String agencyName;
 
   /// Date renewal alerts count back from: the Ejari expiry when known.
   DateTime get renewalDate => ejariExpiry ?? endDate;
@@ -74,6 +83,9 @@ class Lease implements Entity {
         ejariExpiry: expiry,
         ejariLastSynced: syncedAt,
         documents: documents,
+        agencyFee: agencyFee,
+        agencyFeePaidDate: agencyFeePaidDate,
+        agencyName: agencyName,
       );
 
   @override
@@ -93,6 +105,9 @@ class Lease implements Entity {
         'ejariExpiry': ejariExpiry?.toIso8601String(),
         'ejariLastSynced': ejariLastSynced?.toIso8601String(),
         'documents': documents.map((d) => d.toMap()).toList(),
+        'agencyFee': agencyFee,
+        'agencyFeePaidDate': dateKey(agencyFeePaidDate),
+        'agencyName': agencyName,
       };
 
   factory Lease.fromMap(Map<String, dynamic> m) => Lease(
@@ -111,5 +126,8 @@ class Lease implements Entity {
         ejariExpiry: parseDate(m['ejariExpiry']),
         ejariLastSynced: parseDate(m['ejariLastSynced']),
         documents: AppDocument.listFrom(m['documents']),
+        agencyFee: (m['agencyFee'] as num?)?.toDouble(),
+        agencyFeePaidDate: parseDate(m['agencyFeePaidDate']),
+        agencyName: '${m['agencyName'] ?? ''}',
       );
 }
