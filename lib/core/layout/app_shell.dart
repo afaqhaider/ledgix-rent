@@ -1,3 +1,5 @@
+import '../../features/documents/presentation/document_requests_card.dart';
+import '../../features/tenants/domain/tenant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -389,7 +391,9 @@ class NotificationsButton extends ConsumerWidget {
     ];
     final idAlerts = ref.watch(idExpiryAlertsProvider).where((e) => e.daysLeft(today) <= 30).toList();
     final requests = ref.watch(pendingIncomingProvider);
-    final count = due.length + ending.length + holds.length + idAlerts.length + requests.length;
+    final docRequests = ref.watch(pendingDocumentRequestsProvider);
+    final tenantNames = {for (final t in ref.watch(tenantsProvider).value ?? const <Tenant>[]) t.id: t.name};
+    final count = due.length + ending.length + holds.length + idAlerts.length + requests.length + docRequests.length;
 
     return MenuAnchor(
       alignmentOffset: const Offset(-220, 4),
@@ -401,6 +405,15 @@ class NotificationsButton extends ConsumerWidget {
             leadingIcon: const Icon(Icons.group_add_outlined),
             onPressed: () => openRequest(context, r),
             child: SizedBox(width: 260, child: Text(invitationTitle(l, r), maxLines: 2, overflow: TextOverflow.ellipsis)),
+          ),
+        for (final r in docRequests.take(4))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.folder_shared_outlined),
+            onPressed: () => context.go('/'),
+            child: SizedBox(
+              width: 260,
+              child: Text(documentRequestTitle(l, r, tenantNames[r.tenantId] ?? ''), maxLines: 2, overflow: TextOverflow.ellipsis),
+            ),
           ),
         for (final r in holds.take(4))
           MenuItemButton(

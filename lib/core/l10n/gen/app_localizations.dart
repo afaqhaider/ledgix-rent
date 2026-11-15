@@ -4879,6 +4879,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Status'**
   String get exStatus;
+
+  /// No description provided for @drDocsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents from your landlord'**
+  String get drDocsTitle;
+
+  /// No description provided for @drLandlordEmiratesId.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord\'s Emirates ID'**
+  String get drLandlordEmiratesId;
+
+  /// No description provided for @drLandlordPassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord\'s passport'**
+  String get drLandlordPassport;
+
+  /// No description provided for @drTitleDeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Title deed'**
+  String get drTitleDeed;
+
+  /// No description provided for @drTenancyContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenancy contract'**
+  String get drTenancyContract;
+
+  /// No description provided for @drEjari.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejari certificate'**
+  String get drEjari;
+
+  /// No description provided for @drDewaBill.
+  ///
+  /// In en, this message translates to:
+  /// **'DEWA bill'**
+  String get drDewaBill;
+
+  /// No description provided for @drOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other document'**
+  String get drOther;
+
+  /// No description provided for @drAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get drAvailable;
+
+  /// No description provided for @drOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get drOpen;
+
+  /// No description provided for @drNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get drNotAvailable;
+
+  /// No description provided for @drRequestNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Request now'**
+  String get drRequestNow;
+
+  /// No description provided for @drRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get drRequested;
+
+  /// No description provided for @drDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get drDeclined;
+
+  /// No description provided for @drDeclinedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined: {reason}'**
+  String drDeclinedWith(String reason);
+
+  /// No description provided for @drAskAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask again'**
+  String get drAskAgain;
+
+  /// No description provided for @drEndedPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'No longer shared: the tenancy has ended'**
+  String get drEndedPersonal;
+
+  /// No description provided for @drRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request: {doc}'**
+  String drRequestTitle(String doc);
+
+  /// No description provided for @drNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for your landlord (optional)'**
+  String get drNoteHint;
+
+  /// No description provided for @drOtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Which document do you need?'**
+  String get drOtherHint;
+
+  /// No description provided for @drSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get drSend;
+
+  /// No description provided for @drSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to your landlord.'**
+  String get drSent;
+
+  /// No description provided for @drErrAlreadyOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve already asked for this document.'**
+  String get drErrAlreadyOpen;
+
+  /// No description provided for @drErrNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t request this document.'**
+  String get drErrNotAllowed;
+
+  /// No description provided for @drErrNoteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the document you need.'**
+  String get drErrNoteRequired;
+
+  /// No description provided for @drRequestOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Request another document'**
+  String get drRequestOther;
+
+  /// No description provided for @drCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Document requests'**
+  String get drCardTitle;
+
+  /// No description provided for @drUploadShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload & share'**
+  String get drUploadShare;
+
+  /// No description provided for @drShareExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Share existing'**
+  String get drShareExisting;
+
+  /// No description provided for @drDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get drDecline;
+
+  /// No description provided for @drDeclineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline document request'**
+  String get drDeclineTitle;
+
+  /// No description provided for @drDeclineReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (shown to the tenant)'**
+  String get drDeclineReason;
+
+  /// No description provided for @drShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with the tenant.'**
+  String get drShared;
+
+  /// No description provided for @drDeclinedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined.'**
+  String get drDeclinedDone;
+
+  /// No description provided for @drNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'{tenant} asked for: {doc}'**
+  String drNotif(String tenant, String doc);
+
+  /// No description provided for @drNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No open document requests.'**
+  String get drNone;
+
+  /// No description provided for @drTenantRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Document requests from this tenant'**
+  String get drTenantRequests;
 }
 
 class _AppLocalizationsDelegate

@@ -1196,5 +1196,66 @@
   "exViewReport": "View report",
   "exCsvCopied": "CSV copied to the clipboard",
   "exProperty": "Property",
-  "exStatus": "Status"
+  "exStatus": "Status",
+  "drDocsTitle": "Documents from your landlord",
+  "drLandlordEmiratesId": "Landlord's Emirates ID",
+  "drLandlordPassport": "Landlord's passport",
+  "drTitleDeed": "Title deed",
+  "drTenancyContract": "Tenancy contract",
+  "drEjari": "Ejari certificate",
+  "drDewaBill": "DEWA bill",
+  "drOther": "Other document",
+  "drAvailable": "Available",
+  "drOpen": "Open",
+  "drNotAvailable": "Not available",
+  "drRequestNow": "Request now",
+  "drRequested": "Requested",
+  "drDeclined": "Declined",
+  "drDeclinedWith": "Declined: {reason}",
+  "@drDeclinedWith": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "drAskAgain": "Ask again",
+  "drEndedPersonal": "No longer shared: the tenancy has ended",
+  "drRequestTitle": "Request: {doc}",
+  "@drRequestTitle": {
+    "placeholders": {
+      "doc": {
+        "type": "String"
+      }
+    }
+  },
+  "drNoteHint": "Note for your landlord (optional)",
+  "drOtherHint": "Which document do you need?",
+  "drSend": "Send request",
+  "drSent": "Request sent to your landlord.",
+  "drErrAlreadyOpen": "You've already asked for this document.",
+  "drErrNotAllowed": "You can't request this document.",
+  "drErrNoteRequired": "Describe the document you need.",
+  "drRequestOther": "Request another document",
+  "drCardTitle": "Document requests",
+  "drUploadShare": "Upload & share",
+  "drShareExisting": "Share existing",
+  "drDecline": "Decline",
+  "drDeclineTitle": "Decline document request",
+  "drDeclineReason": "Reason (shown to the tenant)",
+  "drShared": "Shared with the tenant.",
+  "drDeclinedDone": "Request declined.",
+  "drNotif": "{tenant} asked for: {doc}",
+  "@drNotif": {
+    "placeholders": {
+      "tenant": {
+        "type": "String"
+      },
+      "doc": {
+        "type": "String"
+      }
+    }
+  },
+  "drNone": "No open document requests.",
+  "drTenantRequests": "Document requests from this tenant"
 }

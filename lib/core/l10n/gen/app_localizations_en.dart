@@ -2642,4 +2642,121 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exStatus => 'Status';
+
+  @override
+  String get drDocsTitle => 'Documents from your landlord';
+
+  @override
+  String get drLandlordEmiratesId => 'Landlord\'s Emirates ID';
+
+  @override
+  String get drLandlordPassport => 'Landlord\'s passport';
+
+  @override
+  String get drTitleDeed => 'Title deed';
+
+  @override
+  String get drTenancyContract => 'Tenancy contract';
+
+  @override
+  String get drEjari => 'Ejari certificate';
+
+  @override
+  String get drDewaBill => 'DEWA bill';
+
+  @override
+  String get drOther => 'Other document';
+
+  @override
+  String get drAvailable => 'Available';
+
+  @override
+  String get drOpen => 'Open';
+
+  @override
+  String get drNotAvailable => 'Not available';
+
+  @override
+  String get drRequestNow => 'Request now';
+
+  @override
+  String get drRequested => 'Requested';
+
+  @override
+  String get drDeclined => 'Declined';
+
+  @override
+  String drDeclinedWith(String reason) {
+    return 'Declined: $reason';
+  }
+
+  @override
+  String get drAskAgain => 'Ask again';
+
+  @override
+  String get drEndedPersonal => 'No longer shared: the tenancy has ended';
+
+  @override
+  String drRequestTitle(String doc) {
+    return 'Request: $doc';
+  }
+
+  @override
+  String get drNoteHint => 'Note for your landlord (optional)';
+
+  @override
+  String get drOtherHint => 'Which document do you need?';
+
+  @override
+  String get drSend => 'Send request';
+
+  @override
+  String get drSent => 'Request sent to your landlord.';
+
+  @override
+  String get drErrAlreadyOpen => 'You\'ve already asked for this document.';
+
+  @override
+  String get drErrNotAllowed => 'You can\'t request this document.';
+
+  @override
+  String get drErrNoteRequired => 'Describe the document you need.';
+
+  @override
+  String get drRequestOther => 'Request another document';
+
+  @override
+  String get drCardTitle => 'Document requests';
+
+  @override
+  String get drUploadShare => 'Upload & share';
+
+  @override
+  String get drShareExisting => 'Share existing';
+
+  @override
+  String get drDecline => 'Decline';
+
+  @override
+  String get drDeclineTitle => 'Decline document request';
+
+  @override
+  String get drDeclineReason => 'Reason (shown to the tenant)';
+
+  @override
+  String get drShared => 'Shared with the tenant.';
+
+  @override
+  String get drDeclinedDone => 'Request declined.';
+
+  @override
+  String drNotif(String tenant, String doc) {
+    return '$tenant asked for: $doc';
+  }
+
+  @override
+  String get drNone => 'No open document requests.';
+
+  @override
+  String get drTenantRequests => 'Document requests from this tenant';
 }

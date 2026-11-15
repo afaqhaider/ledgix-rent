@@ -245,7 +245,9 @@ void main() {
     await tester.tap(find.text('Tower A · Agreement AED 120,000.00'));
     await tester.pumpAndSettle();
     expect(find.text('123456789'), findsOneWidget); // DEWA premise no.
-    expect(find.text('Title deed'), findsOneWidget);
+    // The shared deed is listed and opens from the checklist; the private
+    // owner passport is not shared.
+    expect(find.byKey(const Key('doc-open-titleDeed-llA-p1')), findsOneWidget);
     expect(find.text('Owner passport'), findsNothing);
 
     // Payments: the shared cheque copy only.

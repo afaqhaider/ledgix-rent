@@ -1,3 +1,4 @@
+import '../../documents/presentation/document_requests_card.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,6 +90,7 @@ class DashboardScreen extends ConsumerWidget {
             SizedBox(height: gap),
             IdExpiriesCard(gap: gap),
             ConnectionRequestsCard(gap: gap),
+            DocumentRequestsCard(gap: gap),
             if (wide)
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Expanded(flex: 3, child: Column(children: [upcoming, SizedBox(height: gap), charges, SizedBox(height: gap), chart])),

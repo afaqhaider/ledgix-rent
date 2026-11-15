@@ -11,7 +11,7 @@ import { getMessaging } from "firebase-admin/messaging";
  *  - invites/{code}                                  server-only invite codes
  *  - landlords/{ll}/tenants/{tid}.appUid             the tenant's auth uid once joined
  *  - tenantLinks/{uid}/landlords/{ll}                {status active|former, tenantIds, since, endedAt}
- *  - tenantViews/{uid}/{landlords|properties|leases|payments|documents|inspections|holdRequests}/{id}
+ *  - tenantViews/{uid}/{landlords|properties|leases|payments|documents|inspections|holdRequests|documentRequests}/{id}
  *        what the tenant may read; rebuilt from landlords/{ll}/** by onLandlordDataWritten.
  *        Mirrors buildTenantView in lib/features/tenant_portal/domain/tenant_view.dart.
  *
@@ -21,8 +21,30 @@ import { getMessaging } from "firebase-admin/messaging";
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O, 1/I/L
 const INVITE_DAYS = 30;
 const MAX_INVITES_PER_HOUR = 50;
-const VIEW_COLLECTIONS = ["properties", "leases", "payments", "documents", "inspections", "holdRequests"] as const;
-const SOURCE_COLLECTIONS = new Set(["properties", "tenants", "leases", "payments", "profile", "inspections", "holdRequests"]);
+const VIEW_COLLECTIONS = ["properties", "leases", "payments", "documents", "inspections", "holdRequests", "documentRequests"] as const;
+const SOURCE_COLLECTIONS = new Set(["properties", "tenants", "leases", "payments", "profile", "inspections", "holdRequests", "documentRequests"]);
+
+/**
+ * The landlord's personal identification documents: visible to a tenant only
+ * while they have a current tenancy. Mirrors landlordPersonalIdKinds /
+ * isLandlordPersonalId in lib/features/documents/domain/document_request.dart.
+ * Older property records used the generic emiratesId/passport kinds for the
+ * owner; on a tenant record those are the tenant's own ID and stay visible.
+ */
+const LANDLORD_PERSONAL_ID_KINDS = new Set(["ownerEmiratesId", "ownerPassport"]);
+export const isLandlordPersonalId = (ownerType: string, kind: string): boolean =>
+  LANDLORD_PERSONAL_ID_KINDS.has(kind) || (ownerType !== "tenant" && (kind === "emiratesId" || kind === "passport"));
+
+/** Requestable documents -> kinds that satisfy them. Mirrors RequestableDoc. */
+const REQUESTABLE: Record<string, { kinds: string[]; personal: boolean; label: string }> = {
+  landlordEmiratesId: { kinds: ["ownerEmiratesId"], personal: true, label: "Emirates ID" },
+  landlordPassport: { kinds: ["ownerPassport"], personal: true, label: "passport" },
+  titleDeed: { kinds: ["titleDeed"], personal: false, label: "title deed" },
+  tenancyContract: { kinds: ["tenancyContract", "lease"], personal: false, label: "tenancy contract" },
+  ejari: { kinds: ["ejari"], personal: false, label: "Ejari certificate" },
+  dewaBill: { kinds: ["dewaBill"], personal: false, label: "DEWA bill" },
+  other: { kinds: [], personal: false, label: "document" },
+};
 const MAX_HOLD_DAYS = 90; // mirrors maxHoldDays in lib/features/holds/domain/hold_request.dart
 
 const db = (): Firestore => getFirestore();
@@ -288,6 +310,64 @@ export const createTenantHoldRequest = onCall(async (req) => {
   return { id };
 });
 
+/**
+ * Tenant: ask a landlord for a document (their Emirates ID, title deed, Ejari,
+ * DEWA bill...). Mirrors checkDocumentRequest in
+ * lib/features/documents/domain/document_request.dart. Former tenants can ask
+ * only for non-personal documents.
+ */
+export const requestDocument = onCall(async (req) => {
+  const uid = req.auth?.uid;
+  if (!uid) throw new HttpsError("unauthenticated", "Sign in first.");
+  const ll = text(req.data?.landlordUid);
+  const kind = text(req.data?.kind);
+  const propertyId = text(req.data?.propertyId);
+  const note = text(req.data?.note).slice(0, 500);
+  const spec = REQUESTABLE[kind];
+  if (!ll || !spec) throw new HttpsError("invalid-argument", "landlordUid and a valid kind are required.");
+
+  const link = await db().doc(`tenantLinks/${uid}/landlords/${ll}`).get();
+  if (!link.exists) refuse("notAllowed", "You can only ask your landlords.");
+  const active = link.get("status") === "active";
+  if (spec.personal && !active) refuse("notAllowed", "Personal documents are only shared during a tenancy.");
+  if (kind === "other" && !note) refuse("noteRequired", "Describe the document you need.");
+
+  const tenantIds = (link.get("tenantIds") as string[] | undefined) ?? [];
+  // The tenant record must still point at this account.
+  const tenants = await Promise.all(tenantIds.map((t) => db().doc(`landlords/${ll}/tenants/${t}`).get()));
+  const mine = tenants.filter((t) => t.exists && t.get("appUid") === uid).map((t) => t.id);
+  if (mine.length === 0) refuse("notAllowed", "You can only ask your landlords.");
+
+  let leaseId = "";
+  if (propertyId) {
+    const leases = await db().collection(`landlords/${ll}/leases`).where("propertyId", "==", propertyId).get();
+    const ofMine = leases.docs.filter((x) => mine.includes(x.get("tenantId")))
+      .sort((a, b) => day(b.get("startDate")).localeCompare(day(a.get("startDate"))));
+    if (ofMine.length === 0) refuse("notAllowed", "That isn't one of your properties.");
+    leaseId = ofMine[0].id;
+  }
+
+  const col = db().collection(`landlords/${ll}/documentRequests`);
+  const open = await col.where("tenantId", "in", mine).where("status", "==", "pending").get();
+  const dup = open.docs.some((r) => r.get("kind") === kind && text(r.get("propertyId")) === propertyId &&
+    (kind !== "other" || text(r.get("note")).toLowerCase() === note.toLowerCase()));
+  if (dup) refuse("alreadyOpen", "You've already asked for this document.");
+
+  const id = randomUUID();
+  await col.doc(id).set({
+    id, kind, propertyId, tenantId: mine[0], tenantUid: uid, leaseId, note,
+    status: "pending", response: "", createdAt: new Date().toISOString(), respondedAt: null,
+  });
+
+  const prop = propertyId ? await db().doc(`landlords/${ll}/properties/${propertyId}`).get() : null;
+  const what = kind === "other" ? note : spec.label;
+  await notify(await landlordTokens(ll), {
+    title: "Document request",
+    body: `Your tenant${prop?.exists ? ` at ${prop.get("name")}` : ""} asked for: ${what}.`,
+  }).catch(() => undefined);
+  return { id };
+});
+
 // ---------------------------------------------------------------------------
 // Read model
 // ---------------------------------------------------------------------------
@@ -305,12 +385,14 @@ export const onLandlordDataWritten = onDocumentWritten("landlords/{ll}/{col}/{do
 
   if (col === "payments") await alertPaymentChange(ll, before, event.data?.after?.data());
   if (col === "holdRequests") await alertHoldDecision(ll, before, event.data?.after?.data());
+  if (col === "documentRequests") await alertDocumentDecision(ll, before, event.data?.after?.data());
+  if (col === "properties" || col === "leases") await fulfilSharedRequests(ll);
 });
 
 /** Rebuilds everything [uid] sees of landlord [ll] (idempotent). */
 export async function rebuildTenantView(ll: string, uid: string): Promise<void> {
   const base = db().collection("landlords").doc(ll);
-  const [profileSnap, tenantsSnap, leasesSnap, propsSnap, paysSnap, inspSnap, holdSnap] = await Promise.all([
+  const [profileSnap, tenantsSnap, leasesSnap, propsSnap, paysSnap, inspSnap, holdSnap, docReqSnap] = await Promise.all([
     base.collection("profile").limit(1).get(),
     base.collection("tenants").get(),
     base.collection("leases").get(),
@@ -318,6 +400,7 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
     base.collection("payments").get(),
     base.collection("inspections").get(),
     base.collection("holdRequests").get(),
+    base.collection("documentRequests").get(),
   ]);
   const tenantIds = tenantsSnap.docs.filter((d) => d.get("appUid") === uid).map((d) => d.id);
   const linkRef = db().doc(`tenantLinks/${uid}/landlords/${ll}`);
@@ -352,7 +435,7 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
       hoaPhone: p.hoaPhone ?? "", agreementAmount: mine.length ? mine[mine.length - 1].annualRent ?? null : null,
       leaseIds: mine.map((x) => x.id),
     });
-    addDocs(docs.documents, ll, "property", pid, pid, p.documents);
+    addDocs(docs.documents, ll, "property", pid, pid, p.documents, status);
   }
   for (const x of myLeases) {
     docs.leases.set(x.id, {
@@ -361,10 +444,10 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
       securityDeposit: x.securityDeposit ?? 0, numberOfCheques: x.numberOfCheques ?? 1,
       paymentMethod: x.paymentMethod ?? "cheque", ejariNo: x.ejariNo ?? "", status: x.status ?? "active",
     });
-    addDocs(docs.documents, ll, "lease", x.id, x.propertyId, x.documents);
+    addDocs(docs.documents, ll, "lease", x.id, x.propertyId, x.documents, status);
   }
   for (const t of tenantsSnap.docs.filter((d) => tenantIds.includes(d.id))) {
-    addDocs(docs.documents, ll, "tenant", t.id, "", t.get("documents"));
+    addDocs(docs.documents, ll, "tenant", t.id, "", t.get("documents"), status);
   }
   for (const p of paysSnap.docs) {
     const x = p.data();
@@ -386,6 +469,16 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
       originalDate: x.originalDate ?? null, requestedDate: x.requestedDate ?? null,
       reason: x.reason ?? "", note: x.note ?? "", status: x.status ?? "pending",
       response: x.response ?? "", createdAt: x.createdAt ?? null,
+    });
+  }
+  // The tenant's own document requests and the landlord's answers.
+  for (const r of docReqSnap.docs) {
+    const x = r.data();
+    if (!tenantIds.includes(x.tenantId)) continue;
+    docs.documentRequests.set(r.id, {
+      landlordUid: ll, id: r.id, kind: x.kind ?? "other", propertyId: x.propertyId ?? "", tenantId: x.tenantId,
+      leaseId: x.leaseId ?? "", note: x.note ?? "", status: x.status ?? "pending", response: x.response ?? "",
+      createdAt: x.createdAt ?? null, respondedAt: x.respondedAt ?? null,
     });
   }
   const profile = profileSnap.docs[0]?.data() ?? {};
@@ -415,7 +508,7 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
   const view = db().collection("tenantViews").doc(uid);
   writes.push((b) => b.set(view.collection("landlords").doc(ll), {
     landlordUid: ll, name: profile.name ?? "", email, phone: profile.phone ?? "",
-    emiratesIdNo: profile.emiratesIdNo ?? "", status, since,
+    emiratesIdNo: status === "former" ? "" : profile.emiratesIdNo ?? "", status, since,
   }));
   for (const c of VIEW_COLLECTIONS) {
     const existing = await view.collection(c).where("landlordUid", "==", ll).get();
@@ -429,10 +522,15 @@ export async function rebuildTenantView(ll: string, uid: string): Promise<void> 
   await commitInChunks(writes);
 }
 
-function addDocs(out: Map<string, DocumentData>, ll: string, ownerType: string, ownerId: string, propertyId: string, list: unknown) {
+function addDocs(
+  out: Map<string, DocumentData>, ll: string, ownerType: string, ownerId: string, propertyId: string, list: unknown,
+  status: string,
+) {
   if (!Array.isArray(list)) return;
   list.forEach((d: DocumentData, i: number) => {
     if (d?.shared !== true || !text(d.url)) return;
+    // Tenancy over: the landlord's personal ID is no longer shared.
+    if (status === "former" && isLandlordPersonalId(ownerType, text(d.kind) || "other")) return;
     const id = `${ownerType}_${ownerId}_${i}`;
     out.set(id, { landlordUid: ll, id, ownerType, ownerId, propertyId, name: d.name ?? "", kind: d.kind ?? "other", url: d.url });
   });
@@ -517,4 +615,72 @@ async function alertHoldDecision(ll: string, before: DocumentData | undefined, a
   for (const uid of uids) {
     await notify(await userTokens(uid), { title: approved ? "Hold approved" : "Hold declined", body }).catch(() => undefined);
   }
+}
+
+/** Tells the tenant when the landlord shares the document or declines. */
+async function alertDocumentDecision(ll: string, before: DocumentData | undefined, after: DocumentData | undefined) {
+  if (!after || before?.status !== "pending" || after.status === "pending") return;
+  const spec = REQUESTABLE[text(after.kind)] ?? REQUESTABLE.other;
+  const what = text(after.kind) === "other" ? text(after.note) : spec.label;
+  const fulfilled = after.status === "fulfilled";
+  const body = fulfilled
+    ? `Your landlord shared the ${what}. Open the app to view it.`
+    : `Your landlord declined your request for the ${what}${text(after.response) ? `: ${text(after.response)}` : "."}`;
+  const uids = after.tenantUid ? [after.tenantUid as string] : [];
+  for (const uid of uids) {
+    await notify(await userTokens(uid), { title: fulfilled ? "Document shared" : "Document request declined", body })
+      .catch(() => undefined);
+  }
+}
+
+/**
+ * Marks pending requests fulfilled once a matching document is shared on the
+ * request's property (or its lease). Personal-ID requests also count when the
+ * landlord shares the slot on any of the tenant's properties.
+ */
+export async function fulfilSharedRequests(ll: string): Promise<void> {
+  const pending = await db().collection(`landlords/${ll}/documentRequests`).where("status", "==", "pending").get();
+  if (pending.empty) return;
+  const [props, leases] = await Promise.all([
+    db().collection(`landlords/${ll}/properties`).get(),
+    db().collection(`landlords/${ll}/leases`).get(),
+  ]);
+  const shared = (list: unknown, kinds: string[]) =>
+    Array.isArray(list) && list.some((d: DocumentData) => d?.shared === true && text(d.url) && kinds.includes(text(d.kind)));
+  for (const r of pending.docs) {
+    const spec = REQUESTABLE[text(r.get("kind"))];
+    if (!spec || spec.kinds.length === 0) continue; // "other" is answered by hand
+    const pid = text(r.get("propertyId"));
+    const tenantLeases = leases.docs.filter((x) => x.get("tenantId") === r.get("tenantId"));
+    const pids = pid ? [pid] : [...new Set(tenantLeases.map((x) => text(x.get("propertyId"))))];
+    const onProperty = props.docs.some((p) => pids.includes(p.id) && shared(p.get("documents"), spec.kinds));
+    const onLease = tenantLeases.some((x) => pids.includes(text(x.get("propertyId"))) && shared(x.get("documents"), spec.kinds));
+    if (onProperty || onLease) {
+      await r.ref.update({ status: "fulfilled", respondedAt: new Date().toISOString() });
+    }
+  }
+}
+
+/**
+ * Daily: rebuild the views of tenants whose lease ended yesterday or today, so
+ * the landlord's personal ID disappears when the tenancy ends even if the
+ * landlord changes nothing. Called from dailyReminders.
+ */
+export async function rebuildViewsForEndedLeases(): Promise<number> {
+  const today = todayGst();
+  const yesterday = new Date(Date.parse(`${today}T00:00:00Z`) - 86400_000).toISOString().slice(0, 10);
+  let rebuilt = 0;
+  for (const l of (await db().collection("landlords").get()).docs) {
+    const leases = await l.ref.collection("leases").get();
+    const ended = leases.docs.filter((x) => [yesterday, today].includes(day(x.get("endDate"))));
+    if (ended.length === 0) continue;
+    const tenantIds = new Set(ended.map((x) => text(x.get("tenantId"))));
+    const linked = await l.ref.collection("tenants").where("appUid", "!=", null).get();
+    for (const t of linked.docs) {
+      if (!tenantIds.has(t.id)) continue;
+      await rebuildTenantView(l.id, t.get("appUid") as string);
+      rebuilt++;
+    }
+  }
+  return rebuilt;
 }

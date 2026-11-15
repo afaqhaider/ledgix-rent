@@ -18,6 +18,7 @@ import '../../payments/domain/payment.dart';
 import '../../payments/presentation/payments_screen.dart' show statusLabel;
 import '../../holds/domain/hold_request.dart';
 import '../domain/tenant_view.dart';
+import 'document_checklist.dart';
 import 'tenant_payment_detail.dart';
 import '../tenant_providers.dart';
 
@@ -341,6 +342,13 @@ class TenantLandlordDetailScreen extends ConsumerWidget {
                 if (docs.isEmpty) Text(l.tpNoSharedDocuments),
                 for (final d in docs) _DocTile(d),
               ]),
+              // Standard documents per property: open, or request what's missing.
+              for (final pid in {for (final x in leases) x.propertyId})
+                _Panel(
+                  title: '${l.drDocsTitle} · ${leases.firstWhere((x) => x.propertyId == pid).propertyName}',
+                  icon: Icons.fact_check_outlined,
+                  children: [TenantDocumentChecklist(landlordUid: landlordUid, propertyId: pid)],
+                ),
             ]),
     );
   }
@@ -404,6 +412,8 @@ class TenantPropertiesScreen extends ConsumerWidget {
                         ];
                         return mine.isEmpty ? [Text(l.tpNoSharedDocuments)] : [for (final d in mine) _DocTile(d)];
                       }(),
+                      _Heading(l.drDocsTitle),
+                      TenantDocumentChecklist(landlordUid: p.landlordUid, propertyId: p.id),
                     ],
                   ),
                 ),

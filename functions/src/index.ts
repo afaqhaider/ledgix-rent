@@ -1,7 +1,7 @@
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { landlordTokens, notify, userTokens } from "./tenants";
+import { landlordTokens, notify, rebuildViewsForEndedLeases, userTokens } from "./tenants";
 import { sendIdExpiryReminders } from "./expiryReminders";
 import { sendServiceChargeReminders } from "./serviceChargeReminders";
 
@@ -107,6 +107,8 @@ export const dailyReminders = onSchedule(
         for (const m of tenantMessages) await notify(tenantTokens, m);
       }
     }
+    // Leases that just ended: hide the landlord's personal ID from former tenants.
+    await rebuildViewsForEndedLeases();
   }
 );
 
@@ -121,7 +123,7 @@ export { deleteAccount } from "./account";
 // Tenants: invites, links, read model, maintenance requests
 export {
   createTenantInvite, redeemTenantInvite, removeLandlordLink,
-  createTenantMaintenanceRequest, createTenantHoldRequest, onLandlordDataWritten,
+  createTenantMaintenanceRequest, createTenantHoldRequest, requestDocument, onLandlordDataWritten,
 } from "./tenants";
 
 // Connections: email / LedGix code lookup, share codes, connection requests

@@ -1,3 +1,4 @@
+import '../../documents/presentation/document_requests_card.dart';
 import 'dart:async';
 
 import 'package:cross_file/cross_file.dart';
@@ -284,6 +285,7 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
       formKey: _key,
       onSave: _save,
       header: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        if (_existing != null) DocumentRequestsCard(tenantId: _existing!.id),
         ScanToFillButton(hint: l.scanHintTenant, onScanned: _onScanned),
         if (_banner != null) ...[
           const SizedBox(height: 12),

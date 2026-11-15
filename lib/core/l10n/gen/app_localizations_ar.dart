@@ -2634,4 +2634,121 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get exStatus => 'الحالة';
+
+  @override
+  String get drDocsTitle => 'مستندات من المالك';
+
+  @override
+  String get drLandlordEmiratesId => 'الهوية الإماراتية للمالك';
+
+  @override
+  String get drLandlordPassport => 'جواز سفر المالك';
+
+  @override
+  String get drTitleDeed => 'سند الملكية';
+
+  @override
+  String get drTenancyContract => 'عقد الإيجار';
+
+  @override
+  String get drEjari => 'شهادة إيجاري';
+
+  @override
+  String get drDewaBill => 'فاتورة ديوا';
+
+  @override
+  String get drOther => 'مستند آخر';
+
+  @override
+  String get drAvailable => 'متاح';
+
+  @override
+  String get drOpen => 'فتح';
+
+  @override
+  String get drNotAvailable => 'غير متاح';
+
+  @override
+  String get drRequestNow => 'اطلب الآن';
+
+  @override
+  String get drRequested => 'تم الطلب';
+
+  @override
+  String get drDeclined => 'مرفوض';
+
+  @override
+  String drDeclinedWith(String reason) {
+    return 'مرفوض: $reason';
+  }
+
+  @override
+  String get drAskAgain => 'اطلب مرة أخرى';
+
+  @override
+  String get drEndedPersonal => 'لم يعد مشتركًا: انتهى عقد الإيجار';
+
+  @override
+  String drRequestTitle(String doc) {
+    return 'طلب: $doc';
+  }
+
+  @override
+  String get drNoteHint => 'ملاحظة للمالك (اختياري)';
+
+  @override
+  String get drOtherHint => 'ما المستند الذي تحتاجه؟';
+
+  @override
+  String get drSend => 'إرسال الطلب';
+
+  @override
+  String get drSent => 'تم إرسال الطلب إلى المالك.';
+
+  @override
+  String get drErrAlreadyOpen => 'لقد طلبت هذا المستند بالفعل.';
+
+  @override
+  String get drErrNotAllowed => 'لا يمكنك طلب هذا المستند.';
+
+  @override
+  String get drErrNoteRequired => 'صف المستند الذي تحتاجه.';
+
+  @override
+  String get drRequestOther => 'طلب مستند آخر';
+
+  @override
+  String get drCardTitle => 'طلبات المستندات';
+
+  @override
+  String get drUploadShare => 'رفع ومشاركة';
+
+  @override
+  String get drShareExisting => 'مشاركة الموجود';
+
+  @override
+  String get drDecline => 'رفض';
+
+  @override
+  String get drDeclineTitle => 'رفض طلب المستند';
+
+  @override
+  String get drDeclineReason => 'السبب (يظهر للمستأجر)';
+
+  @override
+  String get drShared => 'تمت المشاركة مع المستأجر.';
+
+  @override
+  String get drDeclinedDone => 'تم رفض الطلب.';
+
+  @override
+  String drNotif(String tenant, String doc) {
+    return '$tenant طلب: $doc';
+  }
+
+  @override
+  String get drNone => 'لا توجد طلبات مستندات مفتوحة.';
+
+  @override
+  String get drTenantRequests => 'طلبات المستندات من هذا المستأجر';
 }

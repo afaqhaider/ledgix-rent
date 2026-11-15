@@ -1,3 +1,4 @@
+import '../../documents/domain/document_request.dart';
 import '../../../core/domain/entity.dart';
 import '../../holds/domain/hold_request.dart';
 import '../../landlord/domain/landlord.dart';
@@ -359,6 +360,7 @@ class TenantViewData {
     this.documents = const [],
     this.inspections = const [],
     this.holdRequests = const [],
+    this.documentRequests = const [],
   });
   final TvLandlord landlord;
   final LinkStatus status;
@@ -369,12 +371,17 @@ class TenantViewData {
   final List<TvDocument> documents;
   final List<Map<String, dynamic>> inspections;
   final List<TvHoldRequest> holdRequests;
+
+  /// The tenant's own document requests to this landlord.
+  final List<DocumentRequest> documentRequests;
 }
 
 /// Builds what [tenantUid] may see of [landlordUid]'s data: only their own
 /// leases, the properties and payments of those leases, the landlord's public
 /// profile, shared documents and cheque copies, and inspections of their leases.
-/// The link is `former` once every lease has ended.
+/// The link is `former` once every lease has ended; from then on the
+/// landlord's personal ID documents and Emirates ID number are no longer shown
+/// (tenancy contract, Ejari, utility bills and other documents stay).
 TenantViewData buildTenantView({
   required String landlordUid,
   required String tenantUid,
@@ -386,6 +393,7 @@ TenantViewData buildTenantView({
   required List<Payment> payments,
   List<Map<String, dynamic>> inspections = const [],
   List<HoldRequest> holdRequests = const [],
+  List<DocumentRequest> documentRequests = const [],
   required DateTime today,
   DateTime? since,
 }) {
@@ -429,6 +437,7 @@ TenantViewData buildTenantView({
     for (var i = 0; i < list.length; i++) {
       final d = list[i];
       if (!d.sharedWithTenant || d.url.isEmpty) continue;
+      if (status == LinkStatus.former && isLandlordPersonalId(ownerType, d.kind)) continue;
       docs.add(TvDocument(
         landlordUid: landlordUid,
         id: '${ownerType}_${ownerId}_$i',
@@ -458,7 +467,7 @@ TenantViewData buildTenantView({
       name: profile?.name ?? '',
       email: (profile?.email.isNotEmpty ?? false) ? profile!.email : landlordEmail,
       phone: profile?.phone ?? '',
-      emiratesIdNo: profile?.emiratesIdNo ?? '',
+      emiratesIdNo: status == LinkStatus.former ? '' : profile?.emiratesIdNo ?? '',
       status: status,
       since: since,
     ),
@@ -504,6 +513,11 @@ TenantViewData buildTenantView({
     inspections: [
       for (final i in inspections)
         if (leaseIds.contains(i['leaseId'])) {...i, 'landlordUid': landlordUid},
+    ],
+    documentRequests: [
+      for (final r in documentRequests)
+        if (tenantIds.contains(r.tenantId))
+          DocumentRequest.fromMap({...r.toMap(), 'landlordUid': landlordUid}),
     ],
     holdRequests: () {
       final myPayments = {for (final p in payments) if (leaseIds.contains(p.leaseId)) p.id};

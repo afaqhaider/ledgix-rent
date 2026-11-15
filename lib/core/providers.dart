@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:uuid/uuid.dart';
 
+import '../features/documents/domain/document_request.dart';
 import '../features/auth/data/demo_auth_repository.dart';
 import '../features/auth/data/firebase_auth_repository.dart';
 import '../features/auth/domain/auth_repository.dart';
@@ -120,6 +121,11 @@ final tenantsProvider = StreamProvider((ref) => ref.watch(tenantRepositoryProvid
 final leasesProvider = StreamProvider((ref) => ref.watch(leaseRepositoryProvider).watchAll());
 final paymentsProvider = StreamProvider((ref) => ref.watch(paymentRepositoryProvider).watchAll());
 final holdsProvider = StreamProvider((ref) => ref.watch(holdRepositoryProvider).watchAll());
+
+/// Tenants' requests for documents (landlords/{uid}/documentRequests).
+final documentRequestRepositoryProvider =
+    Provider<CrudRepository<DocumentRequest>>((r) => _repo(r, 'documentRequests', DocumentRequest.fromMap));
+final documentRequestsProvider = StreamProvider((ref) => ref.watch(documentRequestRepositoryProvider).watchAll());
 final ticketsProvider = StreamProvider((ref) => ref.watch(maintenanceRepositoryProvider).watchAll());
 final vendorsProvider = StreamProvider((ref) => ref.watch(vendorRepositoryProvider).watchAll());
 

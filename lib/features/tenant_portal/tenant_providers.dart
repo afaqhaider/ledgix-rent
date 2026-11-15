@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/data/file_storage.dart';
 import '../../core/providers.dart';
+import '../documents/domain/document_request.dart';
 import 'data/tenant_portal.dart';
 import 'domain/tenant_view.dart';
 
@@ -30,3 +31,7 @@ final tenantInspectionsProvider = StreamProvider<List<Map<String, dynamic>>>(
 final tenantFileStorageProvider = Provider<FileStorage>((ref) => useFirebase
     ? FirebaseFileStorage(ref.watch(userIdProvider).value ?? 'anon', root: 'tenants')
     : LocalFileStorage());
+
+/// The tenant's own document requests (all landlords).
+final tenantDocumentRequestsProvider =
+    StreamProvider<List<DocumentRequest>>((ref) => _view(ref, 'documentRequests', DocumentRequest.fromMap));

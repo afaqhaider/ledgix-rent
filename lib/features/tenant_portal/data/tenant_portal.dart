@@ -7,6 +7,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import '../../../core/data/in_memory_repository.dart';
 import '../../../core/providers.dart' show demoRepo, newId;
 import '../../../core/utils/dates.dart';
+import '../../documents/domain/document_request.dart';
 import '../../holds/domain/hold_request.dart';
 import '../../landlord/domain/landlord.dart';
 import '../../leases/domain/lease.dart';
@@ -32,6 +33,14 @@ class HoldRequestException implements Exception {
   final HoldRequestError reason;
   @override
   String toString() => 'HoldRequestException(${reason.name})';
+}
+
+/// Why a document request was refused (shown to the tenant).
+class DocumentRequestException implements Exception {
+  const DocumentRequestException(this.reason);
+  final DocumentRequestError reason;
+  @override
+  String toString() => 'DocumentRequestException(${reason.name})';
 }
 
 class RedeemException implements Exception {
@@ -65,6 +74,15 @@ abstract class TenantPortal {
     required String paymentId,
     required DateTime requestedDate,
     required String reason,
+    String note = '',
+  });
+
+  /// Tenant asks [landlordUid] for a document, optionally for one property.
+  Future<void> requestDocument({
+    required String tenantUid,
+    required String landlordUid,
+    required RequestableDoc doc,
+    String propertyId = '',
     String note = '',
   });
 
@@ -149,6 +167,29 @@ class FirebaseTenantPortal implements TenantPortal {
     } on FirebaseFunctionsException catch (e) {
       final reason = HoldRequestError.values.where((x) => x.name == '${(e.details as Map?)?['reason'] ?? ''}').firstOrNull;
       if (reason != null) throw HoldRequestException(reason);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> requestDocument({
+    required String tenantUid,
+    required String landlordUid,
+    required RequestableDoc doc,
+    String propertyId = '',
+    String note = '',
+  }) async {
+    try {
+      await _fns.httpsCallable('requestDocument').call<Object?>({
+        'landlordUid': landlordUid,
+        'kind': doc.name,
+        'propertyId': propertyId,
+        'note': note,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      final reason =
+          DocumentRequestError.values.where((x) => x.name == '${(e.details as Map?)?['reason'] ?? ''}').firstOrNull;
+      if (reason != null) throw DocumentRequestException(reason);
       rethrow;
     }
   }
@@ -304,6 +345,44 @@ class DemoTenantPortal implements TenantPortal {
     ));
   }
 
+  @override
+  Future<void> requestDocument({
+    required String tenantUid,
+    required String landlordUid,
+    required RequestableDoc doc,
+    String propertyId = '',
+    String note = '',
+  }) async {
+    final link = _links[tenantUid]?[landlordUid];
+    if (link == null) throw const DocumentRequestException(DocumentRequestError.notAllowed);
+    final view = _view(tenantUid, link);
+    if (view.tenantIds.isEmpty) throw const DocumentRequestException(DocumentRequestError.notAllowed);
+    if (propertyId.isNotEmpty && !view.properties.any((p) => p.id == propertyId)) {
+      throw const DocumentRequestException(DocumentRequestError.notAllowed);
+    }
+    final repo = demoRepo<DocumentRequest>(landlordUid, 'documentRequests');
+    final error = checkDocumentRequest(
+      doc: doc,
+      linkActive: view.status == LinkStatus.active,
+      propertyId: propertyId,
+      note: note,
+      existing: repo.items,
+      tenantIds: view.tenantIds,
+    );
+    if (error != null) throw DocumentRequestException(error);
+    final lease = view.leases.where((x) => x.propertyId == propertyId).lastOrNull;
+    await repo.save(DocumentRequest(
+      id: newId(),
+      doc: doc,
+      propertyId: propertyId,
+      tenantId: view.tenantIds.first,
+      tenantUid: tenantUid,
+      leaseId: lease?.id ?? '',
+      note: note.trim(),
+      createdAt: DateTime.now(),
+    ));
+  }
+
   TenantViewData _view(String tenantUid, TenantLink link) {
     final ll = link.landlordUid;
     final profile = demoRepo<Landlord>(ll, 'profile').items.firstOrNull;
@@ -317,6 +396,7 @@ class DemoTenantPortal implements TenantPortal {
       payments: demoRepo<Payment>(ll, 'payments').items,
       inspections: _inspections(ll),
       holdRequests: demoRepo<HoldRequest>(ll, 'holdRequests').items,
+      documentRequests: demoRepo<DocumentRequest>(ll, 'documentRequests').items,
       today: todayGst(),
       since: link.since,
     );
@@ -358,6 +438,8 @@ class DemoTenantPortal implements TenantPortal {
               out.addAll(v.inspections);
             case 'holdRequests':
               out.addAll(v.holdRequests.map((r) => r.toMap()));
+            case 'documentRequests':
+              out.addAll(v.documentRequests.map((r) => r.toMap()));
           }
         }
         return out;
