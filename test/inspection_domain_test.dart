@@ -39,6 +39,8 @@ String _pdfText(List<int> bytes) {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('Inspection model', () {
     test('toMap/fromMap round-trips every field', () {
       final full = _inspection().copyWith(
@@ -191,7 +193,7 @@ void main() {
       final bytes = await buildInspectionPdf(
         insp,
         info: const InspectionReportInfo(propertyName: 'Marina Studio', tenantName: 'Test Tenant'),
-        googleFonts: false,
+        bundledFonts: false,
         compress: false,
         loadImage: (_) async => null,
       );
@@ -208,7 +210,7 @@ void main() {
         InspectionRoom(id: 'r1', name: 'Kitchen', items: [InspectionItem(id: 'a', name: 'Floor', condition: Condition.damaged, notes: 'Cracked tile')]),
       ]);
       final bytes = await buildInspectionPdf(moveOut,
-          moveIn: _inspection(), googleFonts: false, compress: false, loadImage: (_) async => null);
+          moveIn: _inspection(), bundledFonts: false, compress: false, loadImage: (_) async => null);
       final text = _pdfText(bytes);
       expect(text, contains('Move-out inspection'));
       expect(text, contains('Move-in vs move-out'));
@@ -216,4 +218,22 @@ void main() {
       expect(text, contains('Cracked tile'));
     });
   });
+
+  test('Arabic report builds offline with the bundled Noto fonts', () async {
+    // No network in tests: the fonts must come from the app bundle.
+    final insp = _inspection(rooms: const [
+      InspectionRoom(id: 'r1', name: 'المطبخ', items: [InspectionItem(id: 'a', name: 'الأرضية', condition: Condition.good)]),
+    ]);
+    final bytes = await buildInspectionPdf(
+      insp,
+      info: const InspectionReportInfo(propertyName: 'برج الاختبار 101', tenantName: 'Test Tenant'),
+      compress: false,
+      loadImage: (_) async => null,
+    );
+    final raw = latin1.decode(bytes);
+    expect(raw, startsWith('%PDF'));
+    expect(raw, contains('NotoSansArabic'), reason: 'Arabic font embedded');
+    expect(raw, contains('NotoSans'), reason: 'Latin font embedded');
+  });
 }
+

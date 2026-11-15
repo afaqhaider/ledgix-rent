@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:uuid/uuid.dart';
 
@@ -149,19 +150,40 @@ final dashboardProvider = Provider<DashboardStats>((ref) => DashboardStats.compu
       today: todayGst(),
     ));
 
+/// Saved app preferences, loaded once in main() before the first frame and
+/// injected with an override. Null in tests unless a test provides one.
+final preferencesProvider = Provider<SharedPreferences?>((_) => null);
+
+const _localeKey = 'locale', _themeKey = 'themeMode';
+
+/// App language, remembered across launches.
 class LocaleNotifier extends Notifier<String> {
   @override
-  String build() => 'en';
-  void set(String code) => state = code;
+  String build() {
+    final saved = ref.read(preferencesProvider)?.getString(_localeKey);
+    return saved == 'ar' || saved == 'en' ? saved! : 'en';
+  }
+
+  void set(String code) {
+    state = code;
+    ref.read(preferencesProvider)?.setString(_localeKey, code);
+  }
 }
 
 final localeProvider = NotifierProvider<LocaleNotifier, String>(LocaleNotifier.new);
 
-/// Light / dark / follow the system. Kept for the session, like the locale.
+/// Light / dark / follow the system, remembered across launches.
 class ThemeModeNotifier extends Notifier<ThemeMode> {
   @override
-  ThemeMode build() => ThemeMode.system;
-  void set(ThemeMode mode) => state = mode;
+  ThemeMode build() {
+    final saved = ref.read(preferencesProvider)?.getString(_themeKey);
+    return ThemeMode.values.firstWhere((m) => m.name == saved, orElse: () => ThemeMode.system);
+  }
+
+  void set(ThemeMode mode) {
+    state = mode;
+    ref.read(preferencesProvider)?.setString(_themeKey, mode.name);
+  }
 }
 
 final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);

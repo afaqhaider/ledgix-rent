@@ -19,6 +19,7 @@ import '../../documents/presentation/scan_to_fill.dart';
 import '../../expenses/domain/service_charge_plan.dart' show agencyFeeFivePercent;
 import '../../expenses/presentation/expense_ui.dart' show expenseSyncProvider;
 import '../../payments/domain/payment_scheduler.dart';
+import '../../payments/domain/schedule_update.dart';
 import '../../properties/domain/property.dart';
 import '../../tenants/domain/tenant.dart';
 import '../../tenant_portal/presentation/invite_dialog.dart';
@@ -209,17 +210,46 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
       agencyFeePaidDate: _agencyPaid,
       agencyName: _agencyName.text.trim(),
     );
+    // Editing dates, rent, cheque count or method: offer to rebuild the
+    // schedule. Payments already deposited, cleared, on hold, with a hold
+    // request or with cheque details stay as they are.
+    ScheduleUpdate? update;
+    if (e != null && ScheduleUpdate.affectsSchedule(e, lease)) {
+      final plan = ScheduleUpdate.plan(
+        lease: lease,
+        // Read the stores directly: a stream nobody is watching yet could
+        // still be empty and the plan would then duplicate the schedule.
+        existing: await ref.read(paymentRepositoryProvider).watchAll().first,
+        paymentsWithHolds: {for (final h in await ref.read(holdRepositoryProvider).watchAll().first) h.paymentId},
+        newId: newId,
+      );
+      if (!plan.isEmpty) {
+        if (!mounted) return;
+        final choice = await _confirmScheduleUpdate(plan);
+        if (choice == null) return; // cancelled: nothing saved
+        if (choice) update = plan;
+      }
+    }
     await ref.read(leaseRepositoryProvider).save(lease);
     // The agency fee is an expense of the property.
     await ref.read(expenseSyncProvider).agencyFee(lease);
+    final payments = ref.read(paymentRepositoryProvider);
     if (e == null) {
-      final payments = ref.read(paymentRepositoryProvider);
       for (final p in PaymentScheduler.generate(lease, newId)) {
+        await payments.save(p);
+      }
+    } else if (update != null) {
+      for (final p in update.remove) {
+        await payments.delete(p.id);
+      }
+      for (final p in update.add) {
         await payments.save(p);
       }
     }
     if (!mounted) return;
-    if (e == null) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.scheduleGenerated)));
+    if (e == null || update != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e == null ? l.scheduleGenerated : l.suScheduleUpdated)));
+    }
     // New agreement: offer the tenant an app invite code if they haven't joined.
     final tenant = await ref.read(tenantRepositoryProvider).get(lease.tenantId);
     if (!mounted) return;
@@ -228,6 +258,29 @@ class _RentAgreementFormScreenState extends ConsumerState<RentAgreementFormScree
     if (e == null && tenant != null && tenant.appUid == null && root.mounted) {
       unawaited(showTenantInviteDialog(root, ref, tenant, leaseId: lease.id));
     }
+  }
+
+  /// true = update the schedule, false = keep the current one, null = cancel.
+  Future<bool?> _confirmScheduleUpdate(ScheduleUpdate plan) {
+    final l = context.l;
+    final total = plan.add.fold<double>(0, (s, p) => s + p.amount);
+    return showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        key: const Key('schedule-update-dialog'),
+        icon: const Icon(Icons.event_repeat_outlined),
+        title: Text(l.suTitle),
+        content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(l.suReplace(plan.remove.length, plan.add.length, formatAed(total))),
+          if (plan.keep.isNotEmpty) ...[const SizedBox(height: 8), Text(l.suKeep(plan.keep.length))],
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c), child: Text(l.cancel)),
+          TextButton(key: const Key('schedule-keep'), onPressed: () => Navigator.pop(c, false), child: Text(l.suKeepCurrent)),
+          FilledButton(key: const Key('schedule-update'), onPressed: () => Navigator.pop(c, true), child: Text(l.suUpdate)),
+        ],
+      ),
+    );
   }
 
   @override

@@ -1,4 +1,5 @@
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { onDocumentDeleted } from "firebase-functions/v2/firestore";
 import { logger } from "firebase-functions/v2";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
@@ -149,4 +150,54 @@ export const attachInspectionTenantMedia = onCall(async (req) => {
   });
   await notifyLandlord(c.landlordUid, "New photo on an inspection", "Your tenant added a photo or video.", c.inspectionId);
   return { ok: true, url };
+});
+
+/**
+ * Storage paths of every photo/video an inspection references, plus the
+ * folder prefixes it owns. Media items carry `storagePath` (see
+ * lib/features/inspections/domain/inspection.dart); tenant uploads live under
+ * tenantUploads/{tenantUid}/inspections/{inspectionId}/.
+ */
+export function inspectionMediaTargets(
+  landlordUid: string,
+  inspectionId: string,
+  data: FirebaseFirestore.DocumentData | undefined,
+): { prefixes: string[]; files: string[] } {
+  const files = new Set<string>();
+  const tenantPrefixes = new Set<string>();
+  const marker = `/inspections/${inspectionId}/`;
+  const visit = (v: unknown): void => {
+    if (Array.isArray(v)) {
+      v.forEach(visit);
+    } else if (v && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const path = text(o.storagePath);
+      // Only files that belong to this inspection, never anything else.
+      if (path && !path.includes("..") && path.includes(marker) &&
+          (path.startsWith(`landlords/${landlordUid}/`) || path.startsWith("tenantUploads/"))) {
+        files.add(path);
+        const m = /^tenantUploads\/([^/]+)\/inspections\//.exec(path);
+        if (m) tenantPrefixes.add(`tenantUploads/${m[1]}${marker}`);
+      }
+      Object.values(o).forEach(visit);
+    }
+  };
+  visit(data);
+  return { prefixes: [`landlords/${landlordUid}${marker}`, ...tenantPrefixes], files: [...files] };
+}
+
+/**
+ * When a landlord deletes an inspection, delete its photos and videos from
+ * Storage too: the landlord's folder for it and any tenant uploads it used.
+ */
+export const onInspectionDeleted = onDocumentDeleted("landlords/{landlordUid}/inspections/{inspectionId}", async (event) => {
+  const { landlordUid, inspectionId } = event.params;
+  const { prefixes, files } = inspectionMediaTargets(landlordUid, inspectionId, event.data?.data());
+  const bucket = getStorage().bucket();
+  for (const prefix of prefixes) {
+    await bucket.deleteFiles({ prefix }).catch((e) => logger.warn("Inspection media prefix delete failed", { prefix, e: String(e) }));
+  }
+  for (const f of files) {
+    await bucket.file(f).delete({ ignoreNotFound: true }).catch((e) => logger.warn("Inspection media delete failed", { f, e: String(e) }));
+  }
 });

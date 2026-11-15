@@ -5101,6 +5101,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Document requests from this tenant'**
   String get drTenantRequests;
+
+  /// No description provided for @suTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the payment schedule?'**
+  String get suTitle;
+
+  /// No description provided for @suReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'{removed} pending payments will be replaced by {added} new ones totalling {total}.'**
+  String suReplace(int removed, int added, String total);
+
+  /// No description provided for @suKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} payments already deposited, cleared, on hold or with cheque details stay as they are.'**
+  String suKeep(int count);
+
+  /// No description provided for @suKeepCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep current schedule'**
+  String get suKeepCurrent;
+
+  /// No description provided for @suUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update schedule'**
+  String get suUpdate;
+
+  /// No description provided for @suScheduleUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment schedule updated.'**
+  String get suScheduleUpdated;
+
+  /// No description provided for @fxCsvDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Report downloaded as CSV.'**
+  String get fxCsvDownloaded;
 }
 
 class _AppLocalizationsDelegate

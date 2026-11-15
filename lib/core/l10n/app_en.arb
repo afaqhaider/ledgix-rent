@@ -1257,5 +1257,32 @@
     }
   },
   "drNone": "No open document requests.",
-  "drTenantRequests": "Document requests from this tenant"
+  "drTenantRequests": "Document requests from this tenant",
+  "suTitle": "Update the payment schedule?",
+  "suReplace": "{removed} pending payments will be replaced by {added} new ones totalling {total}.",
+  "@suReplace": {
+    "placeholders": {
+      "removed": {
+        "type": "int"
+      },
+      "added": {
+        "type": "int"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "suKeep": "{count} payments already deposited, cleared, on hold or with cheque details stay as they are.",
+  "@suKeep": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "suKeepCurrent": "Keep current schedule",
+  "suUpdate": "Update schedule",
+  "suScheduleUpdated": "Payment schedule updated.",
+  "fxCsvDownloaded": "Report downloaded as CSV."
 }

@@ -135,4 +135,4 @@ export {
 export { exchangeLedgixHubSession } from "./hub";
 
 // Move-in / move-out inspections: tenant actions
-export { addInspectionTenantComment, attachInspectionTenantMedia, confirmInspectionAsTenant } from "./inspections";
+export { addInspectionTenantComment, attachInspectionTenantMedia, confirmInspectionAsTenant, onInspectionDeleted } from "./inspections";

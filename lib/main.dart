@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/auth/ledgix_hub.dart';
 import 'core/data/push_service.dart';
@@ -22,7 +23,14 @@ Future<void> main() async {
   // git-ignored and kept in secrets/.
   if (useFirebase) await Firebase.initializeApp(options: kIsWeb ? DefaultFirebaseOptions.web : null);
   if (useFirebase && kIsWeb) await _finishLedgixWebSignIn();
-  final container = ProviderContainer();
+  // Language and theme are restored before the first frame (no flash).
+  SharedPreferences? prefs;
+  try {
+    prefs = await SharedPreferences.getInstance();
+  } catch (_) {
+    // Storage unavailable (e.g. blocked in a private browser window): use defaults.
+  }
+  final container = ProviderContainer(overrides: [preferencesProvider.overrideWithValue(prefs)]);
   // Demo builds only: /app/?demo=tenant previews the tenant app with sample data.
   if (!useFirebase && kIsWeb && Uri.base.queryParameters['demo'] == 'tenant') {
     await seedTenantDemo(container.read(authRepositoryProvider) as DemoAuthRepository);

@@ -125,10 +125,14 @@ class DocumentReader {
     final prop = r.section(RegExp(r'property\s*information', caseSensitive: false), RegExp(r'contract\s*information', caseSensitive: false));
     f.putIfNotNull(ScanField.plotNo, prop.value(RegExp(r'plot\s*no', caseSensitive: false), RegExp(r'\d[\d-]*')));
     f.putIfNotNull(ScanField.buildingName, prop.value(RegExp(r'building\s*name', caseSensitive: false), _wordsPattern));
-    f.putIfNotNull(ScanField.unitNo, prop.value(RegExp(r'property\s*no', caseSensitive: false), RegExp(r'[A-Za-z]?\d+[A-Za-z]?')));
+    // On the DLD form the filled-in values are printed in boxes just above
+    // their labels, so these fall back to the row above the label.
+    f.putIfNotNull(ScanField.unitNo, prop.value(RegExp(r'property\s*no', caseSensitive: false), RegExp(r'^[A-Za-z]?\d+[A-Za-z]?$')) ??
+        prop.valueAbove(RegExp(r'property\s*no', caseSensitive: false), RegExp(r'^[A-Za-z]?\d{1,5}[A-Za-z]?$')));
     f.putIfNotNull(ScanField.propertyType, prop.value(RegExp(r'property\s*type', caseSensitive: false), _wordsPattern));
     f.putIfNotNull(ScanField.community, prop.value(RegExp(r'^location|\blocation\b', caseSensitive: false), _wordsPattern));
-    f.putIfNotNull(ScanField.dewaPremiseNo, prop.value(RegExp(r'premises?\s*no', caseSensitive: false), _premisePattern));
+    f.putIfNotNull(ScanField.dewaPremiseNo, prop.value(RegExp(r'premises?\s*no', caseSensitive: false), _premisePattern) ??
+        prop.valueAbove(RegExp(r'premises?\s*no', caseSensitive: false), _premisePattern));
 
     final c = r.section(RegExp(r'contract\s*information', caseSensitive: false), RegExp(r'terms\s*(and|&)\s*conditions', caseSensitive: false));
     final period = c.indexOf(RegExp(r'contract\s*period', caseSensitive: false));
@@ -142,7 +146,9 @@ class DocumentReader {
     f.putIfNotNull(ScanField.annualRent, _amount(c.value(RegExp(r'annual\s*rent', caseSensitive: false), _amountPattern)) ??
         _amount(c.value(RegExp(r'contract\s*value', caseSensitive: false), _amountPattern)));
     f.putIfNotNull(ScanField.securityDeposit, _amount(c.value(RegExp(r'security\s*deposit', caseSensitive: false), _amountPattern)));
-    final mode = c.value(RegExp(r'mode\s*of\s*payment', caseSensitive: false), RegExp(r'\d+\s*(post[- ]?dated\s*)?cheques?', caseSensitive: false));
+    final chequesPattern = RegExp(r'\d+\s*(post[- ]?dated\s*)?(cheques?|pdcs?)\b', caseSensitive: false);
+    final mode = c.value(RegExp(r'mode\s*of\s*payment', caseSensitive: false), chequesPattern) ??
+        c.valueAbove(RegExp(r'mode\s*of\s*payment', caseSensitive: false), chequesPattern);
     f.putIfNotNull(ScanField.numberOfCheques, mode == null ? null : RegExp(r'\d+').firstMatch(mode)?.group(0));
     return f;
   }
@@ -314,6 +320,21 @@ class _Rows {
   final List<String> rows;
 
   int indexOf(RegExp re) => rows.indexWhere(re.hasMatch);
+
+  /// Value printed on the row just above the label (form boxes sit over their
+  /// labels on the DLD tenancy contract). Each piece of that row is tried, so
+  /// left and right columns both work; labels are never taken as values.
+  String? valueAbove(RegExp label, RegExp pattern) {
+    for (var i = 1; i < rows.length; i++) {
+      if (!rows[i].split(segmentGap).any(label.hasMatch)) continue;
+      for (final seg in rows[i - 1].split(segmentGap)) {
+        final v = pattern.firstMatch(seg.trim());
+        if (v != null && !_looksLikeLabel(v.group(0)!)) return v.group(0)!.trim();
+      }
+      return null;
+    }
+    return null;
+  }
 
   /// Rows from the first one matching [start] up to (not including) [end].
   _Rows section(RegExp start, RegExp? end) {

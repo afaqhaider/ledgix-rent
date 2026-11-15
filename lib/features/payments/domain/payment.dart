@@ -35,6 +35,7 @@ class Payment implements Entity {
   bool get isSettled => status == PaymentStatus.cleared;
 
   Payment copyWith({
+    double? amount,
     String? chequeNo,
     String? bankName,
     DateTime? dueDate,
@@ -48,7 +49,7 @@ class Payment implements Entity {
         id: id,
         leaseId: leaseId,
         type: type,
-        amount: amount,
+        amount: amount ?? this.amount,
         dueDate: dueDate ?? this.dueDate,
         chequeNo: chequeNo ?? this.chequeNo,
         bankName: bankName ?? this.bankName,

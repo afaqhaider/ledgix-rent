@@ -2759,4 +2759,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drTenantRequests => 'Document requests from this tenant';
+
+  @override
+  String get suTitle => 'Update the payment schedule?';
+
+  @override
+  String suReplace(int removed, int added, String total) {
+    return '$removed pending payments will be replaced by $added new ones totalling $total.';
+  }
+
+  @override
+  String suKeep(int count) {
+    return '$count payments already deposited, cleared, on hold or with cheque details stay as they are.';
+  }
+
+  @override
+  String get suKeepCurrent => 'Keep current schedule';
+
+  @override
+  String get suUpdate => 'Update schedule';
+
+  @override
+  String get suScheduleUpdated => 'Payment schedule updated.';
+
+  @override
+  String get fxCsvDownloaded => 'Report downloaded as CSV.';
 }

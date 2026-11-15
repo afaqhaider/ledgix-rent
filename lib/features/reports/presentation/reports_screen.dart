@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -6,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
+import '../../../core/utils/file_export.dart';
 import '../../../core/widgets/common.dart';
 import '../../expenses/domain/profitability.dart';
 import '../../expenses/presentation/profitability_widgets.dart';
@@ -69,20 +69,26 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
 
     return Scaffold(
       appBar: ShellAppBar(title: Text(l.exProfitabilityReport), actions: [
-        IconButton(
-          key: const Key('export-csv'),
-          tooltip: l.exExportCsv,
-          icon: const Icon(Icons.download_outlined),
-          onPressed: report.units.isEmpty
-              ? null
-              : () async {
-                  final csv = report.toCsv(totalLabel: l.exTotal, header: [
-                    l.exProperty, l.exRentCollected, l.exRentOutstanding, l.serviceCharges, l.exAgencyFees,
-                    l.exMaintenance, l.exUtilities, l.exOther, l.exTotalExpenses, l.exNetIncome, '${l.exNetYield} %',
-                  ]);
-                  await Clipboard.setData(ClipboardData(text: csv));
-                  if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.exCsvCopied)));
-                },
+        Builder(
+          builder: (button) => IconButton(
+            key: const Key('export-csv'),
+            tooltip: l.exExportCsv,
+            icon: const Icon(Icons.download_outlined),
+            onPressed: report.units.isEmpty
+                ? null
+                : () async {
+                    final csv = report.toCsv(totalLabel: l.exTotal, header: [
+                      l.exProperty, l.exRentCollected, l.exRentOutstanding, l.serviceCharges, l.exAgencyFees,
+                      l.exMaintenance, l.exUtilities, l.exOther, l.exTotalExpenses, l.exNetIncome, '${l.exNetYield} %',
+                    ]);
+                    final name = 'ledgix-rent-profitability-${todayGst().toIso8601String().substring(0, 10)}.csv';
+                    // Browser: download. Phones: share sheet with a .csv file. Else: clipboard.
+                    final result = await exportCsv(name, csv, anchor: button);
+                    if (!context.mounted || result == ExportResult.shared) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(result == ExportResult.downloaded ? l.fxCsvDownloaded : l.exCsvCopied)));
+                  },
+          ),
         ),
       ]),
       body: props == null

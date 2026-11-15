@@ -2751,4 +2751,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get drTenantRequests => 'طلبات المستندات من هذا المستأجر';
+
+  @override
+  String get suTitle => 'تحديث جدول الدفعات؟';
+
+  @override
+  String suReplace(int removed, int added, String total) {
+    return 'سيتم استبدال $removed دفعات معلقة بـ $added دفعات جديدة بإجمالي $total.';
+  }
+
+  @override
+  String suKeep(int count) {
+    return 'تبقى $count دفعات مودعة أو محصلة أو مؤجلة أو بها بيانات شيك كما هي.';
+  }
+
+  @override
+  String get suKeepCurrent => 'الإبقاء على الجدول الحالي';
+
+  @override
+  String get suUpdate => 'تحديث الجدول';
+
+  @override
+  String get suScheduleUpdated => 'تم تحديث جدول الدفعات.';
+
+  @override
+  String get fxCsvDownloaded => 'تم تنزيل التقرير بصيغة CSV.';
 }

@@ -1,7 +1,7 @@
 
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show NetworkAssetBundle;
+import 'package:flutter/services.dart' show NetworkAssetBundle, rootBundle;
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -144,27 +144,34 @@ Future<Uint8List?> defaultImageLoader(String url) async {
 /// Most photos embedded in one report, to keep the PDF small enough to email.
 const maxReportPhotos = 60;
 
+/// Bundled Noto fonts (assets/fonts, SIL Open Font License) so Arabic and
+/// Latin text render without a network connection.
+Future<pw.ThemeData> bundledPdfTheme() async {
+  Future<pw.Font> load(String name) async => pw.Font.ttf(await rootBundle.load('assets/fonts/$name'));
+  final base = await load('NotoSans-Regular.ttf');
+  final bold = await load('NotoSans-Bold.ttf');
+  final arabic = await load('NotoSansArabic-Regular.ttf');
+  return pw.ThemeData.withFont(base: base, bold: bold, fontFallback: [arabic]);
+}
+
 /// Builds the report. [moveIn] adds the comparison section to a move-out.
-/// Set [googleFonts] false to skip downloading Noto (tests, offline); Arabic
-/// text then can't render, so the app always passes true.
+/// Fonts are bundled with the app, so this works offline. Set [bundledFonts]
+/// false to use the PDF's built-in fonts (no Arabic) — only useful in tests.
 Future<Uint8List> buildInspectionPdf(
   Inspection insp, {
   InspectionReportInfo info = const InspectionReportInfo(),
   Inspection? moveIn,
   InspectionPdfLabels labels = InspectionPdfLabels.english,
   ImageLoader loadImage = defaultImageLoader,
-  bool googleFonts = true,
+  bool bundledFonts = true,
   bool compress = true,
 }) async {
   pw.ThemeData? theme;
-  if (googleFonts) {
+  if (bundledFonts) {
     try {
-      final base = await PdfGoogleFonts.notoSansRegular();
-      final bold = await PdfGoogleFonts.notoSansBold();
-      final arabic = await PdfGoogleFonts.notoSansArabicRegular();
-      theme = pw.ThemeData.withFont(base: base, bold: bold, fontFallback: [arabic]);
+      theme = await bundledPdfTheme();
     } catch (e) {
-      debugPrint('Inspection PDF: fonts unavailable ($e); using built-in fonts.');
+      debugPrint('Inspection PDF: bundled fonts unavailable ($e); using built-in fonts.');
     }
   }
 

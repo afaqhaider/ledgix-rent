@@ -54,6 +54,32 @@ const _ejari = [
   '305  Flat  Studio  Residential  40.00 (Sq.m)  600000002',
 ];
 
+/// The same DLD form as OCR reads a filled PDF: each value box is recognised
+/// on the row just above its label, and Arabic labels come back as noise.
+/// All data is made up.
+const _contractBoxesAbove = [
+  'Date  01/01/2026  TENANCY CONTRACT',
+  'Owner / Lessor Information  xxxx',
+  'Tenant Information  xxxx',
+  'Property Information  xxxx',
+  'Property Usage  x xx  xx  Residential',
+  'Plot No.  100  xx  Makani No.  xx',
+  'T-07 TEST CLUSTER 2  412',
+  'Building Name  xx xx  Property No.  xx',
+  'APARTMENT  85.50',
+  'Property Type  Property Area (s.m)  xx',
+  'TEST GARDENS  600000003',
+  'Location  xx  Premises No. (DEWA',
+  'Contract Information  xxxx',
+  '01/03/2026  28/02/2027  AED 72,000/- ONE YEAR',
+  'Contract Period  Contract Value  xx',
+  'AED 72,000/- ONE YEAR  3,600 REFUNDABLE',
+  'Annual Rent  xx x  Security Deposit Amount',
+  'PAYMENT IN 6 CHEQUES ONLY',
+  'Mode of Payment  xx xx',
+  'Terms and Conditions  xxxx',
+];
+
 const _contract = [
   'Date  01/01/2026  TENANCY CONTRACT',
   'Owner / Lessor Information  xxxx',
@@ -155,6 +181,20 @@ void main() {
     expect(propertyTypeFrom(d[ScanField.propertyType]), PropertyType.studio);
     // The owner never lands in tenant fields.
     expect(tenantValues(d)[FormKeys.firstName], 'Alex');
+  });
+
+  test('Tenancy contract with values above their labels: unit, DEWA premise and cheques', () {
+    final d = reader.read(_contractBoxesAbove);
+    expect(reader.classify(_contractBoxesAbove), ScannedKind.tenancyContract);
+    expect(d[ScanField.unitNo], '412'); // not the "2" or "07" in the building name
+    expect(d[ScanField.dewaPremiseNo], '600000003');
+    expect(d[ScanField.numberOfCheques], '6');
+    expect(d[ScanField.plotNo], '100');
+  });
+
+  test('Tenancy contract: cheques written as PDCs', () {
+    final d = reader.read([for (final r in _contract) r.startsWith('Mode of Payment') ? 'Mode of Payment  BY 12 PDCS' : r]);
+    expect(d[ScanField.numberOfCheques], '12');
   });
 
   test('Tenancy contract: lessor -> owner, tenant -> tenant, contract terms', () {

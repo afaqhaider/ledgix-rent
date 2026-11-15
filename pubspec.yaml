@@ -60,6 +60,7 @@ dependencies:
   printing: ^5.15.1
   video_player: ^2.14.1
   qr_flutter: ^4.1.0
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +93,10 @@ flutter:
     - assets/ledgix-rent-logo.png
     - assets/ledgix-rent-logo-mark.png
     - assets/ledgix-id-mark.png
+    # Noto Sans + Noto Sans Arabic for offline PDF reports (assets/fonts/OFL.txt)
+    - assets/fonts/NotoSans-Regular.ttf
+    - assets/fonts/NotoSans-Bold.ttf
+    - assets/fonts/NotoSansArabic-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
