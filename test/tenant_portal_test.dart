@@ -267,6 +267,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('add-landlord')));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('add-by-invite')));
+    await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('add-landlord-code')), codeB);
     await tester.tap(find.byKey(const Key('add-landlord-submit')));
     await tester.pumpAndSettle();

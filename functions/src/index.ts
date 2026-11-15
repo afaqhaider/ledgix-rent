@@ -121,6 +121,11 @@ export {
   createTenantMaintenanceRequest, createTenantHoldRequest, onLandlordDataWritten,
 } from "./tenants";
 
+// Connections: email / LedGix code lookup, share codes, connection requests
+export {
+  lookupAccount, getMyShareCode, sendConnectionRequest, respondToConnectionRequest,
+} from "./connections";
+
 // LedGix ID (Hub) sign-in
 export { exchangeLedgixHubSession } from "./hub";
 

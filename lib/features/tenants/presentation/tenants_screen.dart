@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../connections/connection_providers.dart';
+import '../../connections/domain/connection.dart';
+import '../../connections/presentation/email_account_check.dart';
 import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/utils/dates.dart';
@@ -99,6 +102,10 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
   DateTime? _eidExpiry, _passportExpiry;
   final _datesFromScan = <String>{};
 
+  /// New tenant whose email belongs to a LedGix Rent account: invite them
+  /// in the app after saving (instead of offering a code).
+  final _inviteOnSave = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
@@ -139,6 +146,7 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
   void dispose() {
     _f.dispose();
     _docs.dispose();
+    _inviteOnSave.dispose();
     super.dispose();
   }
 
@@ -232,10 +240,30 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
         );
     await ref.read(tenantRepositoryProvider).save(tenant);
     if (!mounted) return;
+    final invite = _existing == null && _inviteOnSave.value ? ConnectTarget.parse(tenant.email) : null;
+    String? sent;
+    if (invite != null) {
+      try {
+        await ref.read(connectionsServiceProvider).inviteTenant(
+              landlordUid: ref.read(userIdProvider).value ?? 'anon',
+              tenantRecordId: id,
+              target: invite,
+            );
+        sent = l.cxInvitationSent;
+      } on ConnectionException catch (e) {
+        sent = connectionErrorText(l, e.reason);
+      }
+      if (!mounted) return;
+    }
     final root = Navigator.of(context, rootNavigator: true).context;
+    final messenger = ScaffoldMessenger.of(context);
     context.pop(id);
-    // Offer the app invite once the form has closed.
-    if (_existing == null && widget.inviteAfterSave && root.mounted) unawaited(showTenantInviteDialog(root, ref, tenant));
+    if (sent != null) {
+      messenger.showSnackBar(SnackBar(content: Text(sent)));
+    } else if (_existing == null && widget.inviteAfterSave && root.mounted) {
+      // Offer the app invite code once the form has closed.
+      unawaited(showTenantInviteDialog(root, ref, tenant));
+    }
   }
 
   @override
@@ -277,6 +305,7 @@ class _TenantFormScreenState extends ConsumerState<TenantFormScreen> {
                 keyboard: TextInputType.emailAddress,
                 validator: (v) => (v ?? '').trim().isEmpty || _emailFormat.hasMatch(v!.trim()) ? null : l.invalidEmail),
           ]),
+          EmailAccountCheck(controller: _f[FormKeys.email], inviteOnSave: _inviteOnSave, tenant: _existing),
         ]),
         FormSection(title: l.sectionIdentity, icon: Icons.badge_outlined, children: [
           FieldGrid(children: [

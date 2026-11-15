@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../features/connections/presentation/my_code_screen.dart';
+import '../../features/connections/presentation/my_details_screen.dart';
+import '../../features/connections/presentation/tenant_connections.dart' show TenantInvitationsScreen;
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/holds/presentation/holds_screen.dart';
@@ -90,7 +93,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/tenants/new',
             builder: (_, s) => TenantFormScreen(
               prefill: (s.extra as Map?)?.cast<String, String>(),
-              inviteAfterSave: s.uri.queryParameters['from'] != 'agreement',
+              inviteAfterSave: !const {'agreement', 'request'}.contains(s.uri.queryParameters['from']),
             ),
           ),
           GoRoute(path: '/tenants/:id/edit', builder: (_, s) => TenantFormScreen(id: s.pathParameters['id']!)),
@@ -111,6 +114,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/service-charges', pageBuilder: (_, s) => _section(s, const ServiceChargesScreen())),
           GoRoute(path: '/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
           GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
+          GoRoute(path: '/my-code', builder: (_, _) => const MyCodeScreen()),
           // Tenant app.
           GoRoute(path: '/t', pageBuilder: (_, s) => _section(s, const TenantHomeScreen())),
           GoRoute(path: '/t/landlords', pageBuilder: (_, s) => _section(s, const TenantLandlordsScreen())),
@@ -131,6 +135,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/t/maintenance', pageBuilder: (_, s) => _section(s, const TenantMaintenanceScreen())),
           GoRoute(path: '/t/maintenance/new', builder: (_, _) => const TenantRequestFormScreen()),
           GoRoute(path: '/t/settings', pageBuilder: (_, s) => _section(s, const SettingsScreen())),
+          GoRoute(path: '/t/invitations', builder: (_, _) => const TenantInvitationsScreen()),
+          GoRoute(path: '/t/my-details', builder: (_, _) => const MyDetailsScreen()),
+          GoRoute(path: '/t/my-code', builder: (_, _) => const MyCodeScreen()),
         ],
       ),
     ],

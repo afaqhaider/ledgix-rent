@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../features/connections/connection_providers.dart';
+import '../../features/connections/presentation/landlord_connections.dart' show openRequest;
+import '../../features/connections/presentation/tenant_connections.dart' show invitationTitle;
 import '../../features/documents/presentation/expiry_widgets.dart' show expiryText;
 import '../../features/documents/presentation/id_expiries_card.dart';
 import '../../features/dashboard/domain/dashboard_insights.dart';
@@ -385,13 +388,20 @@ class NotificationsButton extends ConsumerWidget {
         if (r.status == HoldStatus.pending) r,
     ];
     final idAlerts = ref.watch(idExpiryAlertsProvider).where((e) => e.daysLeft(today) <= 30).toList();
-    final count = due.length + ending.length + holds.length + idAlerts.length;
+    final requests = ref.watch(pendingIncomingProvider);
+    final count = due.length + ending.length + holds.length + idAlerts.length + requests.length;
 
     return MenuAnchor(
       alignmentOffset: const Offset(-220, 4),
       menuChildren: [
         if (count == 0)
           MenuItemButton(onPressed: null, child: Text(l.noNotifications)),
+        for (final r in requests.take(4))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.group_add_outlined),
+            onPressed: () => openRequest(context, r),
+            child: SizedBox(width: 260, child: Text(invitationTitle(l, r), maxLines: 2, overflow: TextOverflow.ellipsis)),
+          ),
         for (final r in holds.take(4))
           MenuItemButton(
             leadingIcon: const Icon(Icons.pause_circle_outline),
@@ -518,10 +528,18 @@ class TenantNotificationsButton extends ConsumerWidget {
       for (final TvPayment p in ref.watch(tenantPaymentsProvider).value ?? const <TvPayment>[])
         if (p.status == PaymentStatus.pending && !p.dueDate.isBefore(today) && p.dueDate.difference(today).inDays <= 7) p,
     ];
+    final invitations = ref.watch(pendingIncomingProvider);
+    final count = due.length + invitations.length;
     return MenuAnchor(
       alignmentOffset: const Offset(-220, 4),
       menuChildren: [
-        if (due.isEmpty) MenuItemButton(onPressed: null, child: Text(l.noNotifications)),
+        if (count == 0) MenuItemButton(onPressed: null, child: Text(l.noNotifications)),
+        for (final r in invitations.take(4))
+          MenuItemButton(
+            leadingIcon: const Icon(Icons.mail_outline),
+            onPressed: () => context.push('/t/invitations'),
+            child: SizedBox(width: 260, child: Text(invitationTitle(l, r), maxLines: 2, overflow: TextOverflow.ellipsis)),
+          ),
         for (final p in due.take(6))
           MenuItemButton(
             leadingIcon: const Icon(Icons.payments_outlined),
@@ -537,7 +555,7 @@ class TenantNotificationsButton extends ConsumerWidget {
         key: const Key('notifications'),
         tooltip: l.notifications,
         onPressed: () => menu.isOpen ? menu.close() : menu.open(),
-        icon: Badge(isLabelVisible: due.isNotEmpty, label: Text('${due.length}'), child: const Icon(Icons.notifications_none)),
+        icon: Badge(isLabelVisible: count > 0, label: Text('$count'), child: const Icon(Icons.notifications_none)),
       ),
     );
   }

@@ -2134,4 +2134,196 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ixYou => 'You';
+
+  @override
+  String get cxUsesAppTitle => 'This person already uses LedGix Rent.';
+
+  @override
+  String get cxUsesAppBody =>
+      'Send them an invitation to connect. They\'ll see it in their app and can accept.';
+
+  @override
+  String get cxSendInvitation => 'Send invitation';
+
+  @override
+  String get cxInviteOnSave => 'Send them an invitation when I save';
+
+  @override
+  String get cxInvitationSent =>
+      'Invitation sent. They\'ll be connected once they accept.';
+
+  @override
+  String get cxInvitationPending =>
+      'Invitation sent, waiting for their answer.';
+
+  @override
+  String get cxCancelInvitation => 'Cancel invitation';
+
+  @override
+  String get cxAlreadyConnected => 'Already connected to you in LedGix Rent.';
+
+  @override
+  String get cxThatsYou => 'That\'s your own email.';
+
+  @override
+  String get cxInvitations => 'Invitations';
+
+  @override
+  String cxInvitationFrom(String name, String property) {
+    return '$name wants to connect you to $property';
+  }
+
+  @override
+  String cxWantsToConnect(String name) {
+    return '$name wants to connect with you';
+  }
+
+  @override
+  String get cxSomeone => 'Someone';
+
+  @override
+  String get cxAccept => 'Accept';
+
+  @override
+  String get cxDecline => 'Decline';
+
+  @override
+  String get cxShareMyDetails => 'Share my details with this landlord';
+
+  @override
+  String get cxShareMyDetailsHint =>
+      'Your name, phone, Emirates ID and passport (with expiry dates) fill in only what they haven\'t entered.';
+
+  @override
+  String get cxAddMyDetailsFirst =>
+      'Add your details in Settings → My details to share them.';
+
+  @override
+  String get cxAcceptedLandlord =>
+      'Connected. You can now see your lease and payments.';
+
+  @override
+  String get cxDeclined => 'Request declined.';
+
+  @override
+  String get cxDeclineConfirm => 'Decline this request?';
+
+  @override
+  String get cxConnectionRequests => 'Connection requests';
+
+  @override
+  String get cxChooseTenant => 'Which tenant is this?';
+
+  @override
+  String get cxChooseTenantHint =>
+      'Link their account to one of your tenants, or create a new tenant from their details.';
+
+  @override
+  String get cxEmailMatches => 'Email matches';
+
+  @override
+  String get cxCreateFromDetails => 'Create a new tenant from their details';
+
+  @override
+  String get cxConnectedTenant =>
+      'Connected. They can now see what you share with them.';
+
+  @override
+  String get cxNoUnlinkedTenants => 'All your tenants are already connected.';
+
+  @override
+  String get cxByEmail => 'Email';
+
+  @override
+  String get cxByCode => 'LedGix code';
+
+  @override
+  String get cxByInvite => 'Invite code';
+
+  @override
+  String get cxLandlordEmail => 'Landlord\'s email';
+
+  @override
+  String get cxLandlordCode => 'Landlord\'s LedGix code';
+
+  @override
+  String get cxCodeHint => 'e.g. LGX-7K3M9Q';
+
+  @override
+  String get cxAddLandlordHint =>
+      'Find your landlord by email or their LedGix code. They\'ll get a request and connect you once they accept.';
+
+  @override
+  String get cxSendRequest => 'Send request';
+
+  @override
+  String get cxRequestSent =>
+      'Request sent. You\'ll be connected once they accept.';
+
+  @override
+  String get cxRequestsSent => 'Requests sent';
+
+  @override
+  String get cxWaiting => 'Waiting for their answer';
+
+  @override
+  String get cxCancelRequest => 'Cancel request';
+
+  @override
+  String get cxMyCode => 'My LedGix code';
+
+  @override
+  String get cxMyCodeHint =>
+      'Share this code instead of typing your details. Anyone with it can send you a connection request; nothing connects until you accept.';
+
+  @override
+  String get cxCopy => 'Copy';
+
+  @override
+  String get cxShare => 'Share';
+
+  @override
+  String get cxCopied => 'Copied';
+
+  @override
+  String cxShareText(String code) {
+    return 'Connect with me on LedGix Rent. My LedGix code: $code';
+  }
+
+  @override
+  String get cxMyDetails => 'My details';
+
+  @override
+  String get cxMyDetailsHint =>
+      'Kept in your account. You choose when to share them with a landlord.';
+
+  @override
+  String get cxDetailsSaved => 'Details saved.';
+
+  @override
+  String get cxErrNotFound => 'No LedGix Rent account uses that email or code.';
+
+  @override
+  String get cxErrSelf => 'That\'s your own account.';
+
+  @override
+  String get cxErrDuplicate =>
+      'You\'ve already sent a request. Waiting for their answer.';
+
+  @override
+  String get cxErrAlreadyLinked =>
+      'This tenant is already connected to an account.';
+
+  @override
+  String get cxErrRateLimited => 'Too many checks. Try again in a while.';
+
+  @override
+  String get cxErrWrongRole =>
+      'That account belongs to a tenant, not a landlord.';
+
+  @override
+  String get cxErrNotAllowed => 'You can\'t do that.';
+
+  @override
+  String get cxErrInvalid => 'Enter a valid email address or LedGix code.';
 }

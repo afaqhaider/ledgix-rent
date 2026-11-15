@@ -4,6 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { LINKS } from "./hub";
 import { unlinkTenant } from "./tenants";
+import { deleteConnectionData } from "./connections";
 
 /**
  * Permanently deletes the caller's account, landlord or tenant: every
@@ -35,6 +36,8 @@ export const deleteAccount = onCall(async (req) => {
   await db.recursiveDelete(db.doc(`landlords/${uid}`));
   await db.recursiveDelete(db.doc(`users/${uid}`));
   await db.doc(`inviteQuota/${uid}`).delete();
+  // Connection requests to/from this person and their LedGix code.
+  await deleteConnectionData(uid);
   await getStorage().bucket().deleteFiles({ prefix: `landlords/${uid}/` });
   await getStorage().bucket().deleteFiles({ prefix: `tenants/${uid}/` });
   // Photos and videos this person added to inspections as a tenant.

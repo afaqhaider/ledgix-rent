@@ -147,6 +147,40 @@ export const redeemTenantInvite = onCall(async (req) => {
   return { landlordUid, tenantId };
 });
 
+/**
+ * Links tenant account [uid] to landlord [ll]'s tenant record [tid] (accepted
+ * connection requests). Same rules as redeemTenantInvite: a record belongs to
+ * one account, and one account may join several records of a landlord only
+ * if they are the same person (same Emirates ID).
+ */
+export async function linkTenantRecord(ll: string, tid: string, uid: string): Promise<void> {
+  if (ll === uid) refuse("self", "You can't connect to yourself.");
+  await db().runTransaction(async (t) => {
+    const tenantRef = db().doc(`landlords/${ll}/tenants/${tid}`);
+    const tenant = await t.get(tenantRef);
+    if (!tenant.exists) refuse("invalid", "That tenant record no longer exists.");
+    const linked = tenant.get("appUid");
+    if (linked && linked !== uid) refuse("alreadyLinked", "This tenant record is linked to another account.");
+    const others = await t.get(db().collection(`landlords/${ll}/tenants`).where("appUid", "==", uid));
+    for (const o of others.docs) {
+      if (o.id === tid) continue;
+      const a = digits(o.get("emiratesIdNo"));
+      const b = digits(tenant.get("emiratesIdNo"));
+      if (!a || a !== b) refuse("alreadyLinked", "This account is already linked to another tenant of this landlord.");
+    }
+    const linkRef = db().doc(`tenantLinks/${uid}/landlords/${ll}`);
+    const link = await t.get(linkRef);
+    t.update(tenantRef, { appUid: uid, inviteCode: FieldValue.delete(), inviteExpiresAt: FieldValue.delete() });
+    t.set(linkRef, {
+      landlordUid: ll,
+      status: "active",
+      tenantIds: FieldValue.arrayUnion(tid),
+      since: link.exists ? link.get("since") : new Date().toISOString(),
+    }, { merge: true });
+  });
+  await rebuildTenantView(ll, uid);
+}
+
 /** Tenant: remove a former landlord from their app. */
 export const removeLandlordLink = onCall(async (req) => {
   const uid = req.auth?.uid;

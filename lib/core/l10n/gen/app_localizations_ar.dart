@@ -2134,4 +2134,188 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get ixYou => 'أنت';
+
+  @override
+  String get cxUsesAppTitle => 'هذا الشخص يستخدم LedGix Rent بالفعل.';
+
+  @override
+  String get cxUsesAppBody =>
+      'أرسل له دعوة للربط. سيراها في تطبيقه ويمكنه قبولها.';
+
+  @override
+  String get cxSendInvitation => 'إرسال دعوة';
+
+  @override
+  String get cxInviteOnSave => 'أرسل له دعوة عند الحفظ';
+
+  @override
+  String get cxInvitationSent => 'تم إرسال الدعوة. سيتم الربط عند قبولها.';
+
+  @override
+  String get cxInvitationPending => 'تم إرسال الدعوة، بانتظار الرد.';
+
+  @override
+  String get cxCancelInvitation => 'إلغاء الدعوة';
+
+  @override
+  String get cxAlreadyConnected => 'مرتبط بك بالفعل في LedGix Rent.';
+
+  @override
+  String get cxThatsYou => 'هذا بريدك الإلكتروني.';
+
+  @override
+  String get cxInvitations => 'الدعوات';
+
+  @override
+  String cxInvitationFrom(String name, String property) {
+    return '$name يريد ربطك بـ $property';
+  }
+
+  @override
+  String cxWantsToConnect(String name) {
+    return '$name يريد الربط معك';
+  }
+
+  @override
+  String get cxSomeone => 'شخص ما';
+
+  @override
+  String get cxAccept => 'قبول';
+
+  @override
+  String get cxDecline => 'رفض';
+
+  @override
+  String get cxShareMyDetails => 'مشاركة بياناتي مع هذا المالك';
+
+  @override
+  String get cxShareMyDetailsHint =>
+      'اسمك وهاتفك وهويتك الإماراتية وجواز سفرك (مع تواريخ الانتهاء) تُملأ فقط في الحقول التي لم يُدخلها.';
+
+  @override
+  String get cxAddMyDetailsFirst =>
+      'أضف بياناتك من الإعدادات ← بياناتي لمشاركتها.';
+
+  @override
+  String get cxAcceptedLandlord => 'تم الربط. يمكنك الآن رؤية عقدك ودفعاتك.';
+
+  @override
+  String get cxDeclined => 'تم رفض الطلب.';
+
+  @override
+  String get cxDeclineConfirm => 'رفض هذا الطلب؟';
+
+  @override
+  String get cxConnectionRequests => 'طلبات الربط';
+
+  @override
+  String get cxChooseTenant => 'من هو هذا المستأجر؟';
+
+  @override
+  String get cxChooseTenantHint =>
+      'اربط حسابه بأحد مستأجريك، أو أنشئ مستأجرًا جديدًا من بياناته.';
+
+  @override
+  String get cxEmailMatches => 'البريد مطابق';
+
+  @override
+  String get cxCreateFromDetails => 'إنشاء مستأجر جديد من بياناته';
+
+  @override
+  String get cxConnectedTenant => 'تم الربط. يمكنه الآن رؤية ما تشاركه معه.';
+
+  @override
+  String get cxNoUnlinkedTenants => 'جميع مستأجريك مرتبطون بالفعل.';
+
+  @override
+  String get cxByEmail => 'البريد الإلكتروني';
+
+  @override
+  String get cxByCode => 'رمز LedGix';
+
+  @override
+  String get cxByInvite => 'رمز الدعوة';
+
+  @override
+  String get cxLandlordEmail => 'بريد المالك';
+
+  @override
+  String get cxLandlordCode => 'رمز LedGix للمالك';
+
+  @override
+  String get cxCodeHint => 'مثال: LGX-7K3M9Q';
+
+  @override
+  String get cxAddLandlordHint =>
+      'ابحث عن مالكك بالبريد الإلكتروني أو برمز LedGix الخاص به. سيصله طلب ويتم الربط عند قبوله.';
+
+  @override
+  String get cxSendRequest => 'إرسال الطلب';
+
+  @override
+  String get cxRequestSent => 'تم إرسال الطلب. سيتم الربط عند قبوله.';
+
+  @override
+  String get cxRequestsSent => 'الطلبات المرسلة';
+
+  @override
+  String get cxWaiting => 'بانتظار الرد';
+
+  @override
+  String get cxCancelRequest => 'إلغاء الطلب';
+
+  @override
+  String get cxMyCode => 'رمز LedGix الخاص بي';
+
+  @override
+  String get cxMyCodeHint =>
+      'شارك هذا الرمز بدلًا من كتابة بياناتك. يمكن لأي شخص لديه الرمز إرسال طلب ربط إليك، ولا يتم الربط حتى تقبل.';
+
+  @override
+  String get cxCopy => 'نسخ';
+
+  @override
+  String get cxShare => 'مشاركة';
+
+  @override
+  String get cxCopied => 'تم النسخ';
+
+  @override
+  String cxShareText(String code) {
+    return 'تواصل معي على LedGix Rent. رمز LedGix الخاص بي: $code';
+  }
+
+  @override
+  String get cxMyDetails => 'بياناتي';
+
+  @override
+  String get cxMyDetailsHint =>
+      'محفوظة في حسابك. أنت تختار متى تشاركها مع المالك.';
+
+  @override
+  String get cxDetailsSaved => 'تم حفظ البيانات.';
+
+  @override
+  String get cxErrNotFound => 'لا يوجد حساب LedGix Rent بهذا البريد أو الرمز.';
+
+  @override
+  String get cxErrSelf => 'هذا حسابك.';
+
+  @override
+  String get cxErrDuplicate => 'لقد أرسلت طلبًا بالفعل. بانتظار الرد.';
+
+  @override
+  String get cxErrAlreadyLinked => 'هذا المستأجر مرتبط بحساب بالفعل.';
+
+  @override
+  String get cxErrRateLimited => 'عمليات تحقق كثيرة. حاول مرة أخرى لاحقًا.';
+
+  @override
+  String get cxErrWrongRole => 'هذا الحساب لمستأجر وليس لمالك.';
+
+  @override
+  String get cxErrNotAllowed => 'لا يمكنك القيام بذلك.';
+
+  @override
+  String get cxErrInvalid => 'أدخل بريدًا إلكترونيًا صحيحًا أو رمز LedGix.';
 }

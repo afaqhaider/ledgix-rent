@@ -36,6 +36,21 @@ class SettingsScreen extends ConsumerWidget {
               title: Text(name.isEmpty ? (tenant ? l.tpRoleTenant : l.landlord) : name),
               subtitle: Text([email, phone].where((e) => e.isNotEmpty).join(' · ')),
             ),
+            ListTile(
+              key: const Key('my-code'),
+              leading: const Icon(Icons.qr_code_2),
+              title: Text(l.cxMyCode),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(tenant ? '/t/my-code' : '/my-code'),
+            ),
+            if (tenant)
+              ListTile(
+                key: const Key('my-details'),
+                leading: const Icon(Icons.badge_outlined),
+                title: Text(l.cxMyDetails),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/t/my-details'),
+              ),
             if (tenant)
               ListTile(
                 key: const Key('manage-landlords'),

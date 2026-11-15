@@ -647,5 +647,86 @@
   "ixPassportExpiry": "تاريخ انتهاء جواز السفر",
   "ixReplace": "استبدال",
   "ixUpload": "رفع",
-  "ixYou": "أنت"
+  "ixYou": "أنت",
+  "cxUsesAppTitle": "هذا الشخص يستخدم LedGix Rent بالفعل.",
+  "cxUsesAppBody": "أرسل له دعوة للربط. سيراها في تطبيقه ويمكنه قبولها.",
+  "cxSendInvitation": "إرسال دعوة",
+  "cxInviteOnSave": "أرسل له دعوة عند الحفظ",
+  "cxInvitationSent": "تم إرسال الدعوة. سيتم الربط عند قبولها.",
+  "cxInvitationPending": "تم إرسال الدعوة، بانتظار الرد.",
+  "cxCancelInvitation": "إلغاء الدعوة",
+  "cxAlreadyConnected": "مرتبط بك بالفعل في LedGix Rent.",
+  "cxThatsYou": "هذا بريدك الإلكتروني.",
+  "cxInvitations": "الدعوات",
+  "cxInvitationFrom": "{name} يريد ربطك بـ {property}",
+  "@cxInvitationFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "property": {
+        "type": "String"
+      }
+    }
+  },
+  "cxWantsToConnect": "{name} يريد الربط معك",
+  "@cxWantsToConnect": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cxSomeone": "شخص ما",
+  "cxAccept": "قبول",
+  "cxDecline": "رفض",
+  "cxShareMyDetails": "مشاركة بياناتي مع هذا المالك",
+  "cxShareMyDetailsHint": "اسمك وهاتفك وهويتك الإماراتية وجواز سفرك (مع تواريخ الانتهاء) تُملأ فقط في الحقول التي لم يُدخلها.",
+  "cxAddMyDetailsFirst": "أضف بياناتك من الإعدادات ← بياناتي لمشاركتها.",
+  "cxAcceptedLandlord": "تم الربط. يمكنك الآن رؤية عقدك ودفعاتك.",
+  "cxDeclined": "تم رفض الطلب.",
+  "cxDeclineConfirm": "رفض هذا الطلب؟",
+  "cxConnectionRequests": "طلبات الربط",
+  "cxChooseTenant": "من هو هذا المستأجر؟",
+  "cxChooseTenantHint": "اربط حسابه بأحد مستأجريك، أو أنشئ مستأجرًا جديدًا من بياناته.",
+  "cxEmailMatches": "البريد مطابق",
+  "cxCreateFromDetails": "إنشاء مستأجر جديد من بياناته",
+  "cxConnectedTenant": "تم الربط. يمكنه الآن رؤية ما تشاركه معه.",
+  "cxNoUnlinkedTenants": "جميع مستأجريك مرتبطون بالفعل.",
+  "cxByEmail": "البريد الإلكتروني",
+  "cxByCode": "رمز LedGix",
+  "cxByInvite": "رمز الدعوة",
+  "cxLandlordEmail": "بريد المالك",
+  "cxLandlordCode": "رمز LedGix للمالك",
+  "cxCodeHint": "مثال: LGX-7K3M9Q",
+  "cxAddLandlordHint": "ابحث عن مالكك بالبريد الإلكتروني أو برمز LedGix الخاص به. سيصله طلب ويتم الربط عند قبوله.",
+  "cxSendRequest": "إرسال الطلب",
+  "cxRequestSent": "تم إرسال الطلب. سيتم الربط عند قبوله.",
+  "cxRequestsSent": "الطلبات المرسلة",
+  "cxWaiting": "بانتظار الرد",
+  "cxCancelRequest": "إلغاء الطلب",
+  "cxMyCode": "رمز LedGix الخاص بي",
+  "cxMyCodeHint": "شارك هذا الرمز بدلًا من كتابة بياناتك. يمكن لأي شخص لديه الرمز إرسال طلب ربط إليك، ولا يتم الربط حتى تقبل.",
+  "cxCopy": "نسخ",
+  "cxShare": "مشاركة",
+  "cxCopied": "تم النسخ",
+  "cxShareText": "تواصل معي على LedGix Rent. رمز LedGix الخاص بي: {code}",
+  "@cxShareText": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "cxMyDetails": "بياناتي",
+  "cxMyDetailsHint": "محفوظة في حسابك. أنت تختار متى تشاركها مع المالك.",
+  "cxDetailsSaved": "تم حفظ البيانات.",
+  "cxErrNotFound": "لا يوجد حساب LedGix Rent بهذا البريد أو الرمز.",
+  "cxErrSelf": "هذا حسابك.",
+  "cxErrDuplicate": "لقد أرسلت طلبًا بالفعل. بانتظار الرد.",
+  "cxErrAlreadyLinked": "هذا المستأجر مرتبط بحساب بالفعل.",
+  "cxErrRateLimited": "عمليات تحقق كثيرة. حاول مرة أخرى لاحقًا.",
+  "cxErrWrongRole": "هذا الحساب لمستأجر وليس لمالك.",
+  "cxErrNotAllowed": "لا يمكنك القيام بذلك.",
+  "cxErrInvalid": "أدخل بريدًا إلكترونيًا صحيحًا أو رمز LedGix."
 }

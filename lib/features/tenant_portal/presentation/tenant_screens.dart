@@ -9,13 +9,13 @@ import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/dates.dart';
 import '../../../core/widgets/common.dart';
+import '../../connections/connection_providers.dart';
+import '../../connections/presentation/tenant_connections.dart';
 import '../../account/account_providers.dart';
 import '../../documents/presentation/documents_editor.dart' show documentKindLabel;
 import '../../inspections/presentation/inspection_view.dart';
-import '../../landlord/presentation/onboarding_screen.dart' show redeemErrorText;
 import '../../payments/domain/payment.dart';
 import '../../payments/presentation/payments_screen.dart' show statusLabel;
-import '../data/tenant_portal.dart';
 import '../../holds/domain/hold_request.dart';
 import '../domain/tenant_view.dart';
 import 'tenant_payment_detail.dart';
@@ -34,83 +34,9 @@ Future<void> openTenantDocument(String url) async {
   await launchUrl(uri, mode: LaunchMode.externalApplication);
 }
 
-/// "Add landlord": enter an invite code. Returns true when linked.
-Future<bool> showAddLandlordDialog(BuildContext context, WidgetRef ref) async {
-  final added = await showDialog<bool>(context: context, builder: (_) => const _AddLandlordDialog());
-  if (added == true && context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l.tpLandlordAdded)));
-  }
-  return added == true;
-}
-
-class _AddLandlordDialog extends ConsumerStatefulWidget {
-  const _AddLandlordDialog();
-  @override
-  ConsumerState<_AddLandlordDialog> createState() => _AddLandlordDialogState();
-}
-
-class _AddLandlordDialogState extends ConsumerState<_AddLandlordDialog> {
-  final _code = TextEditingController();
-  bool _busy = false;
-  String? _error;
-
-  @override
-  void dispose() {
-    _code.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (_code.text.trim().isEmpty) return;
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    try {
-      await ref.read(tenantPortalProvider).redeem(
-            tenantUid: ref.read(userIdProvider).value ?? 'anon',
-            code: _code.text,
-          );
-      if (mounted) Navigator.pop(context, true);
-    } on RedeemException catch (e) {
-      if (mounted) setState(() => _error = redeemErrorText(context.l, e.reason));
-    } catch (e) {
-      if (mounted) setState(() => _error = '$e');
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l;
-    return AlertDialog(
-      key: const Key('add-landlord-dialog'),
-      icon: const Icon(Icons.vpn_key_outlined),
-      title: Text(l.tpAddLandlord),
-      content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text(l.tpAddLandlordHint),
-        const SizedBox(height: 16),
-        TextField(
-          key: const Key('add-landlord-code'),
-          controller: _code,
-          autofocus: true,
-          textCapitalization: TextCapitalization.characters,
-          decoration: InputDecoration(labelText: l.tpInviteCode, helperText: l.tpInviteCodeHint, errorText: _error, errorMaxLines: 3),
-          onSubmitted: (_) => _submit(),
-        ),
-      ]),
-      actions: [
-        TextButton(onPressed: _busy ? null : () => Navigator.pop(context, false), child: Text(l.cancel)),
-        FilledButton(
-          key: const Key('add-landlord-submit'),
-          onPressed: _busy ? null : _submit,
-          child: Text(l.tpAddLandlord),
-        ),
-      ],
-    );
-  }
-}
+/// "Add landlord": by email, LedGix code or invite code (see
+/// connections/presentation/tenant_connections.dart).
+Future<bool> showAddLandlordDialog(BuildContext context, WidgetRef ref) => showConnectLandlordDialog(context, ref);
 
 class _InfoRow extends StatelessWidget {
   const _InfoRow(this.label, this.value, {this.icon});
@@ -225,6 +151,7 @@ class TenantHomeScreen extends ConsumerWidget {
           style: text.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 16),
+        const IncomingInvitationsCard(),
         if (landlords.isEmpty)
           _Panel(
             title: l.tpLandlords,
@@ -354,9 +281,10 @@ class TenantLandlordsScreen extends ConsumerWidget {
         label: Text(l.tpAddLandlord),
         onPressed: () => showAddLandlordDialog(context, ref),
       ),
-      body: all.isEmpty
+      body: all.isEmpty && ref.watch(pendingOutgoingProvider).isEmpty
           ? _empty(context, l.tpNoLandlords, loading: ref.watch(tenantLandlordsProvider).isLoading)
           : ListView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 96), children: [
+              const OutgoingRequestsSection(),
               if (current.isNotEmpty) _Heading(l.tpCurrent),
               for (final x in current) tile(x, isFormer: false),
               if (former.isNotEmpty) _Heading(l.tpFormer),

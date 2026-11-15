@@ -35,6 +35,14 @@ class InMemoryAccountRepository implements AccountRepository {
   /// Clears all demo accounts (tests).
   static void reset() => _users.clear();
 
+  /// Demo lookups for the connections feature.
+  static AppUser? byId(String uid) => _users[uid];
+  static AppUser? byEmail(String email) {
+    final e = email.trim().toLowerCase();
+    if (e.isEmpty) return null;
+    return _users.values.where((u) => u.email.trim().toLowerCase() == e).firstOrNull;
+  }
+
   @override
   Stream<AppUser?> watch(String uid) async* {
     yield _users[uid];

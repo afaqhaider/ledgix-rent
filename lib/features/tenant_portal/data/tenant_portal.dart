@@ -210,13 +210,22 @@ class DemoTenantPortal implements TenantPortal {
     if (t == null) throw const RedeemException(RedeemError.invalid);
     if (t.appUid != null && t.appUid != tenantUid) throw const RedeemException(RedeemError.alreadyLinked);
     inv.used = true;
+    await demoLink(landlordUid: inv.landlordUid, tenantId: inv.tenantId, tenantUid: tenantUid);
+  }
+
+  /// Links [tenantUid] to the landlord's tenant record (demo mode): used by
+  /// invite codes and by accepted connection requests.
+  static Future<void> demoLink({required String landlordUid, required String tenantId, required String tenantUid}) async {
+    final repo = demoRepo<Tenant>(landlordUid, 'tenants');
+    final t = await repo.get(tenantId);
+    if (t == null) return;
     await repo.save(t.joined(tenantUid));
     final mine = _links.putIfAbsent(tenantUid, () => {});
-    final prev = mine[inv.landlordUid];
-    mine[inv.landlordUid] = TenantLink(
-      landlordUid: inv.landlordUid,
+    final prev = mine[landlordUid];
+    mine[landlordUid] = TenantLink(
+      landlordUid: landlordUid,
       status: LinkStatus.active,
-      tenantIds: {...?prev?.tenantIds, inv.tenantId}.toList(),
+      tenantIds: {...?prev?.tenantIds, tenantId}.toList(),
       since: prev?.since ?? DateTime.now(),
     );
     InMemoryRepository.changes.add(null);

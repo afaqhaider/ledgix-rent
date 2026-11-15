@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
 
+import '../../connections/presentation/landlord_connections.dart' show ConnectionRequestsCard;
 import '../../../core/layout/app_shell.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
@@ -84,6 +85,7 @@ class DashboardScreen extends ConsumerWidget {
             _KpiGrid(kpis: kpis, columns: c.maxWidth >= 560 ? 3 : 2, gap: wide ? 16 : 12),
             SizedBox(height: gap),
             IdExpiriesCard(gap: gap),
+            ConnectionRequestsCard(gap: gap),
             if (wide)
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Expanded(flex: 3, child: Column(children: [upcoming, SizedBox(height: gap), chart])),

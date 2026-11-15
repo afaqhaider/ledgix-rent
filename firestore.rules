@@ -7,6 +7,13 @@ service cloud.firestore {
     function signedIn(uid) {
       return request.auth != null && request.auth.uid == uid;
     }
+    function userFields() {
+      return ['id', 'role', 'name', 'email', 'unitCount', 'fcmTokens', 'language', 'updatedAt',
+              'phone', 'emiratesIdNo', 'emiratesIdExpiry', 'passportNo', 'passportExpiry'];
+    }
+    function validRole() {
+      return !('role' in request.resource.data) || request.resource.data.role in ['landlord', 'propertyManager', 'tenant'];
+    }
 
     // Each landlord can only read and write their own tree. Tenants never
     // read it directly; they get a filtered copy in tenantViews.
@@ -17,9 +24,13 @@ service cloud.firestore {
     // The account record: role, name, number of units, push tokens.
     match /users/{uid} {
       allow read: if signedIn(uid);
-      allow create, update: if signedIn(uid)
-        && request.resource.data.keys().hasOnly(['id', 'role', 'name', 'email', 'unitCount', 'fcmTokens', 'language', 'updatedAt'])
-        && (!('role' in request.resource.data) || request.resource.data.role in ['landlord', 'propertyManager', 'tenant']);
+      // shareCode is written only by getMyShareCode and is never client-writable.
+      allow create: if signedIn(uid)
+        && request.resource.data.keys().hasOnly(userFields())
+        && validRole();
+      allow update: if signedIn(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(userFields())
+        && validRole();
       allow delete: if false; // deleteAccount (Cloud Function) removes it
     }
 
@@ -39,6 +50,21 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /inviteQuota/{uid} {
+      allow read, write: if false;
+    }
+
+    // Connection requests ("invitations") between landlords and tenants:
+    // readable by the sender and the recipient, written only by Cloud Functions.
+    match /connectionRequests/{id} {
+      allow read: if request.auth != null
+        && (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid);
+      allow write: if false;
+    }
+    // Personal LedGix codes and lookup rate limits are server-only.
+    match /shareCodes/{code} {
+      allow read, write: if false;
+    }
+    match /connectionQuota/{id} {
       allow read, write: if false;
     }
   }

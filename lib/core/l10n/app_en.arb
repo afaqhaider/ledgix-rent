@@ -951,5 +951,86 @@
   "ixPassportExpiry": "Passport expiry",
   "ixReplace": "Replace",
   "ixUpload": "Upload",
-  "ixYou": "You"
+  "ixYou": "You",
+  "cxUsesAppTitle": "This person already uses LedGix Rent.",
+  "cxUsesAppBody": "Send them an invitation to connect. They'll see it in their app and can accept.",
+  "cxSendInvitation": "Send invitation",
+  "cxInviteOnSave": "Send them an invitation when I save",
+  "cxInvitationSent": "Invitation sent. They'll be connected once they accept.",
+  "cxInvitationPending": "Invitation sent, waiting for their answer.",
+  "cxCancelInvitation": "Cancel invitation",
+  "cxAlreadyConnected": "Already connected to you in LedGix Rent.",
+  "cxThatsYou": "That's your own email.",
+  "cxInvitations": "Invitations",
+  "cxInvitationFrom": "{name} wants to connect you to {property}",
+  "@cxInvitationFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "property": {
+        "type": "String"
+      }
+    }
+  },
+  "cxWantsToConnect": "{name} wants to connect with you",
+  "@cxWantsToConnect": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cxSomeone": "Someone",
+  "cxAccept": "Accept",
+  "cxDecline": "Decline",
+  "cxShareMyDetails": "Share my details with this landlord",
+  "cxShareMyDetailsHint": "Your name, phone, Emirates ID and passport (with expiry dates) fill in only what they haven't entered.",
+  "cxAddMyDetailsFirst": "Add your details in Settings → My details to share them.",
+  "cxAcceptedLandlord": "Connected. You can now see your lease and payments.",
+  "cxDeclined": "Request declined.",
+  "cxDeclineConfirm": "Decline this request?",
+  "cxConnectionRequests": "Connection requests",
+  "cxChooseTenant": "Which tenant is this?",
+  "cxChooseTenantHint": "Link their account to one of your tenants, or create a new tenant from their details.",
+  "cxEmailMatches": "Email matches",
+  "cxCreateFromDetails": "Create a new tenant from their details",
+  "cxConnectedTenant": "Connected. They can now see what you share with them.",
+  "cxNoUnlinkedTenants": "All your tenants are already connected.",
+  "cxByEmail": "Email",
+  "cxByCode": "LedGix code",
+  "cxByInvite": "Invite code",
+  "cxLandlordEmail": "Landlord's email",
+  "cxLandlordCode": "Landlord's LedGix code",
+  "cxCodeHint": "e.g. LGX-7K3M9Q",
+  "cxAddLandlordHint": "Find your landlord by email or their LedGix code. They'll get a request and connect you once they accept.",
+  "cxSendRequest": "Send request",
+  "cxRequestSent": "Request sent. You'll be connected once they accept.",
+  "cxRequestsSent": "Requests sent",
+  "cxWaiting": "Waiting for their answer",
+  "cxCancelRequest": "Cancel request",
+  "cxMyCode": "My LedGix code",
+  "cxMyCodeHint": "Share this code instead of typing your details. Anyone with it can send you a connection request; nothing connects until you accept.",
+  "cxCopy": "Copy",
+  "cxShare": "Share",
+  "cxCopied": "Copied",
+  "cxShareText": "Connect with me on LedGix Rent. My LedGix code: {code}",
+  "@cxShareText": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "cxMyDetails": "My details",
+  "cxMyDetailsHint": "Kept in your account. You choose when to share them with a landlord.",
+  "cxDetailsSaved": "Details saved.",
+  "cxErrNotFound": "No LedGix Rent account uses that email or code.",
+  "cxErrSelf": "That's your own account.",
+  "cxErrDuplicate": "You've already sent a request. Waiting for their answer.",
+  "cxErrAlreadyLinked": "This tenant is already connected to an account.",
+  "cxErrRateLimited": "Too many checks. Try again in a while.",
+  "cxErrWrongRole": "That account belongs to a tenant, not a landlord.",
+  "cxErrNotAllowed": "You can't do that.",
+  "cxErrInvalid": "Enter a valid email address or LedGix code."
 }

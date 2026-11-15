@@ -3985,6 +3985,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You'**
   String get ixYou;
+
+  /// No description provided for @cxUsesAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This person already uses LedGix Rent.'**
+  String get cxUsesAppTitle;
+
+  /// No description provided for @cxUsesAppBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Send them an invitation to connect. They\'ll see it in their app and can accept.'**
+  String get cxUsesAppBody;
+
+  /// No description provided for @cxSendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send invitation'**
+  String get cxSendInvitation;
+
+  /// No description provided for @cxInviteOnSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Send them an invitation when I save'**
+  String get cxInviteOnSave;
+
+  /// No description provided for @cxInvitationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent. They\'ll be connected once they accept.'**
+  String get cxInvitationSent;
+
+  /// No description provided for @cxInvitationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent, waiting for their answer.'**
+  String get cxInvitationPending;
+
+  /// No description provided for @cxCancelInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel invitation'**
+  String get cxCancelInvitation;
+
+  /// No description provided for @cxAlreadyConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Already connected to you in LedGix Rent.'**
+  String get cxAlreadyConnected;
+
+  /// No description provided for @cxThatsYou.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s your own email.'**
+  String get cxThatsYou;
+
+  /// No description provided for @cxInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations'**
+  String get cxInvitations;
+
+  /// No description provided for @cxInvitationFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} wants to connect you to {property}'**
+  String cxInvitationFrom(String name, String property);
+
+  /// No description provided for @cxWantsToConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} wants to connect with you'**
+  String cxWantsToConnect(String name);
+
+  /// No description provided for @cxSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone'**
+  String get cxSomeone;
+
+  /// No description provided for @cxAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get cxAccept;
+
+  /// No description provided for @cxDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get cxDecline;
+
+  /// No description provided for @cxShareMyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my details with this landlord'**
+  String get cxShareMyDetails;
+
+  /// No description provided for @cxShareMyDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, phone, Emirates ID and passport (with expiry dates) fill in only what they haven\'t entered.'**
+  String get cxShareMyDetailsHint;
+
+  /// No description provided for @cxAddMyDetailsFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your details in Settings → My details to share them.'**
+  String get cxAddMyDetailsFirst;
+
+  /// No description provided for @cxAcceptedLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected. You can now see your lease and payments.'**
+  String get cxAcceptedLandlord;
+
+  /// No description provided for @cxDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined.'**
+  String get cxDeclined;
+
+  /// No description provided for @cxDeclineConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline this request?'**
+  String get cxDeclineConfirm;
+
+  /// No description provided for @cxConnectionRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection requests'**
+  String get cxConnectionRequests;
+
+  /// No description provided for @cxChooseTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Which tenant is this?'**
+  String get cxChooseTenant;
+
+  /// No description provided for @cxChooseTenantHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Link their account to one of your tenants, or create a new tenant from their details.'**
+  String get cxChooseTenantHint;
+
+  /// No description provided for @cxEmailMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Email matches'**
+  String get cxEmailMatches;
+
+  /// No description provided for @cxCreateFromDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new tenant from their details'**
+  String get cxCreateFromDetails;
+
+  /// No description provided for @cxConnectedTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected. They can now see what you share with them.'**
+  String get cxConnectedTenant;
+
+  /// No description provided for @cxNoUnlinkedTenants.
+  ///
+  /// In en, this message translates to:
+  /// **'All your tenants are already connected.'**
+  String get cxNoUnlinkedTenants;
+
+  /// No description provided for @cxByEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get cxByEmail;
+
+  /// No description provided for @cxByCode.
+  ///
+  /// In en, this message translates to:
+  /// **'LedGix code'**
+  String get cxByCode;
+
+  /// No description provided for @cxByInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get cxByInvite;
+
+  /// No description provided for @cxLandlordEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord\'s email'**
+  String get cxLandlordEmail;
+
+  /// No description provided for @cxLandlordCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord\'s LedGix code'**
+  String get cxLandlordCode;
+
+  /// No description provided for @cxCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. LGX-7K3M9Q'**
+  String get cxCodeHint;
+
+  /// No description provided for @cxAddLandlordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your landlord by email or their LedGix code. They\'ll get a request and connect you once they accept.'**
+  String get cxAddLandlordHint;
+
+  /// No description provided for @cxSendRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get cxSendRequest;
+
+  /// No description provided for @cxRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent. You\'ll be connected once they accept.'**
+  String get cxRequestSent;
+
+  /// No description provided for @cxRequestsSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests sent'**
+  String get cxRequestsSent;
+
+  /// No description provided for @cxWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for their answer'**
+  String get cxWaiting;
+
+  /// No description provided for @cxCancelRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel request'**
+  String get cxCancelRequest;
+
+  /// No description provided for @cxMyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'My LedGix code'**
+  String get cxMyCode;
+
+  /// No description provided for @cxMyCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this code instead of typing your details. Anyone with it can send you a connection request; nothing connects until you accept.'**
+  String get cxMyCodeHint;
+
+  /// No description provided for @cxCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get cxCopy;
+
+  /// No description provided for @cxShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get cxShare;
+
+  /// No description provided for @cxCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get cxCopied;
+
+  /// No description provided for @cxShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with me on LedGix Rent. My LedGix code: {code}'**
+  String cxShareText(String code);
+
+  /// No description provided for @cxMyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'My details'**
+  String get cxMyDetails;
+
+  /// No description provided for @cxMyDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept in your account. You choose when to share them with a landlord.'**
+  String get cxMyDetailsHint;
+
+  /// No description provided for @cxDetailsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Details saved.'**
+  String get cxDetailsSaved;
+
+  /// No description provided for @cxErrNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No LedGix Rent account uses that email or code.'**
+  String get cxErrNotFound;
+
+  /// No description provided for @cxErrSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s your own account.'**
+  String get cxErrSelf;
+
+  /// No description provided for @cxErrDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve already sent a request. Waiting for their answer.'**
+  String get cxErrDuplicate;
+
+  /// No description provided for @cxErrAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'This tenant is already connected to an account.'**
+  String get cxErrAlreadyLinked;
+
+  /// No description provided for @cxErrRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many checks. Try again in a while.'**
+  String get cxErrRateLimited;
+
+  /// No description provided for @cxErrWrongRole.
+  ///
+  /// In en, this message translates to:
+  /// **'That account belongs to a tenant, not a landlord.'**
+  String get cxErrWrongRole;
+
+  /// No description provided for @cxErrNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t do that.'**
+  String get cxErrNotAllowed;
+
+  /// No description provided for @cxErrInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address or LedGix code.'**
+  String get cxErrInvalid;
 }
 
 class _AppLocalizationsDelegate
