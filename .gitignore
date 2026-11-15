@@ -72,3 +72,6 @@ web/firebase-messaging-sw.js
 
 # Agent worktrees (other branches checked out inside this project)
 .worktrees/
+
+.DS_Store
+assets/LedGix_Rent_Store_Assets.zip
