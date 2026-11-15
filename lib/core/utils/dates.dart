@@ -12,7 +12,9 @@ DateTime todayGst() => dateOnly(nowGst());
 /// Adds [months] keeping the day where possible (31 Jan + 1 month = 28/29 Feb).
 DateTime addMonths(DateTime d, int months) {
   final total = d.month - 1 + months;
-  final year = d.year + total ~/ 12;
+  // Floor division so negative totals go back a year: Jan - 1 month = Dec of
+  // the previous year (~/ truncates toward zero and kept the same year).
+  final year = d.year + (total / 12).floor();
   final month = total % 12 + 1;
   final lastDay = DateTime(year, month + 1, 0).day;
   return DateTime(year, month, d.day > lastDay ? lastDay : d.day);
