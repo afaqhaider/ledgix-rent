@@ -18,5 +18,9 @@ class FeatureFlags {
 
   /// Off: no live DEWA/chiller connection yet, so the "Fetch bill" button is
   /// hidden. Utility bills you add and upload yourself still work.
+  /// Off: phone (SMS) sign-in is disabled in Firebase because each SMS costs
+  /// money, so the "Use phone number instead" link is hidden.
+  static const phoneSignIn = bool.fromEnvironment('FF_PHONE_SIGN_IN', defaultValue: false);
+
   static const utilityFetch = bool.fromEnvironment('FF_UTILITY_FETCH', defaultValue: false);
 }

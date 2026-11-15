@@ -79,15 +79,10 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('phone toggle swaps in phone sign-in and back', (tester) async {
+  testWidgets('phone sign-in is hidden while FF_PHONE_SIGN_IN is off', (tester) async {
     await pumpLogin(tester);
-    await tapShown(tester, find.byKey(const Key('toggle-phone')));
-    expect(find.byKey(const Key('phone-field')), findsOneWidget);
-    expect(find.byKey(const Key('email-field')), findsNothing);
-    await tester.enterText(find.byKey(const Key('phone-field')), '+971501234567');
-    await tapShown(tester, find.byKey(const Key('phone-submit')));
-    expect(find.byKey(const Key('otp-field')), findsOneWidget);
-    await tapShown(tester, find.byKey(const Key('toggle-phone')));
+    expect(find.byKey(const Key('toggle-phone')), findsNothing);
+    expect(find.byKey(const Key('phone-field')), findsNothing);
     expect(find.byKey(const Key('email-field')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });

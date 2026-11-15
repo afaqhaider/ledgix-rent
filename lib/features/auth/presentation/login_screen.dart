@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/feature_flags.dart';
 import '../../../core/auth/ledgix_hub.dart';
 import '../../../core/providers.dart';
 import '../../account/account_providers.dart';
@@ -205,18 +206,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             onPressed: idle ? () => _run(_Busy.apple, auth.signInWithApple) : null,
           ),
         ],
-        const SizedBox(height: 4),
-        TextButton.icon(
-          key: const Key('toggle-phone'),
-          onPressed: idle
-              ? () => setState(() {
-                    _phoneMode = !_phoneMode;
-                    _error = null;
-                  })
-              : null,
-          icon: Icon(_phoneMode ? Icons.mail_outline : Icons.phone_iphone, size: 18),
-          label: Text(_phoneMode ? l.useEmailInstead : l.usePhoneInstead),
-        ),
+        // Phone sign-in (SMS) is off: it costs money per message.
+        if (FeatureFlags.phoneSignIn) ...[
+          const SizedBox(height: 4),
+          TextButton.icon(
+            key: const Key('toggle-phone'),
+            onPressed: idle
+                ? () => setState(() {
+                      _phoneMode = !_phoneMode;
+                      _error = null;
+                    })
+                : null,
+            icon: Icon(_phoneMode ? Icons.mail_outline : Icons.phone_iphone, size: 18),
+            label: Text(_phoneMode ? l.useEmailInstead : l.usePhoneInstead),
+          ),
+        ],
         const SizedBox(height: 12),
         Divider(height: 1, color: scheme.outlineVariant),
         const SizedBox(height: 8),
