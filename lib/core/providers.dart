@@ -187,3 +187,14 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
 }
 
 final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
+
+/// True while the account is being deleted. The server removes the profile a
+/// moment before sign-out finishes; the router shows the splash screen in that
+/// gap instead of sending the user to "Set up your account".
+class DeletingAccountNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+  void set(bool value) => state = value;
+}
+
+final deletingAccountProvider = NotifierProvider<DeletingAccountNotifier, bool>(DeletingAccountNotifier.new);

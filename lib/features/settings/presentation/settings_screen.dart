@@ -252,12 +252,17 @@ Future<void> confirmDeleteAccount(BuildContext context, WidgetRef ref) async {
     builder: (_) => const Center(child: CircularProgressIndicator()),
   );
   final nav = Navigator.of(context, rootNavigator: true);
+  final deleting = ref.read(deletingAccountProvider.notifier);
+  deleting.set(true);
   try {
     final deleted = await ref.read(authRepositoryProvider).deleteAccount();
-    nav.pop();
+    // The router may already have left this page (and its dialog) behind.
+    if (nav.canPop()) nav.pop();
     if (deleted) messenger.showSnackBar(SnackBar(content: Text(l.accountDeleted)));
   } catch (e) {
-    nav.pop();
+    if (nav.canPop()) nav.pop();
     messenger.showSnackBar(SnackBar(content: Text('$e')));
+  } finally {
+    deleting.set(false);
   }
 }

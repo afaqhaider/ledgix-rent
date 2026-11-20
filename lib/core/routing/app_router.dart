@@ -41,6 +41,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
   ref.listen(userIdProvider, (_, _) => refresh.value++);
   ref.listen(roleProvider, (_, _) => refresh.value++);
+  ref.listen(deletingAccountProvider, (_, _) => refresh.value++);
   ref.onDispose(refresh.dispose);
 
   // Pushed pages (details, forms) show in the browser address bar, so a
@@ -59,7 +60,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
       if (uid.value == null) return loc == '/login' ? null : '/login';
       final r = role?.value;
-      if (r == null) return loc == '/onboarding' ? null : '/onboarding';
+      if (r == null) {
+        // Account deletion removes the profile just before sign-out lands:
+        // show the splash in that gap, not "Set up your account".
+        if (ref.read(deletingAccountProvider)) return loc == '/splash' ? null : '/splash';
+        return loc == '/onboarding' ? null : '/onboarding';
+      }
       final home = r.isTenant ? '/t' : '/';
       if (loc == '/splash') {
         final from = state.uri.queryParameters['from'];
